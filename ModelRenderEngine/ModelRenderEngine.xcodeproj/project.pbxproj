@@ -1,0 +1,342 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		843D4112172C38EF00AC2DA1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4111172C38EF00AC2DA1 /* UIKit.framework */; };
+		843D4114172C38EF00AC2DA1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4113172C38EF00AC2DA1 /* Foundation.framework */; };
+		843D4116172C38EF00AC2DA1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4115172C38EF00AC2DA1 /* CoreGraphics.framework */; };
+		843D411C172C38EF00AC2DA1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 843D411A172C38EF00AC2DA1 /* InfoPlist.strings */; };
+		843D411E172C38EF00AC2DA1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 843D411D172C38EF00AC2DA1 /* main.m */; };
+		843D4122172C38EF00AC2DA1 /* MREAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 843D4121172C38EF00AC2DA1 /* MREAppDelegate.m */; };
+		843D4124172C38EF00AC2DA1 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 843D4123172C38EF00AC2DA1 /* Default.png */; };
+		843D4126172C38EF00AC2DA1 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 843D4125172C38EF00AC2DA1 /* Default@2x.png */; };
+		843D4128172C38EF00AC2DA1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 843D4127172C38EF00AC2DA1 /* Default-568h@2x.png */; };
+		843D412B172C38EF00AC2DA1 /* MREViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843D412A172C38EF00AC2DA1 /* MREViewController.m */; };
+		843D412E172C38EF00AC2DA1 /* MREViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 843D412C172C38EF00AC2DA1 /* MREViewController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		843D4138172C399600AC2DA1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 843D4134172C399600AC2DA1 /* OGLES2Tools.xcode */;
+			proxyType = 2;
+			remoteGlobalIDString = F8748A3A0FF221480052D400;
+			remoteInfo = OGLES2Tools;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		843D410E172C38EF00AC2DA1 /* ModelRenderEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ModelRenderEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		843D4111172C38EF00AC2DA1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		843D4113172C38EF00AC2DA1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		843D4115172C38EF00AC2DA1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		843D4119172C38EF00AC2DA1 /* ModelRenderEngine-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ModelRenderEngine-Info.plist"; sourceTree = "<group>"; };
+		843D411B172C38EF00AC2DA1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		843D411D172C38EF00AC2DA1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		843D411F172C38EF00AC2DA1 /* ModelRenderEngine-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ModelRenderEngine-Prefix.pch"; sourceTree = "<group>"; };
+		843D4120172C38EF00AC2DA1 /* MREAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MREAppDelegate.h; sourceTree = "<group>"; };
+		843D4121172C38EF00AC2DA1 /* MREAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MREAppDelegate.m; sourceTree = "<group>"; };
+		843D4123172C38EF00AC2DA1 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		843D4125172C38EF00AC2DA1 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		843D4127172C38EF00AC2DA1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		843D4129172C38EF00AC2DA1 /* MREViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MREViewController.h; sourceTree = "<group>"; };
+		843D412A172C38EF00AC2DA1 /* MREViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MREViewController.m; sourceTree = "<group>"; };
+		843D412D172C38EF00AC2DA1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MREViewController.xib; sourceTree = "<group>"; };
+		843D4134172C399600AC2DA1 /* OGLES2Tools.xcode */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OGLES2Tools.xcode; path = PowerVR/OGLES2/Build/iOS/OGLES2Tools.xcode; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		843D410B172C38EF00AC2DA1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				843D4112172C38EF00AC2DA1 /* UIKit.framework in Frameworks */,
+				843D4114172C38EF00AC2DA1 /* Foundation.framework in Frameworks */,
+				843D4116172C38EF00AC2DA1 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		843D4105172C38EF00AC2DA1 = {
+			isa = PBXGroup;
+			children = (
+				843D4134172C399600AC2DA1 /* OGLES2Tools.xcode */,
+				843D4117172C38EF00AC2DA1 /* ModelRenderEngine */,
+				843D4110172C38EF00AC2DA1 /* Frameworks */,
+				843D410F172C38EF00AC2DA1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		843D410F172C38EF00AC2DA1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				843D410E172C38EF00AC2DA1 /* ModelRenderEngine.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		843D4110172C38EF00AC2DA1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				843D4111172C38EF00AC2DA1 /* UIKit.framework */,
+				843D4113172C38EF00AC2DA1 /* Foundation.framework */,
+				843D4115172C38EF00AC2DA1 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		843D4117172C38EF00AC2DA1 /* ModelRenderEngine */ = {
+			isa = PBXGroup;
+			children = (
+				843D4120172C38EF00AC2DA1 /* MREAppDelegate.h */,
+				843D4121172C38EF00AC2DA1 /* MREAppDelegate.m */,
+				843D4129172C38EF00AC2DA1 /* MREViewController.h */,
+				843D412A172C38EF00AC2DA1 /* MREViewController.m */,
+				843D412C172C38EF00AC2DA1 /* MREViewController.xib */,
+				843D4118172C38EF00AC2DA1 /* Supporting Files */,
+			);
+			path = ModelRenderEngine;
+			sourceTree = "<group>";
+		};
+		843D4118172C38EF00AC2DA1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				843D4119172C38EF00AC2DA1 /* ModelRenderEngine-Info.plist */,
+				843D411A172C38EF00AC2DA1 /* InfoPlist.strings */,
+				843D411D172C38EF00AC2DA1 /* main.m */,
+				843D411F172C38EF00AC2DA1 /* ModelRenderEngine-Prefix.pch */,
+				843D4123172C38EF00AC2DA1 /* Default.png */,
+				843D4125172C38EF00AC2DA1 /* Default@2x.png */,
+				843D4127172C38EF00AC2DA1 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		843D4135172C399600AC2DA1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				843D4139172C399600AC2DA1 /* libOGLES2Tools.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		843D410D172C38EF00AC2DA1 /* ModelRenderEngine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 843D4131172C38EF00AC2DA1 /* Build configuration list for PBXNativeTarget "ModelRenderEngine" */;
+			buildPhases = (
+				843D410A172C38EF00AC2DA1 /* Sources */,
+				843D410B172C38EF00AC2DA1 /* Frameworks */,
+				843D410C172C38EF00AC2DA1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ModelRenderEngine;
+			productName = ModelRenderEngine;
+			productReference = 843D410E172C38EF00AC2DA1 /* ModelRenderEngine.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		843D4106172C38EF00AC2DA1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = MRE;
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Andrii Mamchur";
+			};
+			buildConfigurationList = 843D4109172C38EF00AC2DA1 /* Build configuration list for PBXProject "ModelRenderEngine" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 843D4105172C38EF00AC2DA1;
+			productRefGroup = 843D410F172C38EF00AC2DA1 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 843D4135172C399600AC2DA1 /* Products */;
+					ProjectRef = 843D4134172C399600AC2DA1 /* OGLES2Tools.xcode */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				843D410D172C38EF00AC2DA1 /* ModelRenderEngine */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		843D4139172C399600AC2DA1 /* libOGLES2Tools.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOGLES2Tools.a;
+			remoteRef = 843D4138172C399600AC2DA1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		843D410C172C38EF00AC2DA1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				843D411C172C38EF00AC2DA1 /* InfoPlist.strings in Resources */,
+				843D4124172C38EF00AC2DA1 /* Default.png in Resources */,
+				843D4126172C38EF00AC2DA1 /* Default@2x.png in Resources */,
+				843D4128172C38EF00AC2DA1 /* Default-568h@2x.png in Resources */,
+				843D412E172C38EF00AC2DA1 /* MREViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		843D410A172C38EF00AC2DA1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				843D411E172C38EF00AC2DA1 /* main.m in Sources */,
+				843D4122172C38EF00AC2DA1 /* MREAppDelegate.m in Sources */,
+				843D412B172C38EF00AC2DA1 /* MREViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		843D411A172C38EF00AC2DA1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				843D411B172C38EF00AC2DA1 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		843D412C172C38EF00AC2DA1 /* MREViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				843D412D172C38EF00AC2DA1 /* en */,
+			);
+			name = MREViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		843D412F172C38EF00AC2DA1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		843D4130172C38EF00AC2DA1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		843D4132172C38EF00AC2DA1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ModelRenderEngine/ModelRenderEngine-Prefix.pch";
+				INFOPLIST_FILE = "ModelRenderEngine/ModelRenderEngine-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		843D4133172C38EF00AC2DA1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ModelRenderEngine/ModelRenderEngine-Prefix.pch";
+				INFOPLIST_FILE = "ModelRenderEngine/ModelRenderEngine-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		843D4109172C38EF00AC2DA1 /* Build configuration list for PBXProject "ModelRenderEngine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				843D412F172C38EF00AC2DA1 /* Debug */,
+				843D4130172C38EF00AC2DA1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		843D4131172C38EF00AC2DA1 /* Build configuration list for PBXNativeTarget "ModelRenderEngine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				843D4132172C38EF00AC2DA1 /* Debug */,
+				843D4133172C38EF00AC2DA1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 843D4106172C38EF00AC2DA1 /* Project object */;
+}
