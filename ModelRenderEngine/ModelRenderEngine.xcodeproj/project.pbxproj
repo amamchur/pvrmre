@@ -18,6 +18,7 @@
 		843D4128172C38EF00AC2DA1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 843D4127172C38EF00AC2DA1 /* Default-568h@2x.png */; };
 		843D412B172C38EF00AC2DA1 /* MREViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843D412A172C38EF00AC2DA1 /* MREViewController.m */; };
 		843D412E172C38EF00AC2DA1 /* MREViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 843D412C172C38EF00AC2DA1 /* MREViewController.xib */; };
+		843D413B172C3D3100AC2DA1 /* models in Resources */ = {isa = PBXBuildFile; fileRef = 843D413A172C3D3100AC2DA1 /* models */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		843D412A172C38EF00AC2DA1 /* MREViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MREViewController.m; sourceTree = "<group>"; };
 		843D412D172C38EF00AC2DA1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MREViewController.xib; sourceTree = "<group>"; };
 		843D4134172C399600AC2DA1 /* OGLES2Tools.xcode */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OGLES2Tools.xcode; path = PowerVR/OGLES2/Build/iOS/OGLES2Tools.xcode; sourceTree = "<group>"; };
+		843D413A172C3D3100AC2DA1 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				843D412A172C38EF00AC2DA1 /* MREViewController.m */,
 				843D412C172C38EF00AC2DA1 /* MREViewController.xib */,
 				843D4118172C38EF00AC2DA1 /* Supporting Files */,
+				843D413A172C3D3100AC2DA1 /* models */,
 			);
 			path = ModelRenderEngine;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 				843D4126172C38EF00AC2DA1 /* Default@2x.png in Resources */,
 				843D4128172C38EF00AC2DA1 /* Default-568h@2x.png in Resources */,
 				843D412E172C38EF00AC2DA1 /* MREViewController.xib in Resources */,
+				843D413B172C3D3100AC2DA1 /* models in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
