@@ -15,7 +15,13 @@
 #include "model.h"
 
 namespace mre {
-    class uniform_overide {
+    class uniform_override;
+    class texture_override;
+    
+    typedef std::map<int, uniform_override> uniform_overrides_map;
+    typedef std::map<int, texture_override> texture_overrides_map;
+    
+    class uniform_override {
     public:
         typedef enum {
             overide_type_none,
@@ -31,17 +37,29 @@ namespace mre {
         const void* ptr() const;
         uniform_overide_type get_type() const;
         
-        uniform_overide();
-        uniform_overide(const uniform_overide& uo);
-        uniform_overide(const PVRTMat4& mat4);
-        uniform_overide(const PVRTMat3& mat3);
-        uniform_overide(const PVRTVec4& vec4);
-        uniform_overide(const PVRTVec3& vec3);
+        uniform_override();
+        uniform_override(const uniform_override& uo);
+        uniform_override(const PVRTMat4& mat4);
+        uniform_override(const PVRTMat3& mat3);
+        uniform_override(const PVRTVec4& vec4);
+        uniform_override(const PVRTVec3& vec3);
         
         operator const GLfloat*() const;
         operator GLint() const;
         
-        uniform_overide& operator=(const uniform_overide& uo);
+        uniform_override& operator=(const uniform_override& uo);
+    };
+    
+    class texture_override {
+    public:
+        GLuint unit;
+        GLuint textId;
+    };
+    
+    class effect_overrides {
+    public:
+        uniform_overrides_map uniform_overrides;
+        texture_overrides_map texture_overrides;
     };
     
     class effect {
@@ -49,11 +67,11 @@ namespace mre {
         CPVRTPFXEffect *pfx_effect;
         const mre::model &model;
         
-        void apply_override(const uniform_overide& override, GLuint location);
+        void apply_override(const uniform_override& override, GLuint location);
+        void apply_default(EPVRTPFXUniformSemantic semantic, GLuint location, const SPODMaterial &material);
     public:
-        typedef std::map<int, uniform_overide> overides_map;
-        
-        overides_map overides;
+        uniform_overrides_map uniform_overrides;
+        texture_overrides_map texture_overrides;
         
         effect(const mre::model &model, CPVRTPFXEffect *pfx_effect);
         

@@ -8,6 +8,8 @@
 
 #include "model.h"
 #include "effect.h"
+#include "node.h"
+
 #include <map>
 
 #define CAM_NEAR 1
@@ -28,6 +30,19 @@ namespace mre {
     }
     
     model::~model() {
+        const PVRTuint32 count = podModel->nNumMesh;
+        glDeleteBuffers(count, vbos);
+        glDeleteBuffers(count, indexVbo);
+        
+        GLsizei n = textures.size();
+        GLuint *tmp = new GLuint[n];
+        int pos = 0;
+        for (auto iter = textures.begin(); iter != textures.end(); ++iter) {
+            tmp[pos++] = iter->second;
+        }
+        glGenTextures(n, tmp);
+        
+        delete tmp;        
         delete vbos;
         delete indexVbo;
         delete podModel;
@@ -192,14 +207,20 @@ namespace mre {
             } else {
                 pfx_effect = effects[material.pszEffectName];
             }
-            mre::effect e(*this, pfx_effect);
+            mre::effect effect(*this, pfx_effect);
+            auto pos = nodes_overrides.find(i);
+            if (pos != nodes_overrides.end()) {
+                const effect_overrides& eo = pos->second;
+                effect.uniform_overrides = eo.uniform_overrides;
+                effect.texture_overrides = eo.texture_overrides;
+            }
             
-            e.configure(mesh, material);
+            effect.configure(mesh, material);
             draw_mesh(mesh, i);
             
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);            
-            e.cleanup();
+            effect.cleanup();
         }
     }
     
@@ -225,13 +246,13 @@ namespace mre {
             unsigned int color = ((i * 13 + 17) << 8);
             GLubyte *colors = reinterpret_cast<GLubyte *>(&color);
             PVRTVec3 vec(colors[0] / 255.0f, colors[1] / 255.0f, colors[2] / 255.0f);
-
+            effect.uniform_overrides.clear();
+            effect.uniform_overrides[ePVRTPFX_UsMATERIALCOLORDIFFUSE] = vec;
+            
             const SPODNode &node = podModel->pNode[i];
             const SPODMaterial &material = podModel->pMaterial[node.nIdxMaterial];
             const SPODMesh &mesh = podModel->pMesh[node.nIdx];
             world = podModel->GetWorldMatrix(node);
-            effect.overides.clear();
-            effect.overides[ePVRTPFX_UsMATERIALCOLORDIFFUSE] = vec;
             
             glBindBuffer(GL_ARRAY_BUFFER, vbos[i]);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVbo[i]);
@@ -261,6 +282,10 @@ namespace mre {
         return res;
     }
     
+    void model::set_node_overrides(int node, const effect_overrides& o) {
+        nodes_overrides[node] = o;
+    }
+    
     std::string model::get_node_name(int index) const {
         if (index < 0 || index >= podModel->nNumMeshNode) {
             return "";
@@ -270,11 +295,39 @@ namespace mre {
         return node.pszName;
     }
     
+    int model::get_node_index(const std::string& name) const {
+        for (int i = 0; i < podModel->nNumMeshNode; i++) {
+            const SPODNode &node = podModel->pNode[i];
+            if (name == node.pszName) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    GLuint model::get_texture(const std::string& name) {
+        auto pos = textures.find(name);        
+        if (pos != textures.end()) {
+            return pos->second;
+        }
+        
+        std::string path = podDir + "/" + name;
+        GLuint uiHandle = 0;
+        if(PVRTTextureLoadFromPVR(path.c_str(), &uiHandle) != PVR_SUCCESS) {
+            return 0;
+        }
+        
+        textures[name] = uiHandle;
+        return uiHandle;
+    }
+    
     EPVRTError model::PVRTPFXOnLoadTexture(const CPVRTStringHash& TextureName, GLuint& uiHandle, unsigned int& uiFlags) {
         std::string path = podDir + "/" + TextureName.c_str();
         if(PVRTTextureLoadFromPVR(path.c_str(), &uiHandle) != PVR_SUCCESS) {
             return PVR_FAIL;
         }
+        
+        textures[TextureName.c_str()] = uiHandle;
         return PVR_SUCCESS;
     }
 }

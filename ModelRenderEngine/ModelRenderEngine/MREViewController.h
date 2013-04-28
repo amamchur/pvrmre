@@ -11,4 +11,6 @@
 
 @interface MREViewController : GLKViewController
 
+- (IBAction)onButton:(id)sender;
+
 @end

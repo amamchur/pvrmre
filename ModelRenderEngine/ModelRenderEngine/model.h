@@ -15,12 +15,15 @@
 
 #include "OGLES2Tools.h"
 
-#include "node.h"
-
 namespace mre {
+    class node;
+    class effect_overrides;
+    
     class model : public PVRTPFXEffectDelegate {
     private:
         typedef std::map<std::string, CPVRTPFXEffect*> effects_map;
+        typedef std::map<std::string, GLuint> textures_map;
+        typedef std::map<int, effect_overrides> nodes_overrides_map;
         typedef std::list<mre::node> nodes_list;
         
         CPVRTModelPOD *podModel;
@@ -38,6 +41,8 @@ namespace mre {
         
         nodes_list nodes;
         effects_map effects;
+        textures_map textures;
+        nodes_overrides_map nodes_overrides;
         
         int selected_node_index;
         
@@ -70,8 +75,14 @@ namespace mre {
         void set_selected_node(int index);
         int get_select_node() const;
         
-        int get_node_at_pos(int x, int y, int width, int height);
         std::string get_node_name(int index) const;
+        int get_node_index(const std::string& name) const;
+        
+        int get_node_at_pos(int x, int y, int width, int height);
+        
+        void set_node_overrides(int node, const effect_overrides& o);
+        
+        GLuint get_texture(const std::string& name);
     };
 }
 
