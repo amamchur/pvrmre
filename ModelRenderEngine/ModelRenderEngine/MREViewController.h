@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 
-@interface MREViewController : GLKViewController
+#import "MREMaterialsView.h"
 
-- (IBAction)onButton:(id)sender;
+@interface MREViewController : GLKViewController<MREMaterialsViewDataSource>
+
+@property (retain, nonatomic) IBOutlet MREMaterialsView *materialsView;
 
 @end

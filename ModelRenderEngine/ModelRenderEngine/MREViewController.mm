@@ -7,6 +7,7 @@
 //
 
 #import "MREViewController.h"
+#import "MREMaterialsView.h"
 
 #import "effect.h"
 #import "model.h"
@@ -16,21 +17,43 @@
 }
 
 @property (strong, nonatomic) EAGLContext *context;
+@property (strong, nonatomic) NSMutableArray *materials;
 
 @end
 
 @implementation MREViewController
 
+@synthesize context;
+@synthesize materials;
+@synthesize materialsView;
+
 - (void)dealloc {
     [self tearDownGL];
+    self.materials = nil;
+    self.materialsView = nil;
     [super dealloc];
+}
+
+- (MREMaterial *)materialWithName:(NSString *)name {
+    NSString *imgPath = [[NSBundle mainBundle] pathForResource:name
+                                                        ofType:@"jpg"
+                                                   inDirectory:@"models/textures_thumb"];
+    MREMaterial *m = [[MREMaterial alloc] init];
+    m.image = [UIImage imageWithContentsOfFile:imgPath];
+    m.texture = [NSString stringWithFormat:@"textures/%@.pvr", name];
+    m.name = name;
+    return [m autorelease];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.context = [[[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2] autorelease];
+    self.materials = [NSMutableArray array];
     
+    [materials addObject:[self materialWithName:@"generics_epoca_senza"]];
+    [materials addObject:[self materialWithName:@"st263"]];
+
     if (self.context == nil) {
         NSLog(@"Failed to create ES context");
     } else {    
@@ -50,6 +73,9 @@
 - (void)viewDidUnload {
     [super viewDidUnload];    
     [self tearDownGL];
+    
+    self.materials = nil;
+    self.materialsView = nil;
 }
 
 - (void)loadModel {
@@ -83,8 +109,60 @@
         return;
     }
     int node = model->get_node_at_pos(point.x, point.y, rect.size.width, rect.size.height);
+    if (node >= 0) {
+        [self showMaterialView];
+    } else {
+        [self hideMaterialView];
+    }
     model->set_selected_node(node);
     NSLog(@"Node selected %s", model->get_node_name(node).c_str());
+}
+
+#pragma mark - UICollectionView delegate methods
+
+- (void)showMaterialView {
+    [UIView beginAnimations:nil context:NULL];
+    CGRect rect = materialsView.frame;
+    rect.origin.y = self.view.bounds.size.height - rect.size.height;
+    materialsView.frame = rect;
+    [UIView commitAnimations];
+}
+
+- (void)hideMaterialView {
+    [UIView beginAnimations:nil context:NULL];
+    CGRect rect = materialsView.frame;
+    rect.origin.y = self.view.bounds.size.height;
+    materialsView.frame = rect;
+    [UIView commitAnimations];
+}
+
+- (NSInteger)materialsViewNumberOfMeterial:(MREMaterialsView *)view {
+    return [materials count];
+}
+
+- (MREMaterial *)materialsView:(MREMaterialsView *)view materialAtIndex:(NSInteger)index {
+    return [materials objectAtIndex:index];
+}
+
+- (void)materialsView:(MREMaterialsView *)view didSelectMaterialAtIndex:(NSInteger)index; {
+    if (model == NULL) {
+        [self hideMaterialView];
+        return;
+    }
+    
+    MREMaterial *m = [materials objectAtIndex:index];
+    int node = model->get_select_node();
+    if (node >= 0) {
+        GLuint textId = model->get_texture([m.texture UTF8String]);
+        mre::effect_overrides eo;
+        mre::texture_override to;
+        to.unit = 0;
+        to.textId = textId;
+        eo.texture_overrides[0] = to;
+        model->set_node_overrides(node, eo);
+        model->set_selected_node(-1);
+    }
+    [self hideMaterialView];
 }
 
 #pragma mark - GLKView and GLKViewController delegate methods
@@ -93,24 +171,6 @@
     if (model != NULL) {        
         model->setup(rect.size.width / rect.size.height);
         model->render();
-    }
-}
-
-- (IBAction)onButton:(id)sender {
-    if (model == NULL) {
-        return;
-    }
-    
-    int node = model->get_select_node();
-    if (node >= 0) {
-        GLuint textId = model->get_texture("textures/generics_epoca_senza_2.pvr");
-        mre::effect_overrides eo;
-        mre::texture_override to;
-        to.unit = 0;
-        to.textId = textId;
-        eo.texture_overrides[0] = to;
-        model->set_node_overrides(node, eo);
-        model->set_selected_node(-1);
     }
 }
 
