@@ -10,14 +10,21 @@
 #define PVRMRE_MODEL_H
 
 #include <list>
+#include <string>
+#include <map>
+
 #include "OGLES2Tools.h"
 
 #include "node.h"
 
 namespace mre {
-    class model {
+    class model : public PVRTPFXEffectDelegate {
     private:
+        typedef std::map<std::string, CPVRTPFXEffect*> effects_map;
+        typedef std::list<mre::node> nodes_list;
+        
         CPVRTModelPOD *podModel;
+        std::string podDir;        
         
         GLuint *vbos;
         GLuint *indexVbo;
@@ -25,15 +32,37 @@ namespace mre {
         PVRTMat4 projection;
         PVRTMat4 view;
         PVRTMat4 world;
+        PVRTVec3 eye_pos;
+        PVRTVec3 light_pos;
+        PVRTVec3 light_dir;
         
-        std::list<mre::node> nodes;
+        nodes_list nodes;
+        effects_map effects;
         
         void load_vbo();
         void load_nodes();
+        void load_effects();
+        
+        void draw_triangles_mesh(const SPODMesh &mesh, int index);
+        void draw_strip_mesh(const SPODMesh &mesh, int index);
+        void draw_mesh(const SPODMesh &mesh, int index);
+        
+        void configure_effect();
+        void cleanup_effect();
+        
+        EPVRTError PVRTPFXOnLoadTexture(const CPVRTStringHash& TextureName, GLuint& uiHandle, unsigned int& uiFlags);
     public:
-        model(CPVRTModelPOD *pod);
+        model(std::string dir, std::string pod);
         ~model();
         
+        const PVRTMat4& get_projection() const;
+        const PVRTMat4& get_view() const;
+        const PVRTMat4& get_world() const;
+        const PVRTVec3& get_eye_pos() const;
+        const PVRTVec3& get_light_pos() const;
+        const PVRTVec3& get_light_dir() const;
+        
+        void setup(float aspect);
         void render();
     };
 }

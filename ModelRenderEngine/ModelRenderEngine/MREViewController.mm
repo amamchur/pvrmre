@@ -56,16 +56,8 @@
         delete model;
     }
     
-    NSString *file = [[NSBundle mainBundle] pathForResource:@"e142"
-                                                     ofType:@"pod"
-                                                inDirectory:@"models"];
-    NSLog(@"%@", file);
-    
-    CPVRTModelPOD *pod = new CPVRTModelPOD();    
-    EPVRTError error = pod->ReadFromFile([file UTF8String]);
-    if (error == PVR_SUCCESS) {
-        model = new mre::model(pod);
-    }    
+    NSString *str = [[NSBundle mainBundle] bundlePath];    
+    model = new mre::model([[str stringByAppendingPathComponent:@"models"] UTF8String], "e142.pod");
 }
 
 - (void)setupGL {
@@ -82,9 +74,8 @@
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
-    glClearColor(0.0f, 1.0f, 0.0f, 1.0f );
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    if (model != NULL) {
+    if (model != NULL) {        
+        model->setup(rect.size.width / rect.size.height);
         model->render();
     }
     

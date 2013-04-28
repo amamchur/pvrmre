@@ -7,13 +7,23 @@
 //
 
 #include "model.h"
+#include "effect.h"
+#include <map>
+
+#define CAM_NEAR 1
+#define CAM_FAR 1000000
 
 namespace mre {
-    model::model(CPVRTModelPOD *pod)
-        : podModel(pod)
-    {
-        load_vbo();
-        load_nodes();
+    model::model(std::string dir, std::string pod)
+    : podDir(dir) {
+        std::string file = dir + "/" + pod;
+        podModel = new CPVRTModelPOD();
+        EPVRTError error = podModel->ReadFromFile(file.c_str());
+        if (error == PVR_SUCCESS) {
+            load_vbo();
+            load_nodes();
+            load_effects();
+        }
     }
     
     model::~model() {
@@ -56,6 +66,142 @@ namespace mre {
         }
     }
     
+    void model::load_effects() {
+        const CPVRTModelPOD &pod = *podModel;
+        std::map<std::string, int> effectsFile;
+        std::map<std::string, std::string> effectsMap;
+        for (int i = 0; i < pod.nNumMaterial; ++i) {
+            const SPODMaterial &material = pod.pMaterial[i];
+            effectsFile[material.pszEffectFile] = 1;
+            effectsMap[material.pszEffectName] = material.pszEffectFile;
+        }
+        
+        std::string file = podDir + "/" + effectsFile.begin()->first;
+        CPVRTPFXParser parser;
+        CPVRTString	errorStr;
+        EPVRTError error = parser.ParseFromFile(file.c_str(), &errorStr);
+        
+        unsigned int unknownUniforms = 0;
+        for (auto iter = effectsMap.begin(); iter != effectsMap.end(); ++iter) {
+            CPVRTPFXEffect *effect = new CPVRTPFXEffect();
+            error = effect->Load(parser, iter->first.c_str(), file.c_str(), this, unknownUniforms, &errorStr);
+            if (error != PVR_SUCCESS) {
+                delete effect;
+            }
+            
+            effects[iter->first] = effect;
+        }
+    }
+    
+    const PVRTMat4& model::get_projection() const {
+        return projection;        
+    }
+    
+    const PVRTMat4& model::get_view() const {
+        return view;
+    }
+    
+    const PVRTMat4& model::get_world() const {
+        return world;
+    }
+    
+    const PVRTVec3& model::get_eye_pos() const {
+        return eye_pos;
+    }
+    
+    const PVRTVec3& model::get_light_pos() const {
+        return light_pos;
+    }
+    
+    const PVRTVec3& model::get_light_dir() const {
+        return light_dir;
+    }
+    
+    void model::setup(float aspect) {
+        podModel->SetFrame(0);
+        
+        light_pos = podModel->GetLightPosition(1);
+        light_dir = podModel->GetLightDirection(1);
+        
+        PVRTVec3 cameraFrom, cameraTo, cameraUp;
+        VERTTYPE cameraFOV = podModel->GetCamera(cameraFrom, cameraTo, cameraUp, 0);
+        
+        view = PVRTMat4::LookAtRH(cameraFrom, cameraTo, cameraUp);
+        eye_pos = cameraFrom;
+        projection = PVRTMat4::PerspectiveFovRH(cameraFOV, aspect, CAM_NEAR, CAM_FAR, PVRTMat4::OGL, false);
+        world = PVRTMat4::Identity();
+    }
+    
+    void model::draw_triangles_mesh(const SPODMesh &mesh, int index) {
+        if(indexVbo[index]) {
+            GLenum type = (mesh.sFaces.eType == EPODDataUnsignedShort) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT;
+            glDrawElements(GL_TRIANGLES, mesh.nNumFaces * 3, type, 0);
+        } else {
+            glDrawArrays(GL_TRIANGLES, 0, mesh.nNumFaces * 3);
+        }
+    }
+    
+    void model::draw_strip_mesh(const SPODMesh &mesh, int index) {
+        PVRTuint32 offset = 0;        
+        GLenum type = (mesh.sFaces.eType == EPODDataUnsignedShort) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT;        
+        for(int i = 0; i < (int)mesh.nNumStrips; ++i) {
+            if (indexVbo[index]) {
+                glDrawElements(GL_TRIANGLE_STRIP, mesh.pnStripLength[i]+2, type, (void*)(offset * mesh.sFaces.nStride));
+            } else {
+                glDrawArrays(GL_TRIANGLE_STRIP, offset, mesh.pnStripLength[i]+2);
+            }
+            offset += mesh.pnStripLength[i] + 2;
+        }
+    }
+    
+    void model::draw_mesh(const SPODMesh &mesh, int index) {
+        if (mesh.nNumStrips == 0) {
+            draw_triangles_mesh(mesh, index);
+        } else {
+            draw_strip_mesh(mesh, index);
+        }
+    }
+    
+    void model::configure_effect() {
+        
+    }
+    
+    void model::cleanup_effect() {
+        
+    }
+    
     void model::render() {
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f );
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_DEPTH_TEST);
+        
+        for (int i = 0; i < podModel->nNumMeshNode; i++) {
+            const SPODNode &node = podModel->pNode[i];
+            const SPODMaterial &material = podModel->pMaterial[node.nIdxMaterial];
+            const SPODMesh &mesh = podModel->pMesh[node.nIdx];
+            world = podModel->GetWorldMatrix(node);
+            
+            glBindBuffer(GL_ARRAY_BUFFER, vbos[i]);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVbo[i]);
+            
+            CPVRTPFXEffect *pfx_effect = effects[material.pszEffectName];
+            mre::effect e(this, pfx_effect);
+            
+            e.configure(mesh, material);
+            draw_mesh(mesh, i);
+            
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);            
+            e.cleanup();
+        }
+    }
+    
+    EPVRTError model::PVRTPFXOnLoadTexture(const CPVRTStringHash& TextureName, GLuint& uiHandle, unsigned int& uiFlags) {
+        std::string path = podDir + "/" + TextureName.c_str();
+        if(PVRTTextureLoadFromPVR(path.c_str(), &uiHandle) != PVR_SUCCESS) {
+            return PVR_FAIL;
+        }
+        return PVR_SUCCESS;
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84330E06172D693600A4CBBB /* effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84330E04172D693600A4CBBB /* effect.cpp */; };
 		843D4112172C38EF00AC2DA1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4111172C38EF00AC2DA1 /* UIKit.framework */; };
 		843D4114172C38EF00AC2DA1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4113172C38EF00AC2DA1 /* Foundation.framework */; };
 		843D4116172C38EF00AC2DA1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4115172C38EF00AC2DA1 /* CoreGraphics.framework */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		84330E04172D693600A4CBBB /* effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = effect.cpp; sourceTree = "<group>"; };
+		84330E05172D693600A4CBBB /* effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = effect.h; sourceTree = "<group>"; };
 		843D410E172C38EF00AC2DA1 /* ModelRenderEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ModelRenderEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		843D4111172C38EF00AC2DA1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		843D4113172C38EF00AC2DA1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -154,6 +157,8 @@
 				843D413E172C3DEF00AC2DA1 /* model.h */,
 				843D4140172C3F1300AC2DA1 /* node.cpp */,
 				843D4141172C3F1300AC2DA1 /* node.h */,
+				84330E04172D693600A4CBBB /* effect.cpp */,
+				84330E05172D693600A4CBBB /* effect.h */,
 			);
 			name = Engine;
 			sourceTree = "<group>";
@@ -247,6 +252,7 @@
 				843D412B172C38EF00AC2DA1 /* MREViewController.mm in Sources */,
 				843D413F172C3DEF00AC2DA1 /* model.cpp in Sources */,
 				843D4142172C3F1300AC2DA1 /* node.cpp in Sources */,
+				84330E06172D693600A4CBBB /* effect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +381,7 @@
 				843D4133172C38EF00AC2DA1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
