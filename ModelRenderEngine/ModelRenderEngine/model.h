@@ -39,6 +39,8 @@ namespace mre {
         nodes_list nodes;
         effects_map effects;
         
+        int selected_node_index;
+        
         void load_vbo();
         void load_nodes();
         void load_effects();
@@ -64,6 +66,12 @@ namespace mre {
         
         void setup(float aspect);
         void render();
+        
+        void set_selected_node(int index);
+        int get_select_node() const;
+        
+        int get_node_at_pos(int x, int y, int width, int height);
+        std::string get_node_name(int index) const;
     };
 }
 

@@ -15,7 +15,8 @@
 
 namespace mre {
     model::model(std::string dir, std::string pod)
-    : podDir(dir) {
+    : podDir(dir)
+    , selected_node_index(-1) {
         std::string file = dir + "/" + pod;
         podModel = new CPVRTModelPOD();
         EPVRTError error = podModel->ReadFromFile(file.c_str());
@@ -185,8 +186,13 @@ namespace mre {
             glBindBuffer(GL_ARRAY_BUFFER, vbos[i]);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVbo[i]);
             
-            CPVRTPFXEffect *pfx_effect = effects[material.pszEffectName];
-            mre::effect e(this, pfx_effect);
+            CPVRTPFXEffect *pfx_effect = NULL;
+            if (i == selected_node_index) {
+                pfx_effect = effects["SelectedNode"];
+            } else {
+                pfx_effect = effects[material.pszEffectName];
+            }
+            mre::effect e(*this, pfx_effect);
             
             e.configure(mesh, material);
             draw_mesh(mesh, i);
@@ -195,6 +201,73 @@ namespace mre {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);            
             e.cleanup();
         }
+    }
+    
+    void model::set_selected_node(int index) {
+        selected_node_index = index;
+    }
+    
+    int model::get_select_node() const {
+        return selected_node_index;
+    }
+    
+    int model::get_node_at_pos(int x, int y, int width, int height) {
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        int res = 0;
+               
+        CPVRTPFXEffect *pfx_effect = effects["Selection"];
+        mre::effect effect(*this, pfx_effect);
+        
+        glDisable(GL_DITHER);
+        for (int i = 0; i < podModel->nNumMeshNode; i++) {
+            unsigned int color = ((i * 13 + 17) << 8);
+            GLubyte *colors = reinterpret_cast<GLubyte *>(&color);
+            PVRTVec3 vec(colors[0] / 255.0f, colors[1] / 255.0f, colors[2] / 255.0f);
+
+            const SPODNode &node = podModel->pNode[i];
+            const SPODMaterial &material = podModel->pMaterial[node.nIdxMaterial];
+            const SPODMesh &mesh = podModel->pMesh[node.nIdx];
+            world = podModel->GetWorldMatrix(node);
+            effect.overides.clear();
+            effect.overides[ePVRTPFX_UsMATERIALCOLORDIFFUSE] = vec;
+            
+            glBindBuffer(GL_ARRAY_BUFFER, vbos[i]);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVbo[i]);
+                        
+            effect.configure(mesh, material);
+            draw_mesh(mesh, i);
+            
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            effect.cleanup();
+        }
+        
+        glEnable(GL_DITHER);
+                
+        GLubyte buffer[64] = {0};
+        glReadPixels(x, height - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+        
+        GLenum error = glGetError();
+        if (error == GL_NO_ERROR) {
+            unsigned int color = *reinterpret_cast<unsigned int *>(buffer);
+            if (color == 0xFFFFFFFF) {
+                res = -1;
+            } else {
+                res = (((color & 0xFFFFFF) >> 8) - 17) / 13;
+            }
+        }
+        return res;
+    }
+    
+    std::string model::get_node_name(int index) const {
+        if (index < 0 || index >= podModel->nNumMeshNode) {
+            return "";
+        }
+        
+        const SPODNode &node = podModel->pNode[index];
+        return node.pszName;
     }
     
     EPVRTError model::PVRTPFXOnLoadTexture(const CPVRTStringHash& TextureName, GLuint& uiHandle, unsigned int& uiFlags) {

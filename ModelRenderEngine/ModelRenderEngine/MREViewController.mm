@@ -24,6 +24,7 @@
     [super viewDidLoad];
     
     self.context = [[[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2] autorelease];
+    self.preferredFramesPerSecond = 60;
     
     if (!self.context) {
         NSLog(@"Failed to create ES context");
@@ -33,8 +34,22 @@
     view.context = self.context;
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     
+    UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
+    [view addGestureRecognizer:gr];
+    [gr release];
+    
     [self setupGL];
     [self loadModel];
+}
+
+- (void)onTap:(UITapGestureRecognizer *)tap {
+    GLKView *view = (GLKView *)self.view;
+    CGRect rect = self.view.bounds;
+    CGPoint point = [tap locationInView:view];
+    if (model != NULL) {
+        int node = model->get_node_at_pos(point.x, point.y, rect.size.width, rect.size.height);
+        model->set_selected_node(node);
+    }
 }
 
 - (void)viewDidUnload {
@@ -65,7 +80,7 @@
 }
 
 - (void)tearDownGL {
-    [EAGLContext setCurrentContext:self.context];
+    [EAGLContext setCurrentContext:nil];
 }
 
 #pragma mark - GLKView and GLKViewController delegate methods
