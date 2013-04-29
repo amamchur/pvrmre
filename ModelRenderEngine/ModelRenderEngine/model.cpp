@@ -289,8 +289,6 @@ namespace mre {
     void model::render() {
         recalc_view_projection();
                                
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
         

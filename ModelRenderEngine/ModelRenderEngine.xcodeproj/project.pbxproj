@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		842564B8172F002C0079B651 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842564B7172F002C0079B651 /* AssetsLibrary.framework */; };
+		842564BF172F1B110079B651 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842564BE172F1B110079B651 /* ImageIO.framework */; };
 		84330E06172D693600A4CBBB /* effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84330E04172D693600A4CBBB /* effect.cpp */; };
 		84330E0D172DD3D200A4CBBB /* MREMaterialsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84330E0C172DD3D100A4CBBB /* MREMaterialsView.m */; };
 		84330E11172DE5D400A4CBBB /* models in Resources */ = {isa = PBXBuildFile; fileRef = 84330E10172DE5D400A4CBBB /* models */; };
@@ -39,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		842564B7172F002C0079B651 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		842564BE172F1B110079B651 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		84330E04172D693600A4CBBB /* effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = effect.cpp; sourceTree = "<group>"; };
 		84330E05172D693600A4CBBB /* effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = effect.h; sourceTree = "<group>"; };
 		84330E0B172DD3D100A4CBBB /* MREMaterialsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MREMaterialsView.h; sourceTree = "<group>"; };
@@ -74,6 +78,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				842564BF172F1B110079B651 /* ImageIO.framework in Frameworks */,
+				842564B8172F002C0079B651 /* AssetsLibrary.framework in Frameworks */,
 				843D4146172C417900AC2DA1 /* GLKit.framework in Frameworks */,
 				843D4144172C40E500AC2DA1 /* OpenGLES.framework in Frameworks */,
 				843D4112172C38EF00AC2DA1 /* UIKit.framework in Frameworks */,
@@ -107,6 +113,8 @@
 		843D4110172C38EF00AC2DA1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				842564BE172F1B110079B651 /* ImageIO.framework */,
+				842564B7172F002C0079B651 /* AssetsLibrary.framework */,
 				843D4145172C417900AC2DA1 /* GLKit.framework */,
 				843D4143172C40E500AC2DA1 /* OpenGLES.framework */,
 				843D4111172C38EF00AC2DA1 /* UIKit.framework */,

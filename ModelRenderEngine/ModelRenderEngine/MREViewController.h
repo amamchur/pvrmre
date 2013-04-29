@@ -14,5 +14,10 @@
 @interface MREViewController : GLKViewController<MREMaterialsViewDataSource>
 
 @property (retain, nonatomic) IBOutlet MREMaterialsView *materialsView;
+@property (retain, nonatomic) IBOutlet UIToolbar *toolbar;
+
+- (IBAction)onSelectFromLibrary:(id)sender;
+- (IBAction)onSelectFromCamera:(id)sender;
+- (IBAction)onSave:(id)sender;
 
 @end

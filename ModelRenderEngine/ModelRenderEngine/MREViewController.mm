@@ -12,12 +12,20 @@
 #import "effect.h"
 #import "model.h"
 
-@interface MREViewController () {
+@interface MREViewController ()<
+UIGestureRecognizerDelegate,
+UIPopoverControllerDelegate,
+UIImagePickerControllerDelegate,
+UINavigationControllerDelegate> {
     mre::model *model;
+    CPVRTBackground *background;
+    GLuint backgroundTextId;
 }
 
 @property (strong, nonatomic) EAGLContext *context;
 @property (strong, nonatomic) NSMutableArray *materials;
+@property (strong, nonatomic) NSTimer *hideToolbarTimer;
+@property (strong, nonatomic) UIPopoverController *popover;
 
 @end
 
@@ -25,12 +33,21 @@
 
 @synthesize context;
 @synthesize materials;
+@synthesize toolbar;
+@synthesize hideToolbarTimer;
 @synthesize materialsView;
+@synthesize popover;
 
 - (void)dealloc {
     [self tearDownGL];
+    
+    [hideToolbarTimer invalidate];
+    self.hideToolbarTimer = nil;
+    
     self.materials = nil;
     self.materialsView = nil;
+    self.toolbar = nil;
+    self.popover = nil;
     [super dealloc];
 }
 
@@ -59,42 +76,92 @@
     
     if (self.context == nil) {
         NSLog(@"Failed to create ES context");
-    } else {    
-        GLKView *view = (GLKView *)self.view;
-        view.context = self.context;
-        view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-        
-        UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
-        [view addGestureRecognizer:gr];
-        [gr release];
-        
-        UIPanGestureRecognizer *pgr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onPan:)];
-        pgr.minimumNumberOfTouches = 1;
-        pgr.maximumNumberOfTouches = 1;
-        [view addGestureRecognizer:pgr];
-        [pgr release];
-        
-        UIPanGestureRecognizer *dpgr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onDoublePan:)];
-        dpgr.minimumNumberOfTouches = 2;
-        dpgr.maximumNumberOfTouches = 2;
-        [view addGestureRecognizer:dpgr];
-        [dpgr release];
-        
-        UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(onPinch:)];
-        [view addGestureRecognizer:pinch];
-        [pinch release];
-        
-        [self setupGL];
-        [self loadModel];
+        return;
     }
+    
+    GLKView *view = (GLKView *)self.view;
+    view.context = self.context;
+    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+    
+    UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
+    gr.delegate = self;
+    [view addGestureRecognizer:gr];
+    [gr release];
+    
+    UIPanGestureRecognizer *pgr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onPan:)];
+    pgr.minimumNumberOfTouches = 1;
+    pgr.maximumNumberOfTouches = 1;
+    pgr.delegate = self;
+    [view addGestureRecognizer:pgr];
+    [pgr release];
+    
+    UIPanGestureRecognizer *dpgr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onDoublePan:)];
+    dpgr.minimumNumberOfTouches = 2;
+    dpgr.maximumNumberOfTouches = 2;
+    dpgr.delegate = self;
+    [view addGestureRecognizer:dpgr];
+    [dpgr release];
+    
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(onPinch:)];
+    pinch.delegate = self;
+    [view addGestureRecognizer:pinch];
+    [pinch release];
+    
+    [self setupGL];
+    [self loadModel];
+    
+    background = new CPVRTBackground();
+    background->Init(NULL, FALSE);
+    backgroundTextId = 0;
+}
+
+- (GLuint)loadTextureFromImage:(UIImage *)img {
+    if (img == nil) {
+        return 0;
+    }
+    
+    CGImageRef spriteImage = img.CGImage;
+    size_t width = CGImageGetWidth(spriteImage);
+    size_t height = CGImageGetHeight(spriteImage);
+    
+    GLubyte * spriteData = (GLubyte *)calloc(width*height*4, sizeof(GLubyte));    
+    CGContextRef ctx = CGBitmapContextCreate(spriteData,
+                                             width,
+                                             height,
+                                             8,
+                                             width*4,
+                                             CGImageGetColorSpace(spriteImage),
+                                             kCGImageAlphaPremultipliedLast);
+    CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0,height);
+    CGContextConcatCTM(ctx, flipVertical);
+    CGContextDrawImage(ctx, CGRectMake(0, 0, width, height), spriteImage);
+    CGContextRelease(ctx);
+    
+    GLuint texName;
+    glGenTextures(1, &texName);
+    glBindTexture(GL_TEXTURE_2D, texName);    
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
+    
+    free(spriteData);
+    
+    return texName;
 }
 
 - (void)viewDidUnload {
     [super viewDidUnload];    
     [self tearDownGL];
     
+    [hideToolbarTimer invalidate];
+    self.hideToolbarTimer = nil;
+    
     self.materials = nil;
     self.materialsView = nil;
+    self.toolbar = nil;
+    self.popover = nil;
 }
 
 - (void)loadModel {
@@ -116,8 +183,21 @@
     }
     self.context = nil;
     
+    if (background != NULL) {
+        delete background;
+        background = NULL;
+    }
+    
+    if (model != NULL) {
+        delete model;
+        model = NULL;
+    }
     delete model;
     model = NULL;
+}
+
+- (signed char)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    return touch.view == self.view;
 }
 
 - (void)onPinch:(UIPinchGestureRecognizer *)pinch {
@@ -180,13 +260,44 @@
     int node = model->get_node_at_pos(point.x, point.y, rect.size.width, rect.size.height);
     if (node >= 0) {
         [self showMaterialView];
+        [self hideToolbar];
     } else {
         [self hideMaterialView];
+        [self showToolbar];
     }
     model->set_selected_node(node);
 }
 
 #pragma mark - UICollectionView delegate methods
+
+- (void)showToolbar {
+    [UIView beginAnimations:nil context:NULL];
+    CGRect rect = toolbar.frame;
+    rect.origin.y = 0;
+    toolbar.frame = rect;
+    [UIView commitAnimations];
+    
+    [hideToolbarTimer invalidate];
+    self.hideToolbarTimer = [NSTimer scheduledTimerWithTimeInterval:5
+                                                    target:self
+                                                  selector:@selector(hideToolbar)
+                                                  userInfo:nil
+                                                   repeats:NO];
+}
+
+- (void)hideToolbar {
+    if (popover == nil) {
+        [UIView beginAnimations:nil context:NULL];
+        CGRect rect = toolbar.frame;
+        rect.origin.y = -rect.size.height;
+        toolbar.frame = rect;
+        [UIView commitAnimations];
+    }
+    
+    [hideToolbarTimer invalidate];
+    [[hideToolbarTimer retain] autorelease];
+    self.hideToolbarTimer = nil;
+}
 
 - (void)showMaterialView {
     [UIView beginAnimations:nil context:NULL];
@@ -236,10 +347,71 @@
 #pragma mark - GLKView and GLKViewController delegate methods
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    if (backgroundTextId != 0) {
+        background->Draw(backgroundTextId);
+    }
+    
     if (model != NULL) {        
         model->setup(rect.size.width / rect.size.height);
         model->render();
     }
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [[popover retain] autorelease];
+    [popover dismissPopoverAnimated:YES];
+    self.popover = nil;
+    [self hideToolbar];
+    
+    glDeleteTextures(1, &backgroundTextId);
+    UIImage *img = [info objectForKey:UIImagePickerControllerOriginalImage];
+    backgroundTextId = [self loadTextureFromImage:img];
+    model->setup_default_camera();
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    [[popover retain] autorelease];
+    self.popover = nil;
+    [self hideToolbar];
+}
+
+- (IBAction)onSelectFromLibrary:(id)sender {
+    UIImagePickerController *pc = [[UIImagePickerController alloc] init];
+    pc.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    pc.delegate = self;
+    UIPopoverController *p = [[UIPopoverController alloc] initWithContentViewController:pc];
+    p.delegate = self;
+    p.passthroughViews = [NSArray array];
+    [p presentPopoverFromBarButtonItem:sender
+              permittedArrowDirections:UIPopoverArrowDirectionAny
+                              animated:YES];
+    self.popover = p;
+    [p release];
+    [pc release];
+}
+
+- (IBAction)onSelectFromCamera:(id)sender {
+    UIImagePickerController *pc = [[UIImagePickerController alloc] init];
+    pc.sourceType = UIImagePickerControllerSourceTypeCamera;
+    pc.delegate = self;
+    UIPopoverController *p = [[UIPopoverController alloc] initWithContentViewController:pc];
+    p.delegate = self;
+    p.passthroughViews = [NSArray array];
+    [p presentPopoverFromBarButtonItem:sender
+              permittedArrowDirections:UIPopoverArrowDirectionAny
+                              animated:YES];
+    self.popover = p;
+    [p release];
+    [pc release];
+}
+
+- (IBAction)onSave:(id)sender {
+    GLKView *view = (GLKView *)self.view;
+    UIImage *img = [view snapshot];
+    UIImageWriteToSavedPhotosAlbum(img, NULL, NULL, NULL);
 }
 
 @end
