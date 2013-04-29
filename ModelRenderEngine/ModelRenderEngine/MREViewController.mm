@@ -188,10 +188,14 @@ UINavigationControllerDelegate> {
         background = NULL;
     }
     
+    glDeleteTextures(1, &backgroundTextId);
+    backgroundTextId = 0;
+    
     if (model != NULL) {
         delete model;
         model = NULL;
     }
+    
     delete model;
     model = NULL;
 }
@@ -347,6 +351,10 @@ UINavigationControllerDelegate> {
 #pragma mark - GLKView and GLKViewController delegate methods
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
+    if (context == nil) {
+        return;
+    }
+    
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -369,6 +377,7 @@ UINavigationControllerDelegate> {
     glDeleteTextures(1, &backgroundTextId);
     UIImage *img = [info objectForKey:UIImagePickerControllerOriginalImage];
     backgroundTextId = [self loadTextureFromImage:img];
+    
     model->setup_default_camera();
 }
 
@@ -384,10 +393,10 @@ UINavigationControllerDelegate> {
     pc.delegate = self;
     UIPopoverController *p = [[UIPopoverController alloc] initWithContentViewController:pc];
     p.delegate = self;
-    p.passthroughViews = [NSArray array];
     [p presentPopoverFromBarButtonItem:sender
               permittedArrowDirections:UIPopoverArrowDirectionAny
                               animated:YES];
+    p.passthroughViews = [NSArray array];
     self.popover = p;
     [p release];
     [pc release];
@@ -399,10 +408,10 @@ UINavigationControllerDelegate> {
     pc.delegate = self;
     UIPopoverController *p = [[UIPopoverController alloc] initWithContentViewController:pc];
     p.delegate = self;
-    p.passthroughViews = [NSArray array];
     [p presentPopoverFromBarButtonItem:sender
               permittedArrowDirections:UIPopoverArrowDirectionAny
                               animated:YES];
+    p.passthroughViews = [NSArray array];
     self.popover = p;
     [p release];
     [pc release];
@@ -412,6 +421,11 @@ UINavigationControllerDelegate> {
     GLKView *view = (GLKView *)self.view;
     UIImage *img = [view snapshot];
     UIImageWriteToSavedPhotosAlbum(img, NULL, NULL, NULL);
+}
+
+- (IBAction)onCancel:(id)sender {
+    [self tearDownGL];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

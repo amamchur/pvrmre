@@ -19,5 +19,6 @@
 - (IBAction)onSelectFromLibrary:(id)sender;
 - (IBAction)onSelectFromCamera:(id)sender;
 - (IBAction)onSave:(id)sender;
+- (IBAction)onCancel:(id)sender;
 
 @end

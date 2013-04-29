@@ -9,6 +9,7 @@
 #import "MREAppDelegate.h"
 
 #import "MREViewController.h"
+#import "MREMenuViewController.h"
 
 @implementation MREAppDelegate
 
@@ -19,13 +20,20 @@
     [super dealloc];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    MREMenuViewController *menu = [[MREMenuViewController alloc] initWithNibName:@"MREMenuViewController"
+                                                                          bundle:nil];
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:menu];
+    nc.navigationBarHidden = YES;
+        
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
-    self.viewController = [[[MREViewController alloc] initWithNibName:@"MREViewController" bundle:nil] autorelease];
+    self.viewController = nc;
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    
+    [menu release];
+    [nc release];    
     return YES;
 }
 

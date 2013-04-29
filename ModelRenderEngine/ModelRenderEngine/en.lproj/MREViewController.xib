@@ -43,6 +43,7 @@
 						<string key="NSFrame">{{0, 1024}, {768, 128}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -53,7 +54,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<bool key="IBUIAlwaysBounceHorizontal">YES</bool>
 					</object>
-					<object class="IBUIToolbar" id="87233476">
+					<object class="IBUIToolbar" id="500565917">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{0, -44}, {768, 44}}</string>
@@ -66,28 +67,34 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIBarStyle">2</int>
 						<array class="NSMutableArray" key="IBUIItems">
-							<object class="IBUIBarButtonItem" id="745869673">
+							<object class="IBUIBarButtonItem" id="682148577">
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<int key="IBUIStyle">1</int>
+								<reference key="IBUIToolbar" ref="500565917"/>
+								<int key="IBUISystemItemIdentifier">1</int>
+							</object>
+							<object class="IBUIBarButtonItem" id="170155729">
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<reference key="IBUIToolbar" ref="500565917"/>
+								<int key="IBUISystemItemIdentifier">5</int>
+							</object>
+							<object class="IBUIBarButtonItem" id="209265997">
 								<string key="IBUITitle">Library</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
-								<reference key="IBUIToolbar" ref="87233476"/>
+								<reference key="IBUIToolbar" ref="500565917"/>
 							</object>
-							<object class="IBUIBarButtonItem" id="706079713">
+							<object class="IBUIBarButtonItem" id="290626176">
 								<string key="IBUITitle">Camera</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
-								<reference key="IBUIToolbar" ref="87233476"/>
+								<reference key="IBUIToolbar" ref="500565917"/>
 							</object>
-							<object class="IBUIBarButtonItem" id="142790648">
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<reference key="IBUIToolbar" ref="87233476"/>
-								<int key="IBUISystemItemIdentifier">5</int>
-							</object>
-							<object class="IBUIBarButtonItem" id="139364425">
+							<object class="IBUIBarButtonItem" id="730374986">
 								<string key="IBUITitle">Save</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
-								<reference key="IBUIToolbar" ref="87233476"/>
+								<reference key="IBUIToolbar" ref="500565917"/>
 							</object>
 						</array>
 					</object>
@@ -95,7 +102,7 @@
 				<string key="NSFrame">{{0, 20}, {768, 1004}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="87233476"/>
+				<reference key="NSNextKeyView" ref="500565917"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -132,7 +139,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">toolbar</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="87233476"/>
+						<reference key="destination" ref="500565917"/>
 					</object>
 					<int key="connectionID">47</int>
 				</object>
@@ -155,7 +162,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">onSelectFromLibrary:</string>
-						<reference key="source" ref="745869673"/>
+						<reference key="source" ref="209265997"/>
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">49</int>
@@ -163,7 +170,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">onSave:</string>
-						<reference key="source" ref="139364425"/>
+						<reference key="source" ref="730374986"/>
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">46</int>
@@ -171,10 +178,18 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">onSelectFromCamera:</string>
-						<reference key="source" ref="706079713"/>
+						<reference key="source" ref="290626176"/>
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">50</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">onCancel:</string>
+						<reference key="source" ref="682148577"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">52</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -201,7 +216,7 @@
 						<reference key="object" ref="766721923"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="190974875"/>
-							<reference ref="87233476"/>
+							<reference ref="500565917"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -212,34 +227,40 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">41</int>
-						<reference key="object" ref="87233476"/>
+						<reference key="object" ref="500565917"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="745869673"/>
-							<reference ref="142790648"/>
-							<reference ref="139364425"/>
-							<reference ref="706079713"/>
+							<reference ref="209265997"/>
+							<reference ref="730374986"/>
+							<reference ref="170155729"/>
+							<reference ref="290626176"/>
+							<reference ref="682148577"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">42</int>
-						<reference key="object" ref="745869673"/>
-						<reference key="parent" ref="87233476"/>
+						<reference key="object" ref="209265997"/>
+						<reference key="parent" ref="500565917"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">43</int>
-						<reference key="object" ref="142790648"/>
-						<reference key="parent" ref="87233476"/>
+						<reference key="object" ref="170155729"/>
+						<reference key="parent" ref="500565917"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">44</int>
-						<reference key="object" ref="139364425"/>
-						<reference key="parent" ref="87233476"/>
+						<reference key="object" ref="730374986"/>
+						<reference key="parent" ref="500565917"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">48</int>
-						<reference key="object" ref="706079713"/>
-						<reference key="parent" ref="87233476"/>
+						<reference key="object" ref="290626176"/>
+						<reference key="parent" ref="500565917"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">51</int>
+						<reference key="object" ref="682148577"/>
+						<reference key="parent" ref="500565917"/>
 					</object>
 				</array>
 			</object>
@@ -257,12 +278,13 @@
 				<string key="43.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="44.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="48.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">50</int>
+			<int key="maxID">52</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -292,11 +314,16 @@
 					<string key="className">MREViewController</string>
 					<string key="superclassName">GLKViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="onCancel:">id</string>
 						<string key="onSave:">id</string>
 						<string key="onSelectFromCamera:">id</string>
 						<string key="onSelectFromLibrary:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="onCancel:">
+							<string key="name">onCancel:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="onSave:">
 							<string key="name">onSave:</string>
 							<string key="candidateClassName">id</string>

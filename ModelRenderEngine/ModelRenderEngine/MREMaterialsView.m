@@ -86,6 +86,11 @@
     return self;
 }
 
+- (void)dealloc {
+    self.pool = nil;
+    [super dealloc];
+}
+
 - (void)onTap:(UITapGestureRecognizer *)tgr {
     CGPoint p = [tgr locationInView:self];
     UIView *v = [self hitTest:p withEvent:nil];

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		842564B8172F002C0079B651 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842564B7172F002C0079B651 /* AssetsLibrary.framework */; };
 		842564BF172F1B110079B651 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842564BE172F1B110079B651 /* ImageIO.framework */; };
+		842564C3172F23130079B651 /* MREMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842564C1172F23130079B651 /* MREMenuViewController.m */; };
+		842564C4172F23130079B651 /* MREMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842564C2172F23130079B651 /* MREMenuViewController.xib */; };
+		842564C6172F26410079B651 /* generics_epoca_senza_render.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 842564C5172F26410079B651 /* generics_epoca_senza_render.jpg */; };
 		84330E06172D693600A4CBBB /* effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84330E04172D693600A4CBBB /* effect.cpp */; };
 		84330E0D172DD3D200A4CBBB /* MREMaterialsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84330E0C172DD3D100A4CBBB /* MREMaterialsView.m */; };
 		84330E11172DE5D400A4CBBB /* models in Resources */ = {isa = PBXBuildFile; fileRef = 84330E10172DE5D400A4CBBB /* models */; };
@@ -43,6 +46,10 @@
 /* Begin PBXFileReference section */
 		842564B7172F002C0079B651 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		842564BE172F1B110079B651 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		842564C0172F23130079B651 /* MREMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MREMenuViewController.h; sourceTree = "<group>"; };
+		842564C1172F23130079B651 /* MREMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MREMenuViewController.m; sourceTree = "<group>"; };
+		842564C2172F23130079B651 /* MREMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MREMenuViewController.xib; sourceTree = "<group>"; };
+		842564C5172F26410079B651 /* generics_epoca_senza_render.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = generics_epoca_senza_render.jpg; sourceTree = "<group>"; };
 		84330E04172D693600A4CBBB /* effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = effect.cpp; sourceTree = "<group>"; };
 		84330E05172D693600A4CBBB /* effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = effect.h; sourceTree = "<group>"; };
 		84330E0B172DD3D100A4CBBB /* MREMaterialsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MREMaterialsView.h; sourceTree = "<group>"; };
@@ -135,6 +142,10 @@
 				843D4129172C38EF00AC2DA1 /* MREViewController.h */,
 				843D412A172C38EF00AC2DA1 /* MREViewController.mm */,
 				843D412C172C38EF00AC2DA1 /* MREViewController.xib */,
+				842564C0172F23130079B651 /* MREMenuViewController.h */,
+				842564C1172F23130079B651 /* MREMenuViewController.m */,
+				842564C2172F23130079B651 /* MREMenuViewController.xib */,
+				842564C5172F26410079B651 /* generics_epoca_senza_render.jpg */,
 				84330E10172DE5D400A4CBBB /* models */,
 				843D4118172C38EF00AC2DA1 /* Supporting Files */,
 			);
@@ -250,6 +261,8 @@
 				843D4128172C38EF00AC2DA1 /* Default-568h@2x.png in Resources */,
 				843D412E172C38EF00AC2DA1 /* MREViewController.xib in Resources */,
 				84330E11172DE5D400A4CBBB /* models in Resources */,
+				842564C4172F23130079B651 /* MREMenuViewController.xib in Resources */,
+				842564C6172F26410079B651 /* generics_epoca_senza_render.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +280,7 @@
 				843D4142172C3F1300AC2DA1 /* node.cpp in Sources */,
 				84330E06172D693600A4CBBB /* effect.cpp in Sources */,
 				84330E0D172DD3D200A4CBBB /* MREMaterialsView.m in Sources */,
+				842564C3172F23130079B651 /* MREMenuViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

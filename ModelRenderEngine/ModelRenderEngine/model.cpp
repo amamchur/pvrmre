@@ -51,6 +51,10 @@ namespace mre {
         }
         glGenTextures(n, tmp);
         
+        for (auto iter = effects.begin(); iter != effects.end(); ++iter) {
+            delete iter->second;
+        }
+        
         delete tmp;        
         delete vbos;
         delete indexVbo;
@@ -104,16 +108,12 @@ namespace mre {
         std::string file = pod_directory + "/" + effectsFile.begin()->first;
         CPVRTPFXParser parser;
         CPVRTString	errorStr;
-        EPVRTError error = parser.ParseFromFile(file.c_str(), &errorStr);
+        parser.ParseFromFile(file.c_str(), &errorStr);
         
         unsigned int unknownUniforms = 0;
         for (auto iter = effectsMap.begin(); iter != effectsMap.end(); ++iter) {
             CPVRTPFXEffect *effect = new CPVRTPFXEffect();
-            error = effect->Load(parser, iter->first.c_str(), file.c_str(), this, unknownUniforms, &errorStr);
-            if (error != PVR_SUCCESS) {
-                delete effect;
-            }
-            
+            effect->Load(parser, iter->first.c_str(), file.c_str(), this, unknownUniforms, &errorStr);
             effects[iter->first] = effect;
         }
     }
