@@ -22,8 +22,9 @@ namespace mre {
     , distance(-1)
     , dirty_view_projection(true)
     , aspect(1)
-    , right_rotation(0)
-    , up_rotation(0)
+    , right_rotation(0.0)
+    , up_rotation(0.0)
+    , viewport_translation(0.0)
     , selected_node_index(-1) {
         std::string file = dir + "/" + pod;
         pod_model = new CPVRTModelPOD();
@@ -184,6 +185,15 @@ namespace mre {
         dirty_view_projection = true;
     }
     
+    const PVRTVec3& model::get_viewport_translation() const {
+        return viewport_translation;
+    }
+    
+    void model::set_viewport_translation(const PVRTVec3& t) {
+        viewport_translation = t;
+        dirty_view_projection = true;
+    }
+    
     void model::recalc_view_projection() {
         if (!dirty_view_projection) {
             return;
@@ -209,7 +219,8 @@ namespace mre {
         eye_pos = forward * m + target_pos;
         up = up * m;
         
-        view = PVRTMat4::LookAtRH(eye_pos, target_pos, up);
+        PVRTMat4 vpt = PVRTMat4::Translation(viewport_translation);        
+        view = vpt * PVRTMat4::LookAtRH(eye_pos, target_pos, up);
         projection = PVRTMat4::PerspectiveFovRH(M_PI_4, aspect, CAM_NEAR, CAM_FAR, PVRTMat4::OGL, false);
         world = PVRTMat4::Identity();
         
@@ -222,6 +233,7 @@ namespace mre {
         
         up_rotation = 0;
         right_rotation = 0;
+        viewport_translation *= 0;
         
         distance = std::max((double)model_box.Point[7].x, (double)model_box.Point[7].y);
         distance = std::max((double)distance, (double)model_box.Point[7].z);

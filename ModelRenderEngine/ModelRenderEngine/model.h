@@ -45,6 +45,7 @@ namespace mre {
         PVRTVec3 eye_pos;
         PVRTVec3 light_pos;
         PVRTVec3 light_dir;
+        PVRTVec3 viewport_translation;
         
         nodes_list nodes;
         effects_map effects;
@@ -77,10 +78,12 @@ namespace mre {
         const PVRTVec3& get_light_pos() const;
         const PVRTVec3& get_light_dir() const;
         
+        const PVRTVec3& get_viewport_translation() const;
         double get_distance() const;
         double get_up_rotation() const;
         double get_right_rotation() const;
         
+        void set_viewport_translation(const PVRTVec3& t);
         void set_distance(double d);
         void set_up_rotation(double r);
         void set_right_rotation(double r);

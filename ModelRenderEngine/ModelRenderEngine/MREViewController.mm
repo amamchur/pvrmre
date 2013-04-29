@@ -54,7 +54,9 @@
     
     [materials addObject:[self materialWithName:@"generics_epoca_senza"]];
     [materials addObject:[self materialWithName:@"st263"]];
-
+    [materials addObject:[self materialWithName:@"wallpapers"]];
+    [materials addObject:[self materialWithName:@"brickwork-texture"]];
+    
     if (self.context == nil) {
         NSLog(@"Failed to create ES context");
     } else {    
@@ -67,8 +69,16 @@
         [gr release];
         
         UIPanGestureRecognizer *pgr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onPan:)];
+        pgr.minimumNumberOfTouches = 1;
+        pgr.maximumNumberOfTouches = 1;
         [view addGestureRecognizer:pgr];
         [pgr release];
+        
+        UIPanGestureRecognizer *dpgr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onDoublePan:)];
+        dpgr.minimumNumberOfTouches = 2;
+        dpgr.maximumNumberOfTouches = 2;
+        [view addGestureRecognizer:dpgr];
+        [dpgr release];
         
         UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(onPinch:)];
         [view addGestureRecognizer:pinch];
@@ -129,6 +139,22 @@
             CGPoint p  = [pan translationInView:self.view];
             model->set_up_rotation(model->get_up_rotation() - p.x * 0.01);
             model->set_right_rotation(model->get_right_rotation() - p.y * 0.01);
+            [pan setTranslation:CGPointZero inView:self.view];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)onDoublePan:(UIPanGestureRecognizer *)pan {
+    switch (pan.state) {
+        case UIGestureRecognizerStateChanged: {
+            CGPoint p  = [pan translationInView:self.view];
+            PVRTVec3 v = model->get_viewport_translation();
+            v.x += p.x;
+            v.y -= p.y;
+            model->set_viewport_translation(v);
             [pan setTranslation:CGPointZero inView:self.view];
             break;
         }
