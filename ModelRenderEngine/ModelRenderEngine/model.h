@@ -26,15 +26,22 @@ namespace mre {
         typedef std::map<int, effect_overrides> nodes_overrides_map;
         typedef std::list<mre::node> nodes_list;
         
-        CPVRTModelPOD *podModel;
-        std::string podDir;        
+        CPVRTModelPOD *pod_model;
+        std::string pod_directory;
         
         GLuint *vbos;
         GLuint *indexVbo;
         
+        double distance;
+        double aspect;
+        double up_rotation;
+        double right_rotation;
+        bool dirty_view_projection;
+        
         PVRTMat4 projection;
         PVRTMat4 view;
         PVRTMat4 world;
+        PVRTVec3 target_pos;
         PVRTVec3 eye_pos;
         PVRTVec3 light_pos;
         PVRTVec3 light_dir;
@@ -59,9 +66,6 @@ namespace mre {
         
         EPVRTError PVRTPFXOnLoadTexture(const CPVRTStringHash& TextureName, GLuint& uiHandle, unsigned int& uiFlags);
     public:
-        double distance;
-        double longitude;
-        double latitude;
         
         model(std::string dir, std::string pod);
         ~model();
@@ -72,7 +76,17 @@ namespace mre {
         const PVRTVec3& get_eye_pos() const;
         const PVRTVec3& get_light_pos() const;
         const PVRTVec3& get_light_dir() const;
+        
+        double get_distance() const;
+        double get_up_rotation() const;
+        double get_right_rotation() const;
+        
+        void set_distance(double d);
+        void set_up_rotation(double r);
+        void set_right_rotation(double r);
 
+        void recalc_view_projection();
+        void setup_default_camera();
         void setup(float aspect);
         void render();
         

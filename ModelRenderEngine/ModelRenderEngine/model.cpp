@@ -18,24 +18,27 @@
 
 namespace mre {
     model::model(std::string dir, std::string pod)
-    : podDir(dir)
+    : pod_directory(dir)
     , distance(-1)
-    , latitude(0)
-    , longitude(0)
+    , dirty_view_projection(true)
+    , aspect(1)
+    , right_rotation(0)
+    , up_rotation(0)
     , selected_node_index(-1) {
         std::string file = dir + "/" + pod;
-        podModel = new CPVRTModelPOD();
-        EPVRTError error = podModel->ReadFromFile(file.c_str());
+        pod_model = new CPVRTModelPOD();
+        EPVRTError error = pod_model->ReadFromFile(file.c_str());
         if (error == PVR_SUCCESS) {
             load_bounding_boxes();
             load_vbo();
             load_nodes();
             load_effects();
+            setup_default_camera();
         }
     }
     
     model::~model() {
-        const PVRTuint32 count = podModel->nNumMesh;
+        const PVRTuint32 count = pod_model->nNumMesh;
         glDeleteBuffers(count, vbos);
         glDeleteBuffers(count, indexVbo);
         
@@ -50,17 +53,17 @@ namespace mre {
         delete tmp;        
         delete vbos;
         delete indexVbo;
-        delete podModel;
+        delete pod_model;
     }
     
     void model::load_vbo() {
-        const PVRTuint32 count = podModel->nNumMesh;
+        const PVRTuint32 count = pod_model->nNumMesh;
         vbos = new GLuint[count];
         indexVbo = new GLuint[count];
         
         glGenBuffers(count, vbos);
         for(int i = 0; i < count; i++) {
-            const SPODMesh& mesh = podModel->pMesh[i];
+            const SPODMesh& mesh = pod_model->pMesh[i];
             PVRTuint32 size = mesh.nNumVertex * mesh.sVertex.nStride;
             
             glBindBuffer(GL_ARRAY_BUFFER, vbos[i]);
@@ -79,16 +82,16 @@ namespace mre {
     }
     
     void model::load_nodes() {
-        const PVRTuint32 count = podModel->nNumNode;
+        const PVRTuint32 count = pod_model->nNumNode;
         for (int i = 0; i < count; i++) {
-            const SPODNode &node = podModel->pNode[i];
+            const SPODNode &node = pod_model->pNode[i];
             mre::node n(node.pszName, i);
             nodes.push_back(n);
         }
     }
     
     void model::load_effects() {
-        const CPVRTModelPOD &pod = *podModel;
+        const CPVRTModelPOD &pod = *pod_model;
         std::map<std::string, int> effectsFile;
         std::map<std::string, std::string> effectsMap;
         for (int i = 0; i < pod.nNumMaterial; ++i) {
@@ -97,7 +100,7 @@ namespace mre {
             effectsMap[material.pszEffectName] = material.pszEffectFile;
         }
         
-        std::string file = podDir + "/" + effectsFile.begin()->first;
+        std::string file = pod_directory + "/" + effectsFile.begin()->first;
         CPVRTPFXParser parser;
         CPVRTString	errorStr;
         EPVRTError error = parser.ParseFromFile(file.c_str(), &errorStr);
@@ -115,13 +118,13 @@ namespace mre {
     }
     
     void model::load_bounding_boxes() {
-        podModel->SetFrame(0);
-        int count = podModel->nNumMeshNode;
+        pod_model->SetFrame(0);
+        int count = pod_model->nNumMeshNode;
         PVRTBOUNDINGBOX *boxes = new PVRTBOUNDINGBOX[count];
         for (int i = 0; i < count; i++) {
-            const SPODNode &node = podModel->pNode[i];
-            const SPODMesh &mesh = podModel->pMesh[node.nIdx];
-            PVRTMat4 world = podModel->GetWorldMatrix(node);
+            const SPODNode &node = pod_model->pNode[i];
+            const SPODMesh &mesh = pod_model->pMesh[node.nIdx];
+            PVRTMat4 world = pod_model->GetWorldMatrix(node);
             PVRTBOUNDINGBOX box;
             PVRTBoundingBoxComputeInterleaved(&box, mesh.pInterleaved, mesh.nNumVertex, 0, mesh.sVertex.nStride);
             PVRTTransformArray(boxes[i].Point, box.Point, sizeof(box.Point)/sizeof(*box.Point), &world);
@@ -152,57 +155,93 @@ namespace mre {
     
     const PVRTVec3& model::get_light_dir() const {
         return light_dir;
-    }   
+    }
     
-    void model::setup(float aspect) {
-        podModel->SetFrame(0);
-        
-        light_pos = podModel->GetLightPosition(1);
-        light_dir = podModel->GetLightDirection(1);
-       
-        PVRTVec3 cameraFrom, cameraTo, cameraUp;
-        VERTTYPE cameraFOV = podModel->GetCamera(cameraFrom, cameraTo, cameraUp, 0);
-
-        if (distance < 0) {
-            distance = std::max((double)model_box.Point[7].x, (double)model_box.Point[7].y);
-            distance = std::max((double)distance, (double)model_box.Point[7].z);
-            distance *= 2;
+    double model::get_distance() const {
+        return distance;
+    }
+    
+    void model::set_distance(double d) {
+        distance = d;
+        dirty_view_projection = true;
+    }
+    
+    double model::get_up_rotation() const {
+        return up_rotation;
+    }
+    
+    void model::set_up_rotation(double r) {
+        up_rotation = r;
+        dirty_view_projection = true;
+    }
+    
+    double model::get_right_rotation() const {
+        return right_rotation;
+    }
+    
+    void model::set_right_rotation(double r) {
+        right_rotation = r;
+        dirty_view_projection = true;
+    }
+    
+    void model::recalc_view_projection() {
+        if (!dirty_view_projection) {
+            return;
         }
         
-        cameraTo.x = (model_box.Point[0].x + model_box.Point[7].x) / 2;
-        cameraTo.y = (model_box.Point[0].y + model_box.Point[7].y) / 2;
-        cameraTo.z = (model_box.Point[0].z + model_box.Point[7].z) / 2;
+        PVRTVec3 cam_pos(target_pos);
+        cam_pos.z += distance;
         
-        cameraFrom.x = cameraTo.x;
-        cameraFrom.y = cameraTo.y;
-        cameraFrom.z = cameraTo.z + distance;
-        
-        PVRTVec3 forward = cameraFrom - cameraTo;
+        PVRTVec3 forward = cam_pos - target_pos;
         PVRTVec3 up(0.0, 1.0, 0.0);
         PVRTVec3 right(1.0, 0.0, 0.0);
-        
         up.normalize();
         right.normalize();
+        
         PVRTQUATERNION qu, qr, q;
-        PVRTMatrixQuaternionRotationAxis(qu, up, longitude);
-        PVRTMatrixQuaternionRotationAxis(qr, right, latitude);
+        PVRTMatrixQuaternionRotationAxis(qu, up, up_rotation);
+        PVRTMatrixQuaternionRotationAxis(qr, right, right_rotation);
         PVRTMatrixQuaternionMultiply(q, qu, qr);
         
         PVRTMat4 m;
         PVRTMatrixRotationQuaternion(m, q);
-
-        forward = forward * m;
-        cameraFrom = forward + cameraTo;
         
-        cameraUp.x = 0;
-        cameraUp.y = 1;
-        cameraUp.z = 0;
-        cameraUp = cameraUp * m;
+        eye_pos = forward * m + target_pos;
+        up = up * m;
         
-        view = PVRTMat4::LookAtRH(cameraFrom, cameraTo, cameraUp);
-        eye_pos = cameraFrom;
-        projection = PVRTMat4::PerspectiveFovRH(cameraFOV, aspect, CAM_NEAR, CAM_FAR, PVRTMat4::OGL, false);
+        view = PVRTMat4::LookAtRH(eye_pos, target_pos, up);
+        projection = PVRTMat4::PerspectiveFovRH(M_PI_4, aspect, CAM_NEAR, CAM_FAR, PVRTMat4::OGL, false);
         world = PVRTMat4::Identity();
+        
+        dirty_view_projection = false;
+    }
+    
+    void model::setup_default_camera() {
+        light_pos = pod_model->GetLightPosition(0);
+        light_dir = pod_model->GetLightDirection(0);
+        
+        up_rotation = 0;
+        right_rotation = 0;
+        
+        distance = std::max((double)model_box.Point[7].x, (double)model_box.Point[7].y);
+        distance = std::max((double)distance, (double)model_box.Point[7].z);
+        distance *= 2;
+        
+        target_pos.x = (model_box.Point[0].x + model_box.Point[7].x) / 2;
+        target_pos.y = (model_box.Point[0].y + model_box.Point[7].y) / 2;
+        target_pos.z = (model_box.Point[0].z + model_box.Point[7].z) / 2;
+        
+        dirty_view_projection = true;
+    }
+    
+    void model::setup(float aspect) {
+        if (this->aspect == aspect) {
+            return;
+        }
+        
+        this->aspect = aspect;
+        dirty_view_projection = true;
+        recalc_view_projection();
     }
     
     void model::draw_triangles_mesh(const SPODMesh &mesh, int index) {
@@ -236,16 +275,18 @@ namespace mre {
     }
     
     void model::render() {
+        recalc_view_projection();
+                               
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
         
-        for (int i = 0; i < podModel->nNumMeshNode; i++) {
-            const SPODNode &node = podModel->pNode[i];
-            const SPODMaterial &material = podModel->pMaterial[node.nIdxMaterial];
-            const SPODMesh &mesh = podModel->pMesh[node.nIdx];
-            world = podModel->GetWorldMatrix(node);
+        for (int i = 0; i < pod_model->nNumMeshNode; i++) {
+            const SPODNode &node = pod_model->pNode[i];
+            const SPODMaterial &material = pod_model->pMaterial[node.nIdxMaterial];
+            const SPODMesh &mesh = pod_model->pMesh[node.nIdx];
+            world = pod_model->GetWorldMatrix(node);
             
             glBindBuffer(GL_ARRAY_BUFFER, vbos[i]);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVbo[i]);
@@ -291,17 +332,17 @@ namespace mre {
         mre::effect effect(*this, pfx_effect);
         
         glDisable(GL_DITHER);
-        for (int i = 0; i < podModel->nNumMeshNode; i++) {
+        for (int i = 0; i < pod_model->nNumMeshNode; i++) {
             unsigned int color = ((i * 13 + 17) << 8);
             GLubyte *colors = reinterpret_cast<GLubyte *>(&color);
             PVRTVec3 vec(colors[0] / 255.0f, colors[1] / 255.0f, colors[2] / 255.0f);
             effect.uniform_overrides.clear();
             effect.uniform_overrides[ePVRTPFX_UsMATERIALCOLORDIFFUSE] = vec;
             
-            const SPODNode &node = podModel->pNode[i];
-            const SPODMaterial &material = podModel->pMaterial[node.nIdxMaterial];
-            const SPODMesh &mesh = podModel->pMesh[node.nIdx];
-            world = podModel->GetWorldMatrix(node);
+            const SPODNode &node = pod_model->pNode[i];
+            const SPODMaterial &material = pod_model->pMaterial[node.nIdxMaterial];
+            const SPODMesh &mesh = pod_model->pMesh[node.nIdx];
+            world = pod_model->GetWorldMatrix(node);
             
             glBindBuffer(GL_ARRAY_BUFFER, vbos[i]);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVbo[i]);
@@ -336,17 +377,17 @@ namespace mre {
     }
     
     std::string model::get_node_name(int index) const {
-        if (index < 0 || index >= podModel->nNumMeshNode) {
+        if (index < 0 || index >= pod_model->nNumMeshNode) {
             return "";
         }
         
-        const SPODNode &node = podModel->pNode[index];
+        const SPODNode &node = pod_model->pNode[index];
         return node.pszName;
     }
     
     int model::get_node_index(const std::string& name) const {
-        for (int i = 0; i < podModel->nNumMeshNode; i++) {
-            const SPODNode &node = podModel->pNode[i];
+        for (int i = 0; i < pod_model->nNumMeshNode; i++) {
+            const SPODNode &node = pod_model->pNode[i];
             if (name == node.pszName) {
                 return i;
             }
@@ -360,7 +401,7 @@ namespace mre {
             return pos->second;
         }
         
-        std::string path = podDir + "/" + name;
+        std::string path = pod_directory + "/" + name;
         GLuint uiHandle = 0;
         if(PVRTTextureLoadFromPVR(path.c_str(), &uiHandle) != PVR_SUCCESS) {
             return 0;
@@ -371,7 +412,7 @@ namespace mre {
     }
     
     EPVRTError model::PVRTPFXOnLoadTexture(const CPVRTStringHash& TextureName, GLuint& uiHandle, unsigned int& uiFlags) {
-        std::string path = podDir + "/" + TextureName.c_str();
+        std::string path = pod_directory + "/" + TextureName.c_str();
         if(PVRTTextureLoadFromPVR(path.c_str(), &uiHandle) != PVR_SUCCESS) {
             return PVR_FAIL;
         }

@@ -112,14 +112,12 @@
 
 - (void)onPinch:(UIPinchGestureRecognizer *)pinch {
     switch (pinch.state) {
-        case UIGestureRecognizerStateBegan: {
-            pinch.scale = 1 / model->distance;
+        case UIGestureRecognizerStateBegan:
+            pinch.scale = 1 / model->get_distance();
             break;
-        }
-        case UIGestureRecognizerStateChanged: {
-            model->distance = 1 / pinch.scale;
+        case UIGestureRecognizerStateChanged:
+            model->set_distance(1 / pinch.scale);
             break;
-        }
         default:
             break;
     }
@@ -127,13 +125,10 @@
 
 - (void)onPan:(UIPanGestureRecognizer *)pan {
     switch (pan.state) {
-        case UIGestureRecognizerStateBegan: {
-            break;
-        }
         case UIGestureRecognizerStateChanged: {
             CGPoint p  = [pan translationInView:self.view];
-            model->longitude -= p.x * 0.01;
-            model->latitude -= p.y * 0.01;
+            model->set_up_rotation(model->get_up_rotation() - p.x * 0.01);
+            model->set_right_rotation(model->get_right_rotation() - p.y * 0.01);
             [pan setTranslation:CGPointZero inView:self.view];
             break;
         }
@@ -163,7 +158,6 @@
         [self hideMaterialView];
     }
     model->set_selected_node(node);
-    NSLog(@"Node selected %s", model->get_node_name(node).c_str());
 }
 
 #pragma mark - UICollectionView delegate methods
