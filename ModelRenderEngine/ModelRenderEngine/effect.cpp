@@ -7,6 +7,7 @@
 //
 
 #include "effect.h"
+#include <sys/time.h>
 
 namespace mre {
     uniform_override::uniform_override() {
@@ -99,8 +100,9 @@ namespace mre {
         PVRTVec3 light_pos = model.get_light_pos();
         PVRTVec3 light_dir = model.get_light_dir();
         
-        time_t timer;
-        time(&timer);
+        timeval time;
+        gettimeofday(&time, NULL);
+        double sec = time.tv_sec + ((double)time.tv_usec / 1000000.0);
         
         switch (semantic) {
             case ePVRTPFX_UsWORLDVIEWPROJECTION:
@@ -152,13 +154,22 @@ namespace mre {
                 glUniform1f(location, material.fMatShininess);
                 break;
             case ePVRTPFX_UsTIME:
-                glUniform1f(location, timer);
+                glUniform1f(location, sec);
                 break;
             case ePVRTPFX_UsTIMECOS:
-                glUniform1f(location, cos(timer));
+                glUniform1f(location, cos(sec));
                 break;
             case ePVRTPFX_UsTIMESIN:
-                glUniform1f(location, sin(timer));
+                glUniform1f(location, sin(sec));
+                break;
+            case ePVRTPFX_UsTIME2PI:
+                glUniform1f(location, 2 * M_PI * sec);
+                break;
+            case ePVRTPFX_UsTIME2PICOS:
+                glUniform1f(location, cos(2 * M_PI * sec));
+                break;
+            case ePVRTPFX_UsTIME2PISIN:
+                glUniform1f(location, sin(2 * M_PI * sec));
                 break;
             default:
                 break;

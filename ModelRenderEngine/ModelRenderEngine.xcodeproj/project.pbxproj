@@ -25,13 +25,13 @@
 		843D4142172C3F1300AC2DA1 /* node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 843D4140172C3F1300AC2DA1 /* node.cpp */; };
 		843D4144172C40E500AC2DA1 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4143172C40E500AC2DA1 /* OpenGLES.framework */; };
 		843D4146172C417900AC2DA1 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4145172C417900AC2DA1 /* GLKit.framework */; };
-		843D4147172C457900AC2DA1 /* libOGLES2Tools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4139172C399600AC2DA1 /* libOGLES2Tools.a */; };
+		87CB35E3172E697300D3CA2C /* libOGLES2Tools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CB35E2172E696D00D3CA2C /* libOGLES2Tools.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		843D4138172C399600AC2DA1 /* PBXContainerItemProxy */ = {
+		87CB35E1172E696D00D3CA2C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 843D4134172C399600AC2DA1 /* OGLES2Tools.xcode */;
+			containerPortal = 87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */;
 			proxyType = 2;
 			remoteGlobalIDString = F8748A3A0FF221480052D400;
 			remoteInfo = OGLES2Tools;
@@ -60,13 +60,13 @@
 		843D4129172C38EF00AC2DA1 /* MREViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MREViewController.h; sourceTree = "<group>"; };
 		843D412A172C38EF00AC2DA1 /* MREViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MREViewController.mm; sourceTree = "<group>"; };
 		843D412D172C38EF00AC2DA1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MREViewController.xib; sourceTree = "<group>"; };
-		843D4134172C399600AC2DA1 /* OGLES2Tools.xcode */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OGLES2Tools.xcode; path = PowerVR/OGLES2/Build/iOS/OGLES2Tools.xcode; sourceTree = "<group>"; };
 		843D413D172C3DEF00AC2DA1 /* model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = model.cpp; sourceTree = "<group>"; };
 		843D413E172C3DEF00AC2DA1 /* model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = model.h; sourceTree = "<group>"; };
 		843D4140172C3F1300AC2DA1 /* node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = node.cpp; sourceTree = "<group>"; };
 		843D4141172C3F1300AC2DA1 /* node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = node.h; sourceTree = "<group>"; };
 		843D4143172C40E500AC2DA1 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		843D4145172C417900AC2DA1 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OGLES2Tools.xcode; path = PowerVR/OGLES2/Build/iOS/OGLES2Tools.xcode; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +79,7 @@
 				843D4112172C38EF00AC2DA1 /* UIKit.framework in Frameworks */,
 				843D4114172C38EF00AC2DA1 /* Foundation.framework in Frameworks */,
 				843D4116172C38EF00AC2DA1 /* CoreGraphics.framework in Frameworks */,
-				843D4147172C457900AC2DA1 /* libOGLES2Tools.a in Frameworks */,
+				87CB35E3172E697300D3CA2C /* libOGLES2Tools.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +89,7 @@
 		843D4105172C38EF00AC2DA1 = {
 			isa = PBXGroup;
 			children = (
-				843D4134172C399600AC2DA1 /* OGLES2Tools.xcode */,
+				87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */,
 				843D4117172C38EF00AC2DA1 /* ModelRenderEngine */,
 				843D4110172C38EF00AC2DA1 /* Frameworks */,
 				843D410F172C38EF00AC2DA1 /* Products */,
@@ -147,14 +147,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		843D4135172C399600AC2DA1 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				843D4139172C399600AC2DA1 /* libOGLES2Tools.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		843D413C172C3DC500AC2DA1 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,6 +158,14 @@
 				84330E05172D693600A4CBBB /* effect.h */,
 			);
 			name = Engine;
+			sourceTree = "<group>";
+		};
+		87CB35DE172E696C00D3CA2C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				87CB35E2172E696D00D3CA2C /* libOGLES2Tools.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,8 +210,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 843D4135172C399600AC2DA1 /* Products */;
-					ProjectRef = 843D4134172C399600AC2DA1 /* OGLES2Tools.xcode */;
+					ProductGroup = 87CB35DE172E696C00D3CA2C /* Products */;
+					ProjectRef = 87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */;
 				},
 			);
 			projectRoot = "";
@@ -222,11 +222,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		843D4139172C399600AC2DA1 /* libOGLES2Tools.a */ = {
+		87CB35E2172E696D00D3CA2C /* libOGLES2Tools.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libOGLES2Tools.a;
-			remoteRef = 843D4138172C399600AC2DA1 /* PBXContainerItemProxy */;
+			remoteRef = 87CB35E1172E696D00D3CA2C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

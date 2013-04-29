@@ -11,6 +11,7 @@
 #include "node.h"
 
 #include <map>
+#include <sys/time.h>
 
 #define CAM_NEAR 1
 #define CAM_FAR 1000000
@@ -18,11 +19,15 @@
 namespace mre {
     model::model(std::string dir, std::string pod)
     : podDir(dir)
+    , distance(-1)
+    , latitude(0)
+    , longitude(0)
     , selected_node_index(-1) {
         std::string file = dir + "/" + pod;
         podModel = new CPVRTModelPOD();
         EPVRTError error = podModel->ReadFromFile(file.c_str());
         if (error == PVR_SUCCESS) {
+            load_bounding_boxes();
             load_vbo();
             load_nodes();
             load_effects();
@@ -109,6 +114,22 @@ namespace mre {
         }
     }
     
+    void model::load_bounding_boxes() {
+        podModel->SetFrame(0);
+        int count = podModel->nNumMeshNode;
+        PVRTBOUNDINGBOX *boxes = new PVRTBOUNDINGBOX[count];
+        for (int i = 0; i < count; i++) {
+            const SPODNode &node = podModel->pNode[i];
+            const SPODMesh &mesh = podModel->pMesh[node.nIdx];
+            PVRTMat4 world = podModel->GetWorldMatrix(node);
+            PVRTBOUNDINGBOX box;
+            PVRTBoundingBoxComputeInterleaved(&box, mesh.pInterleaved, mesh.nNumVertex, 0, mesh.sVertex.nStride);
+            PVRTTransformArray(boxes[i].Point, box.Point, sizeof(box.Point)/sizeof(*box.Point), &world);
+        }
+        PVRTBoundingBoxCompute(&model_box, boxes->Point, count * 8);
+        delete boxes;
+    }
+    
     const PVRTMat4& model::get_projection() const {
         return projection;        
     }
@@ -131,16 +152,52 @@ namespace mre {
     
     const PVRTVec3& model::get_light_dir() const {
         return light_dir;
-    }
+    }   
     
     void model::setup(float aspect) {
         podModel->SetFrame(0);
         
         light_pos = podModel->GetLightPosition(1);
         light_dir = podModel->GetLightDirection(1);
-        
+       
         PVRTVec3 cameraFrom, cameraTo, cameraUp;
         VERTTYPE cameraFOV = podModel->GetCamera(cameraFrom, cameraTo, cameraUp, 0);
+
+        if (distance < 0) {
+            distance = std::max((double)model_box.Point[7].x, (double)model_box.Point[7].y);
+            distance = std::max((double)distance, (double)model_box.Point[7].z);
+            distance *= 2;
+        }
+        
+        cameraTo.x = (model_box.Point[0].x + model_box.Point[7].x) / 2;
+        cameraTo.y = (model_box.Point[0].y + model_box.Point[7].y) / 2;
+        cameraTo.z = (model_box.Point[0].z + model_box.Point[7].z) / 2;
+        
+        cameraFrom.x = cameraTo.x;
+        cameraFrom.y = cameraTo.y;
+        cameraFrom.z = cameraTo.z + distance;
+        
+        PVRTVec3 forward = cameraFrom - cameraTo;
+        PVRTVec3 up(0.0, 1.0, 0.0);
+        PVRTVec3 right(1.0, 0.0, 0.0);
+        
+        up.normalize();
+        right.normalize();
+        PVRTQUATERNION qu, qr, q;
+        PVRTMatrixQuaternionRotationAxis(qu, up, longitude);
+        PVRTMatrixQuaternionRotationAxis(qr, right, latitude);
+        PVRTMatrixQuaternionMultiply(q, qu, qr);
+        
+        PVRTMat4 m;
+        PVRTMatrixRotationQuaternion(m, q);
+
+        forward = forward * m;
+        cameraFrom = forward + cameraTo;
+        
+        cameraUp.x = 0;
+        cameraUp.y = 1;
+        cameraUp.z = 0;
+        cameraUp = cameraUp * m;
         
         view = PVRTMat4::LookAtRH(cameraFrom, cameraTo, cameraUp);
         eye_pos = cameraFrom;
@@ -176,14 +233,6 @@ namespace mre {
         } else {
             draw_strip_mesh(mesh, index);
         }
-    }
-    
-    void model::configure_effect() {
-        
-    }
-    
-    void model::cleanup_effect() {
-        
     }
     
     void model::render() {

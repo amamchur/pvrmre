@@ -44,21 +44,25 @@ namespace mre {
         textures_map textures;
         nodes_overrides_map nodes_overrides;
         
+        PVRTBOUNDINGBOX model_box;
+
         int selected_node_index;
         
         void load_vbo();
         void load_nodes();
         void load_effects();
+        void load_bounding_boxes();
         
         void draw_triangles_mesh(const SPODMesh &mesh, int index);
         void draw_strip_mesh(const SPODMesh &mesh, int index);
         void draw_mesh(const SPODMesh &mesh, int index);
         
-        void configure_effect();
-        void cleanup_effect();
-        
         EPVRTError PVRTPFXOnLoadTexture(const CPVRTStringHash& TextureName, GLuint& uiHandle, unsigned int& uiFlags);
     public:
+        double distance;
+        double longitude;
+        double latitude;
+        
         model(std::string dir, std::string pod);
         ~model();
         
@@ -68,7 +72,7 @@ namespace mre {
         const PVRTVec3& get_eye_pos() const;
         const PVRTVec3& get_light_pos() const;
         const PVRTVec3& get_light_dir() const;
-        
+
         void setup(float aspect);
         void render();
         

@@ -49,6 +49,7 @@
     [super viewDidLoad];
     
     self.context = [[[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2] autorelease];
+    self.preferredFramesPerSecond = 60;
     self.materials = [NSMutableArray array];
     
     [materials addObject:[self materialWithName:@"generics_epoca_senza"]];
@@ -64,6 +65,14 @@
         UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
         [view addGestureRecognizer:gr];
         [gr release];
+        
+        UIPanGestureRecognizer *pgr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onPan:)];
+        [view addGestureRecognizer:pgr];
+        [pgr release];
+        
+        UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(onPinch:)];
+        [view addGestureRecognizer:pinch];
+        [pinch release];
         
         [self setupGL];
         [self loadModel];
@@ -101,13 +110,52 @@
     model = NULL;
 }
 
+- (void)onPinch:(UIPinchGestureRecognizer *)pinch {
+    switch (pinch.state) {
+        case UIGestureRecognizerStateBegan: {
+            pinch.scale = 1 / model->distance;
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            model->distance = 1 / pinch.scale;
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)onPan:(UIPanGestureRecognizer *)pan {
+    switch (pan.state) {
+        case UIGestureRecognizerStateBegan: {
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            CGPoint p  = [pan translationInView:self.view];
+            model->longitude -= p.x * 0.01;
+            model->latitude -= p.y * 0.01;
+            [pan setTranslation:CGPointZero inView:self.view];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 - (void)onTap:(UITapGestureRecognizer *)tap {
-    GLKView *view = (GLKView *)self.view;
-    CGRect rect = self.view.bounds;
-    CGPoint point = [tap locationInView:view];
     if (model == NULL) {
         return;
     }
+    
+    GLKView *view = (GLKView *)self.view;
+    CGRect rect = self.view.bounds;
+    CGPoint point = [tap locationInView:view];
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    point.x *= scale;
+    point.y *= scale;
+    rect.size.width *= scale;
+    rect.size.height *= scale;
+    
     int node = model->get_node_at_pos(point.x, point.y, rect.size.width, rect.size.height);
     if (node >= 0) {
         [self showMaterialView];
