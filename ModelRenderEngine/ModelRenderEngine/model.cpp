@@ -9,6 +9,7 @@
 #include "model.h"
 #include "effect.h"
 #include "node.h"
+#include "texture_buffer.h"
 
 #include <map>
 #include <sys/time.h>
@@ -332,16 +333,15 @@ namespace mre {
         return selected_node_index;
     }
     
-    int model::get_node_at_pos(int x, int y, int width, int height) {
+    int model::get_node_at_pos(int x, int y, int width, int height) {        
+        texture_buffer text_buffer(width, height, TRUE); // Render to texture and auto delete
+
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-        int res = 0;
-               
+                       
         CPVRTPFXEffect *pfx_effect = effects["Selection"];
         mre::effect effect(*this, pfx_effect);
         
-        glDisable(GL_DITHER);
         for (int i = 0; i < pod_model->nNumMeshNode; i++) {
             unsigned int color = ((i * 13 + 17) << 8);
             GLubyte *colors = reinterpret_cast<GLubyte *>(&color);
@@ -364,12 +364,11 @@ namespace mre {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             effect.cleanup();
         }
-        
-        glEnable(GL_DITHER);
                 
         GLubyte buffer[64] = {0};
         glReadPixels(x, height - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
         
+        int res = -1;
         GLenum error = glGetError();
         if (error == GL_NO_ERROR) {
             unsigned int color = *reinterpret_cast<unsigned int *>(buffer);

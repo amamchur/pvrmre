@@ -30,6 +30,7 @@
 		843D4142172C3F1300AC2DA1 /* node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 843D4140172C3F1300AC2DA1 /* node.cpp */; };
 		843D4144172C40E500AC2DA1 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4143172C40E500AC2DA1 /* OpenGLES.framework */; };
 		843D4146172C417900AC2DA1 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4145172C417900AC2DA1 /* GLKit.framework */; };
+		84D095BD179BF1DF0099D413 /* texture_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84D095BB179BF1DF0099D413 /* texture_buffer.cpp */; };
 		87CB35E3172E697300D3CA2C /* libOGLES2Tools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CB35E2172E696D00D3CA2C /* libOGLES2Tools.a */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,8 @@
 		843D4141172C3F1300AC2DA1 /* node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = node.h; sourceTree = "<group>"; };
 		843D4143172C40E500AC2DA1 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		843D4145172C417900AC2DA1 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		84D095BB179BF1DF0099D413 /* texture_buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture_buffer.cpp; sourceTree = "<group>"; };
+		84D095BC179BF1DF0099D413 /* texture_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture_buffer.h; sourceTree = "<group>"; };
 		87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OGLES2Tools.xcode; path = PowerVR/OGLES2/Build/iOS/OGLES2Tools.xcode; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -169,12 +172,14 @@
 		843D413C172C3DC500AC2DA1 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				84330E04172D693600A4CBBB /* effect.cpp */,
+				84330E05172D693600A4CBBB /* effect.h */,
 				843D413D172C3DEF00AC2DA1 /* model.cpp */,
 				843D413E172C3DEF00AC2DA1 /* model.h */,
 				843D4140172C3F1300AC2DA1 /* node.cpp */,
 				843D4141172C3F1300AC2DA1 /* node.h */,
-				84330E04172D693600A4CBBB /* effect.cpp */,
-				84330E05172D693600A4CBBB /* effect.h */,
+				84D095BB179BF1DF0099D413 /* texture_buffer.cpp */,
+				84D095BC179BF1DF0099D413 /* texture_buffer.h */,
 			);
 			name = Engine;
 			sourceTree = "<group>";
@@ -281,6 +286,7 @@
 				84330E06172D693600A4CBBB /* effect.cpp in Sources */,
 				84330E0D172DD3D200A4CBBB /* MREMaterialsView.m in Sources */,
 				842564C3172F23130079B651 /* MREMenuViewController.m in Sources */,
+				84D095BD179BF1DF0099D413 /* texture_buffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

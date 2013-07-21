@@ -82,6 +82,7 @@ UINavigationControllerDelegate> {
     GLKView *view = (GLKView *)self.view;
     view.context = self.context;
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+    view.drawableMultisample = GLKViewDrawableMultisample4X;
     
     UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
     gr.delegate = self;
@@ -355,7 +356,7 @@ UINavigationControllerDelegate> {
         return;
     }
     
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f );
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     if (backgroundTextId != 0) {

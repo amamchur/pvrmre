@@ -13,25 +13,22 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#ifndef PVRMRE_NODE_H
-#define PVRMRE_NODE_H
+#ifndef PVRMRE_TEXTURE_BUFFER_H
+#define PVRMRE_TEXTURE_BUFFER_H
 
-#include <string>
+#include "OGLES2Tools.h"
 
-namespace mre {
-    class node {
-    private:
-        std::string name;
-        int index;
-    public:
-        node(const std::string &name, int index);
-        node(const mre::node &node);
-        
-        bool operator ==(const mre::node &node) const;
-        bool operator !=(const mre::node &node) const;
-        
-        const std::string& node_name() const;
-    };
-}
+class texture_buffer {
+private:
+    GLsizei width;
+    GLsizei height;
+    GLuint texture;
+    GLuint render_buffer;
+    GLuint frame_buffer;
+    bool auto_delete_texture;
+public:
+    texture_buffer(GLsizei width, GLsizei height, bool auto_delete_texture = false);
+    ~texture_buffer();
+};
 
 #endif
