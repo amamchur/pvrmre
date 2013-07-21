@@ -18,17 +18,18 @@
 
 #include "OGLES2Tools.h"
 
-class texture_buffer {
-private:
-    GLsizei width;
-    GLsizei height;
-    GLuint texture;
-    GLuint render_buffer;
-    GLuint frame_buffer;
-    bool auto_delete_texture;
-public:
-    texture_buffer(GLsizei width, GLsizei height, bool auto_delete_texture = false);
-    ~texture_buffer();
-};
-
+namespace mre {
+    class texture_buffer {
+    private:
+        GLsizei width;
+        GLsizei height;
+        GLuint texture;
+        GLuint render_buffer;
+        GLuint frame_buffer;
+        bool auto_delete_texture;
+    public:
+        texture_buffer(GLsizei width, GLsizei height, bool auto_delete_texture = false);
+        ~texture_buffer();
+    };
+}
 #endif

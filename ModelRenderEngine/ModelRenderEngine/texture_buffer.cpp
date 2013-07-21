@@ -15,7 +15,7 @@
 
 #include "texture_buffer.h"
 
-texture_buffer::texture_buffer(GLsizei width, GLsizei height, bool auto_delete_texture)
+mre::texture_buffer::texture_buffer(GLsizei width, GLsizei height, bool auto_delete_texture)
     : texture(0)
     , auto_delete_texture(auto_delete_texture)
     , width(width)
@@ -41,7 +41,7 @@ texture_buffer::texture_buffer(GLsizei width, GLsizei height, bool auto_delete_t
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, render_buffer);
 }
 
-texture_buffer::~texture_buffer() {
+mre::texture_buffer::~texture_buffer() {
     glDeleteFramebuffers(1, &frame_buffer);
     glDeleteRenderbuffers(1, &render_buffer);
     if (auto_delete_texture) {
