@@ -31,6 +31,8 @@
 		843D4144172C40E500AC2DA1 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4143172C40E500AC2DA1 /* OpenGLES.framework */; };
 		843D4146172C417900AC2DA1 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4145172C417900AC2DA1 /* GLKit.framework */; };
 		84D095BD179BF1DF0099D413 /* texture_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84D095BB179BF1DF0099D413 /* texture_buffer.cpp */; };
+		84F80D2D181AEC25006AB5FD /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F80D2C181AEC25006AB5FD /* AppIcon.png */; };
+		84F80D30181AEC4B006AB5FD /* AppIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */; };
 		87CB35E3172E697300D3CA2C /* libOGLES2Tools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CB35E2172E696D00D3CA2C /* libOGLES2Tools.a */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +82,8 @@
 		843D4145172C417900AC2DA1 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		84D095BB179BF1DF0099D413 /* texture_buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture_buffer.cpp; sourceTree = "<group>"; };
 		84D095BC179BF1DF0099D413 /* texture_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture_buffer.h; sourceTree = "<group>"; };
+		84F80D2C181AEC25006AB5FD /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
+		84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon@2x.png"; sourceTree = "<group>"; };
 		87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OGLES2Tools.xcode; path = PowerVR/OGLES2/Build/iOS/OGLES2Tools.xcode; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +109,8 @@
 		843D4105172C38EF00AC2DA1 = {
 			isa = PBXGroup;
 			children = (
+				84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */,
+				84F80D2C181AEC25006AB5FD /* AppIcon.png */,
 				87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */,
 				843D4117172C38EF00AC2DA1 /* ModelRenderEngine */,
 				843D4110172C38EF00AC2DA1 /* Frameworks */,
@@ -268,6 +274,8 @@
 				84330E11172DE5D400A4CBBB /* models in Resources */,
 				842564C4172F23130079B651 /* MREMenuViewController.xib in Resources */,
 				842564C6172F26410079B651 /* generics_epoca_senza_render.jpg in Resources */,
+				84F80D2D181AEC25006AB5FD /* AppIcon.png in Resources */,
+				84F80D30181AEC4B006AB5FD /* AppIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,12 +380,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ModelRenderEngine/ModelRenderEngine-Prefix.pch";
 				INFOPLIST_FILE = "ModelRenderEngine/ModelRenderEngine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = ./PowerVR/OGLES2;
 				WRAPPER_EXTENSION = app;
 			};
@@ -387,12 +399,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ModelRenderEngine/ModelRenderEngine-Prefix.pch";
 				INFOPLIST_FILE = "ModelRenderEngine/ModelRenderEngine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = ./PowerVR/OGLES2;
 				WRAPPER_EXTENSION = app;
 			};

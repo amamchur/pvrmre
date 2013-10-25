@@ -70,9 +70,11 @@ UINavigationControllerDelegate> {
     self.materials = [NSMutableArray array];
     
     [materials addObject:[self materialWithName:@"generics_epoca_senza"]];
+    [materials addObject:[self materialWithName:@"finish"]];
     [materials addObject:[self materialWithName:@"st263"]];
-    [materials addObject:[self materialWithName:@"wallpapers"]];
-    [materials addObject:[self materialWithName:@"brickwork-texture"]];
+//    [materials addObject:[self materialWithName:@"wallpapers"]];
+//    [materials addObject:[self materialWithName:@"brickwork-texture"]];
+    [materials addObject:[self materialWithName:@"st2090"]];
     
     if (self.context == nil) {
         NSLog(@"Failed to create ES context");
@@ -356,7 +358,8 @@ UINavigationControllerDelegate> {
         return;
     }
     
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f );
+//    glClearColor(1.0f, 1.0f, 1.0f, 1.0f );
+    glClearColor(.0f, .0f, .0f, 1.0f );
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     if (backgroundTextId != 0) {

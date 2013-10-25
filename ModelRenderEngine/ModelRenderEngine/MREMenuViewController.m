@@ -47,7 +47,7 @@
         cell.textLabel.textColor = [UIColor whiteColor];
         [cell autorelease];
     }
-    cell.textLabel.text = @"Tap Me";
+    cell.textLabel.text = @"Chair S";
     return cell;
 }
 
