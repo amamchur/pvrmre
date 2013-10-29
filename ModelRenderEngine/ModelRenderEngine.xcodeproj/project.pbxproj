@@ -12,6 +12,8 @@
 		842564C3172F23130079B651 /* MREMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842564C1172F23130079B651 /* MREMenuViewController.m */; };
 		842564C4172F23130079B651 /* MREMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842564C2172F23130079B651 /* MREMenuViewController.xib */; };
 		842564C6172F26410079B651 /* generics_epoca_senza_render.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 842564C5172F26410079B651 /* generics_epoca_senza_render.jpg */; };
+		843134461820775500B1CC46 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 843134401820775500B1CC46 /* libTestFlight.a */; };
+		8431344A1820788000B1CC46 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 843134491820788000B1CC46 /* libz.dylib */; };
 		84330E06172D693600A4CBBB /* effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84330E04172D693600A4CBBB /* effect.cpp */; };
 		84330E0D172DD3D200A4CBBB /* MREMaterialsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84330E0C172DD3D100A4CBBB /* MREMaterialsView.m */; };
 		84330E11172DE5D400A4CBBB /* models in Resources */ = {isa = PBXBuildFile; fileRef = 84330E10172DE5D400A4CBBB /* models */; };
@@ -53,6 +55,11 @@
 		842564C1172F23130079B651 /* MREMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MREMenuViewController.m; sourceTree = "<group>"; };
 		842564C2172F23130079B651 /* MREMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MREMenuViewController.xib; sourceTree = "<group>"; };
 		842564C5172F26410079B651 /* generics_epoca_senza_render.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = generics_epoca_senza_render.jpg; sourceTree = "<group>"; };
+		843134401820775500B1CC46 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		843134431820775500B1CC46 /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
+		843134441820775500B1CC46 /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
+		843134451820775500B1CC46 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
+		843134491820788000B1CC46 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		84330E04172D693600A4CBBB /* effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = effect.cpp; sourceTree = "<group>"; };
 		84330E05172D693600A4CBBB /* effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = effect.h; sourceTree = "<group>"; };
 		84330E0B172DD3D100A4CBBB /* MREMaterialsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MREMaterialsView.h; sourceTree = "<group>"; };
@@ -82,8 +89,8 @@
 		843D4145172C417900AC2DA1 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		84D095BB179BF1DF0099D413 /* texture_buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture_buffer.cpp; sourceTree = "<group>"; };
 		84D095BC179BF1DF0099D413 /* texture_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture_buffer.h; sourceTree = "<group>"; };
-		84F80D2C181AEC25006AB5FD /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
-		84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon@2x.png"; sourceTree = "<group>"; };
+		84F80D2C181AEC25006AB5FD /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppIcon.png; path = ../AppIcon.png; sourceTree = "<group>"; };
+		84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon@2x.png"; path = "../AppIcon@2x.png"; sourceTree = "<group>"; };
 		87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OGLES2Tools.xcode; path = PowerVR/OGLES2/Build/iOS/OGLES2Tools.xcode; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8431344A1820788000B1CC46 /* libz.dylib in Frameworks */,
 				842564BF172F1B110079B651 /* ImageIO.framework in Frameworks */,
 				842564B8172F002C0079B651 /* AssetsLibrary.framework in Frameworks */,
 				843D4146172C417900AC2DA1 /* GLKit.framework in Frameworks */,
@@ -100,18 +108,29 @@
 				843D4114172C38EF00AC2DA1 /* Foundation.framework in Frameworks */,
 				843D4116172C38EF00AC2DA1 /* CoreGraphics.framework in Frameworks */,
 				87CB35E3172E697300D3CA2C /* libOGLES2Tools.a in Frameworks */,
+				843134461820775500B1CC46 /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8431343F1820775500B1CC46 /* TestFlightSDK */ = {
+			isa = PBXGroup;
+			children = (
+				843134401820775500B1CC46 /* libTestFlight.a */,
+				843134431820775500B1CC46 /* TestFlight+AsyncLogging.h */,
+				843134441820775500B1CC46 /* TestFlight+ManualSessions.h */,
+				843134451820775500B1CC46 /* TestFlight.h */,
+			);
+			path = TestFlightSDK;
+			sourceTree = "<group>";
+		};
 		843D4105172C38EF00AC2DA1 = {
 			isa = PBXGroup;
 			children = (
-				84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */,
-				84F80D2C181AEC25006AB5FD /* AppIcon.png */,
 				87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */,
+				8431343F1820775500B1CC46 /* TestFlightSDK */,
 				843D4117172C38EF00AC2DA1 /* ModelRenderEngine */,
 				843D4110172C38EF00AC2DA1 /* Frameworks */,
 				843D410F172C38EF00AC2DA1 /* Products */,
@@ -129,6 +148,7 @@
 		843D4110172C38EF00AC2DA1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				843134491820788000B1CC46 /* libz.dylib */,
 				842564BE172F1B110079B651 /* ImageIO.framework */,
 				842564B7172F002C0079B651 /* AssetsLibrary.framework */,
 				843D4145172C417900AC2DA1 /* GLKit.framework */,
@@ -154,6 +174,8 @@
 				842564C0172F23130079B651 /* MREMenuViewController.h */,
 				842564C1172F23130079B651 /* MREMenuViewController.m */,
 				842564C2172F23130079B651 /* MREMenuViewController.xib */,
+				84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */,
+				84F80D2C181AEC25006AB5FD /* AppIcon.png */,
 				842564C5172F26410079B651 /* generics_epoca_senza_render.jpg */,
 				84330E10172DE5D400A4CBBB /* models */,
 				843D4118172C38EF00AC2DA1 /* Supporting Files */,
@@ -380,16 +402,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Andrii Mamchur (36ULA927RR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Andrii Mamchur (36ULA927RR)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ModelRenderEngine/ModelRenderEngine-Prefix.pch";
 				INFOPLIST_FILE = "ModelRenderEngine/ModelRenderEngine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/TestFlightSDK\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "7F06D51C-D41E-470D-8925-424C77C4C57B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7F06D51C-D41E-470D-8925-424C77C4C57B";
 				USER_HEADER_SEARCH_PATHS = ./PowerVR/OGLES2;
 				WRAPPER_EXTENSION = app;
 			};
@@ -399,16 +425,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Andrii Mamchur (36ULA927RR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Andrii Mamchur (36ULA927RR)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ModelRenderEngine/ModelRenderEngine-Prefix.pch";
 				INFOPLIST_FILE = "ModelRenderEngine/ModelRenderEngine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/TestFlightSDK\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "7F06D51C-D41E-470D-8925-424C77C4C57B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7F06D51C-D41E-470D-8925-424C77C4C57B";
 				USER_HEADER_SEARCH_PATHS = ./PowerVR/OGLES2;
 				WRAPPER_EXTENSION = app;
 			};
