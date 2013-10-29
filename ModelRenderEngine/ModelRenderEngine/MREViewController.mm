@@ -23,9 +23,100 @@ UINavigationControllerDelegate> {
 }
 
 @property (strong, nonatomic) EAGLContext *context;
-@property (strong, nonatomic) NSMutableArray *materials;
 @property (strong, nonatomic) NSTimer *hideToolbarTimer;
 @property (strong, nonatomic) UIPopoverController *popover;
+@property (copy, nonatomic) NSArray *activeMeterieals;
+
+@end
+
+
+@interface UIImage (fixOrientation)
+
+- (UIImage *)fixOrientation;
+
+@end
+
+@implementation UIImage (fixOrientation)
+
+- (UIImage *)fixOrientation {
+    
+    // No-op if the orientation is already correct
+    if (self.imageOrientation == UIImageOrientationUp) return self;
+    
+    // We need to calculate the proper transformation to make the image upright.
+    // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    
+    switch (self.imageOrientation) {
+        case UIImageOrientationDown:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.width, self.size.height);
+            transform = CGAffineTransformRotate(transform, M_PI);
+            break;
+            
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.width, 0);
+            transform = CGAffineTransformRotate(transform, M_PI_2);
+            break;
+            
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, self.size.height);
+            transform = CGAffineTransformRotate(transform, -M_PI_2);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationUpMirrored:
+            break;
+    }
+    
+    switch (self.imageOrientation) {
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.width, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.height, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationDown:
+        case UIImageOrientationLeft:
+        case UIImageOrientationRight:
+            break;
+    }
+    
+    // Now we draw the underlying CGImage into a new context, applying the transform
+    // calculated above.
+    CGContextRef ctx = CGBitmapContextCreate(NULL, self.size.width, self.size.height,
+                                             CGImageGetBitsPerComponent(self.CGImage), 0,
+                                             CGImageGetColorSpace(self.CGImage),
+                                             CGImageGetBitmapInfo(self.CGImage));
+    CGContextConcatCTM(ctx, transform);
+    switch (self.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            // Grr...
+            CGContextDrawImage(ctx, CGRectMake(0,0,self.size.height,self.size.width), self.CGImage);
+            break;
+            
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,self.size.width,self.size.height), self.CGImage);
+            break;
+    }
+    
+    // And now we just create a new UIImage from the drawing context
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    return img;
+}
 
 @end
 
@@ -45,9 +136,11 @@ UINavigationControllerDelegate> {
     self.hideToolbarTimer = nil;
     
     self.materials = nil;
+    self.activeMeterieals = nil;
     self.materialsView = nil;
     self.toolbar = nil;
     self.popover = nil;
+    self.modelName = nil;
     [super dealloc];
 }
 
@@ -67,14 +160,6 @@ UINavigationControllerDelegate> {
     
     self.context = [[[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2] autorelease];
     self.preferredFramesPerSecond = 60;
-    self.materials = [NSMutableArray array];
-    
-    [materials addObject:[self materialWithName:@"generics_epoca_senza"]];
-    [materials addObject:[self materialWithName:@"finish"]];
-    [materials addObject:[self materialWithName:@"st263"]];
-//    [materials addObject:[self materialWithName:@"wallpapers"]];
-//    [materials addObject:[self materialWithName:@"brickwork-texture"]];
-    [materials addObject:[self materialWithName:@"st2090"]];
     
     if (self.context == nil) {
         NSLog(@"Failed to create ES context");
@@ -119,24 +204,29 @@ UINavigationControllerDelegate> {
 }
 
 - (GLuint)loadTextureFromImage:(UIImage *)img {
+    img = [img fixOrientation];
     if (img == nil) {
         return 0;
     }
-    
+
     CGImageRef spriteImage = img.CGImage;
     size_t width = CGImageGetWidth(spriteImage);
     size_t height = CGImageGetHeight(spriteImage);
     
-    GLubyte * spriteData = (GLubyte *)calloc(width*height*4, sizeof(GLubyte));    
-    CGContextRef ctx = CGBitmapContextCreate(spriteData,
+    GLubyte *data = (GLubyte *)malloc(width * height * 4 * sizeof(GLubyte));
+    CGContextRef ctx = CGBitmapContextCreate(data,
                                              width,
                                              height,
                                              8,
                                              width*4,
                                              CGImageGetColorSpace(spriteImage),
                                              kCGImageAlphaPremultipliedLast);
-    CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0,height);
-    CGContextConcatCTM(ctx, flipVertical);
+    if (img.imageOrientation == UIImageOrientationDown) {
+        CGContextRotateCTM(ctx, M_PI);
+    }
+    
+    CGAffineTransform matrix = CGAffineTransformMake(1, 0, 0, -1, 0, height);
+    CGContextConcatCTM(ctx, matrix);
     CGContextDrawImage(ctx, CGRectMake(0, 0, width, height), spriteImage);
     CGContextRelease(ctx);
     
@@ -147,9 +237,9 @@ UINavigationControllerDelegate> {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);    
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     
-    free(spriteData);
+    free(data);
     
     return texName;
 }
@@ -173,7 +263,7 @@ UINavigationControllerDelegate> {
     }
     
     NSString *str = [[NSBundle mainBundle] bundlePath];    
-    model = new mre::model([[str stringByAppendingPathComponent:@"models"] UTF8String], "e142.pod");
+    model = new mre::model([[str stringByAppendingPathComponent:@"models"] UTF8String], [_modelName UTF8String]);
 }
 
 - (void)setupGL {
@@ -266,6 +356,8 @@ UINavigationControllerDelegate> {
     
     int node = model->get_node_at_pos(point.x, point.y, rect.size.width, rect.size.height);
     if (node >= 0) {
+        NSString *name = [NSString stringWithUTF8String:model->get_node_name(node).c_str()];
+        self.activeMeterieals = [materials objectForKey:name];
         [self showMaterialView];
         [self hideToolbar];
     } else {
@@ -307,6 +399,9 @@ UINavigationControllerDelegate> {
 }
 
 - (void)showMaterialView {
+    [materialsView setNeedsLayout];
+    [materialsView layoutIfNeeded];
+    
     [UIView beginAnimations:nil context:NULL];
     CGRect rect = materialsView.frame;
     rect.origin.y = self.view.bounds.size.height - rect.size.height;
@@ -323,11 +418,11 @@ UINavigationControllerDelegate> {
 }
 
 - (NSInteger)materialsViewNumberOfMeterial:(MREMaterialsView *)view {
-    return [materials count];
+    return [_activeMeterieals count];
 }
 
 - (MREMaterial *)materialsView:(MREMaterialsView *)view materialAtIndex:(NSInteger)index {
-    return [materials objectAtIndex:index];
+    return [_activeMeterieals objectAtIndex:index];
 }
 
 - (void)materialsView:(MREMaterialsView *)view didSelectMaterialAtIndex:(NSInteger)index; {
@@ -336,7 +431,7 @@ UINavigationControllerDelegate> {
         return;
     }
     
-    MREMaterial *m = [materials objectAtIndex:index];
+    MREMaterial *m = [_activeMeterieals objectAtIndex:index];
     int node = model->get_select_node();
     if (node >= 0) {
         GLuint textId = model->get_texture([m.texture UTF8String]);
@@ -358,7 +453,6 @@ UINavigationControllerDelegate> {
         return;
     }
     
-//    glClearColor(1.0f, 1.0f, 1.0f, 1.0f );
     glClearColor(.0f, .0f, .0f, 1.0f );
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     

@@ -15,6 +15,8 @@
 
 @property (retain, nonatomic) IBOutlet MREMaterialsView *materialsView;
 @property (retain, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (copy, nonatomic) NSString *modelName;
+@property (copy, nonatomic) NSDictionary *materials;
 
 - (IBAction)onSelectFromLibrary:(id)sender;
 - (IBAction)onSelectFromCamera:(id)sender;
