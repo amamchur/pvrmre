@@ -229,8 +229,8 @@ namespace mre {
     }
     
     void model::setup_default_camera() {
-        light_pos = pod_model->GetLightPosition(0);
-        light_dir = pod_model->GetLightDirection(0);
+        light_pos = pod_model->GetLightPosition(2);
+        light_dir = pod_model->GetLightDirection(2);
         
         up_rotation = 0;
         right_rotation = 0;

@@ -106,6 +106,8 @@ namespace mre {
         PVRTVec3 eye_pos = model.get_eye_pos();
         PVRTVec3 light_pos = model.get_light_pos();
         PVRTVec3 light_dir = model.get_light_dir();
+        PVRTVec3 light_pos_eye = light_pos * world_view_i;
+        PVRTVec3 light_pos_model = light_pos * world;
         
         timeval time;
         gettimeofday(&time, NULL);
@@ -121,15 +123,20 @@ namespace mre {
             case ePVRTPFX_UsWORLD:
                 glUniformMatrix4fv(location, 1, GL_FALSE, world.ptr());
                 break;
+            case ePVRTPFX_UsWORLDVIEW:
+                glUniformMatrix4fv(location, 1, GL_FALSE, world_view.ptr());
+                break;
             case ePVRTPFX_UsWORLDVIEWIT:
                 glUniformMatrix3fv(location, 1, GL_FALSE, PVRTMat3(world_view_it).ptr());
                 break;
             case ePVRTPFX_UsLIGHTPOSMODEL:
-                // TODO: Convert to model space
                 glUniform3fv(location, 1, light_pos.ptr());
                 break;
+            case ePVRTPFX_UsLIGHTPOSEYE:
+                glUniform3fv(location, 1, light_pos_eye.ptr());
+                break;
             case ePVRTPFX_UsLIGHTPOSWORLD:
-                glUniform3fv(location, 1, light_pos.ptr());
+                glUniform3fv(location, 1, light_pos_model.ptr());
                 break;
             case ePVRTPFX_UsLIGHTDIREYE: {
                 PVRTVec4 ld = PVRTVec4(light_dir, 0);
