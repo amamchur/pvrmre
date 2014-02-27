@@ -8,6 +8,8 @@
 
 #import "MREViewController.h"
 #import "MREMaterialsView.h"
+#import "MREModelInfo.h"
+#import "MRENodelInfo.h"
 
 #import "effect.h"
 #import "model.h"
@@ -140,7 +142,6 @@ UINavigationControllerDelegate> {
     self.materialsView = nil;
     self.toolbar = nil;
     self.popover = nil;
-    self.modelName = nil;
     [super dealloc];
 }
 
@@ -176,6 +177,16 @@ UINavigationControllerDelegate> {
         NSLog(@"Failed to create ES context");
         return;
     }
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    for (MRENodelInfo *info in _modelInfo.nodesInfo) {
+        NSMutableArray *array = [NSMutableArray array];
+        for (NSString *str in info.materials) {
+            [array addObject:[self materialWithName:str]];
+        }
+        [dict setObject:array forKey:info.nodeName];
+    }
+    self.materials = dict;
     
     GLKView *view = (GLKView *)self.view;
     view.context = self.context;
@@ -276,8 +287,9 @@ UINavigationControllerDelegate> {
         delete model;
     }
     
-    NSString *str = [[NSBundle mainBundle] bundlePath];    
-    model = new mre::model([[str stringByAppendingPathComponent:@"models"] UTF8String], [_modelName UTF8String]);
+    NSString *str = [[NSBundle mainBundle] bundlePath];
+    NSString *file = _modelInfo.file;
+    model = new mre::model([[str stringByAppendingPathComponent:@"models"] UTF8String], [file UTF8String]);
 }
 
 - (void)setupGL {

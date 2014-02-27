@@ -11,11 +11,13 @@
 
 #import "MREMaterialsView.h"
 
+@class MREModelInfo;
+
 @interface MREViewController : GLKViewController<MREMaterialsViewDataSource>
 
 @property (retain, nonatomic) IBOutlet MREMaterialsView *materialsView;
 @property (retain, nonatomic) IBOutlet UIToolbar *toolbar;
-@property (copy, nonatomic) NSString *modelName;
+@property (retain, nonatomic) MREModelInfo *modelInfo;
 @property (copy, nonatomic) NSDictionary *materials;
 
 - (IBAction)onSelectFromLibrary:(id)sender;

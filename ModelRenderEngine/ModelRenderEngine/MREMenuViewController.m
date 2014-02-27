@@ -9,7 +9,14 @@
 #import "MREMenuViewController.h"
 #import "MREViewController.h"
 
+#import "MREDataLoader.h"
+#import "MREModelInfo.h"
+#import "MRENodelInfo.h"
+
 @interface MREMenuViewController ()
+
+@property (retain, nonatomic) IBOutlet UITableView *table;
+@property (copy, nonatomic) NSArray *models;
 
 @end
 
@@ -23,11 +30,35 @@
     return self;
 }
 
+- (void)dealloc {
+    self.table = nil;
+    self.models = nil;
+    [super dealloc];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    MREDataLoader *loader = [[MREDataLoader alloc] init];
+    
+    NSURL *url = [NSURL URLWithString:@"http://mre.mamchur.net/models.json"];
+    [loader fetchUrl:url
+             rootCls:[MREModelInfo class]
+             success:^(id resource) {
+                 self.models = resource;
+                 [_table reloadData];
+             }
+             failure:^(NSError *error) {
+                 
+             }];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return [_models count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    MREModelInfo *model = [_models objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
@@ -37,14 +68,7 @@
         [cell autorelease];
     }
     
-    switch (indexPath.row) {
-        case 0:
-            cell.textLabel.text = @"Chair S";
-            break;
-        case 1:
-            cell.textLabel.text = @"Selva Vendome Bergere";
-            break;
-    }
+    cell.textLabel.text = model.title;
     return cell;
 }
 
@@ -60,6 +84,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    MREModelInfo *model = [_models objectAtIndex:indexPath.row];
     NSDictionary *materials = nil;
     NSString *name = nil;
     switch (indexPath.row) {
@@ -102,8 +127,7 @@
     }
 
     MREViewController *vc = [[[MREViewController alloc] initWithNibName:@"MREViewController" bundle:nil] autorelease];
-    vc.modelName = name;
-    vc.materials = materials;
+    vc.modelInfo = model;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -1,0 +1,50 @@
+[
+   {
+      "title":"Chair S",
+      "file":"e142.pod",
+      "nodesInfo":[
+         {
+            "nodeName":"Object001",
+            "materials":[
+               "st263",
+               "st2090"
+            ]
+         },
+         {
+            "nodeName":"Plane003",
+            "materials":[
+               "w_1",
+               "w_2",
+               "w_3",
+               "w_4"
+            ]
+         }
+      ]
+   },
+   {
+      "title":"Selva Vendome Bergere",
+      "file":"selva_poltron.pod",
+      "nodesInfo":[
+         {
+            "nodeName":"fabrick",
+            "materials":[
+               "f_1_d",
+               "f_2_d",
+               "f_3_d",
+               "f_4_d",
+               "f_5_d",
+               "f_6_d"
+            ]
+         },
+         {
+            "nodeName":"wood",
+            "materials":[
+               "w_1",
+               "w_2",
+               "w_3",
+               "w_4"
+            ]
+         }
+      ]
+   }
+]
