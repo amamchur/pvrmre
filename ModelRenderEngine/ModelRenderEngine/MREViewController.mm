@@ -144,6 +144,17 @@ UINavigationControllerDelegate> {
     [super dealloc];
 }
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self != nil) {
+        BOOL os7 = floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1;
+        if (os7) {
+            self.automaticallyAdjustsScrollViewInsets = NO;
+        }
+    }
+    return self;
+}
+
 - (MREMaterial *)materialWithName:(NSString *)name {
     NSString *imgPath = [[NSBundle mainBundle] pathForResource:name
                                                         ofType:@"jpg"
@@ -201,6 +212,9 @@ UINavigationControllerDelegate> {
     background = new CPVRTBackground();
     background->Init(NULL, FALSE);
     backgroundTextId = 0;
+    
+    materialsView.contentInset = UIEdgeInsetsZero;
+    materialsView.scrollIndicatorInsets = UIEdgeInsetsZero;
 }
 
 - (GLuint)loadTextureFromImage:(UIImage *)img {
