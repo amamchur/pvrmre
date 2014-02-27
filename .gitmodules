@@ -1,0 +1,3 @@
+[submodule "ThirdParty/jsonlite"]
+	path = ThirdParty/jsonlite
+	url = https://github.com/amamchur/jsonlite.git
