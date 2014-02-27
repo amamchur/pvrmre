@@ -1,100 +1,110 @@
-/******************************************************************************
+/*!****************************************************************************
 
- @File         PVRTPFXSemantics.h
-
- @Title        PFX Semantics
-
- @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     All
-
- @Description  A list of supported PFX semantics.
+ @file         OGLES2/PVRTPFXSemantics.h
+ @ingroup      API_OGLES2
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief  A list of supported PFX semantics.
 
 ******************************************************************************/
 #ifndef PVRTPFXSEMANTICS_H
 #define PVRTPFXSEMANTICS_H
 
+/*!
+ @addtogroup API_OGLES2
+ @{
+*/
+
 struct SPVRTPFXUniformSemantic;
+
 /****************************************************************************
 ** Semantic Enumerations
 ****************************************************************************/
+
+
+/*!**************************************************************************
+ @enum         EPVRTPFXUniformSemantic
+ @brief        The default Shaman semantics.
+ ***************************************************************************/
 enum EPVRTPFXUniformSemantic
 {
-	ePVRTPFX_UsPOSITION,
-	ePVRTPFX_UsNORMAL,
-	ePVRTPFX_UsTANGENT,
-	ePVRTPFX_UsBINORMAL,
-	ePVRTPFX_UsUV,
-	ePVRTPFX_UsVERTEXCOLOR,
-	ePVRTPFX_UsBONEINDEX,
-	ePVRTPFX_UsBONEWEIGHT,
+	ePVRTPFX_UsPOSITION,                /*!< POSITION */
+	ePVRTPFX_UsNORMAL,                  /*!< NORMAL */
+	ePVRTPFX_UsTANGENT,                 /*!< TANGENT */
+	ePVRTPFX_UsBINORMAL,                /*!< BINORMAL */
+	ePVRTPFX_UsUV,                      /*!< UV */
+	ePVRTPFX_UsVERTEXCOLOR,             /*!< VERTEXCOLOR */
+	ePVRTPFX_UsBONEINDEX,               /*!< BONEINDEX */
+	ePVRTPFX_UsBONEWEIGHT,              /*!< BONEWEIGHT */
 
-	ePVRTPFX_UsWORLD,
-	ePVRTPFX_UsWORLDI,
-	ePVRTPFX_UsWORLDIT,
-	ePVRTPFX_UsVIEW,
-	ePVRTPFX_UsVIEWI,
-	ePVRTPFX_UsVIEWIT,
-	ePVRTPFX_UsPROJECTION,
-	ePVRTPFX_UsPROJECTIONI,
-	ePVRTPFX_UsPROJECTIONIT,
-	ePVRTPFX_UsWORLDVIEW,
-	ePVRTPFX_UsWORLDVIEWI,
-	ePVRTPFX_UsWORLDVIEWIT,
-	ePVRTPFX_UsWORLDVIEWPROJECTION,
-	ePVRTPFX_UsWORLDVIEWPROJECTIONI,
-	ePVRTPFX_UsWORLDVIEWPROJECTIONIT,
-	ePVRTPFX_UsVIEWPROJECTION,
-	ePVRTPFX_UsVIEWPROJECTIONI,
-	ePVRTPFX_UsVIEWPROJECTIONIT,
-	ePVRTPFX_UsOBJECT,
-	ePVRTPFX_UsOBJECTI,
-	ePVRTPFX_UsOBJECTIT,
-	ePVRTPFX_UsUNPACKMATRIX,
+	ePVRTPFX_UsWORLD,                   /*!< WORLD */
+	ePVRTPFX_UsWORLDI,                  /*!< WORLDI */
+	ePVRTPFX_UsWORLDIT,                 /*!< WORLDIT */
+	ePVRTPFX_UsVIEW,                    /*!< VIEW */
+	ePVRTPFX_UsVIEWI,                   /*!< VIEWI */
+	ePVRTPFX_UsVIEWIT,                  /*!< VIEWIT */
+	ePVRTPFX_UsPROJECTION,              /*!< PROJECTION */
+	ePVRTPFX_UsPROJECTIONI,             /*!< PROJECTIONI */
+	ePVRTPFX_UsPROJECTIONIT,            /*!< PROJECTIONIT */
+	ePVRTPFX_UsWORLDVIEW,               /*!< WORLDVIEW */
+	ePVRTPFX_UsWORLDVIEWI,              /*!< WORLDVIEWI */
+	ePVRTPFX_UsWORLDVIEWIT,             /*!< WORLDVIEWIT */
+	ePVRTPFX_UsWORLDVIEWPROJECTION,     /*!< WORLDVIEWPROJECTION */
+	ePVRTPFX_UsWORLDVIEWPROJECTIONI,    /*!< WORLDVIEWPROJECTIONI */
+	ePVRTPFX_UsWORLDVIEWPROJECTIONIT,   /*!< WORLDVIEWPROJECTIONIT */
+	ePVRTPFX_UsVIEWPROJECTION,          /*!< VIEWPROJECTION */
+	ePVRTPFX_UsVIEWPROJECTIONI,         /*!< VIEWPROJECTIONI */
+	ePVRTPFX_UsVIEWPROJECTIONIT,        /*!< VIEWPROJECTIONIT */
+	ePVRTPFX_UsOBJECT,                  /*!< OBJECT */
+	ePVRTPFX_UsOBJECTI,                 /*!< OBJECTI */
+	ePVRTPFX_UsOBJECTIT,                /*!< OBJECTIT */
+	ePVRTPFX_UsUNPACKMATRIX,            /*!< UNPACKMATRIX */
 
-	ePVRTPFX_UsBONECOUNT,
-	ePVRTPFX_UsBONEMATRIXARRAY,
-	ePVRTPFX_UsBONEMATRIXARRAYIT,
+	ePVRTPFX_UsBONECOUNT,               /*!< BONECOUNT */
+	ePVRTPFX_UsBONEMATRIXARRAY,         /*!< BONEMATRIXARRAY */
+	ePVRTPFX_UsBONEMATRIXARRAYIT,       /*!< BONEMATRIXARRAYIT */
 
-	ePVRTPFX_UsMATERIALOPACITY,
-	ePVRTPFX_UsMATERIALSHININESS,
-	ePVRTPFX_UsMATERIALCOLORAMBIENT,
-	ePVRTPFX_UsMATERIALCOLORDIFFUSE,
-	ePVRTPFX_UsMATERIALCOLORSPECULAR,
+	ePVRTPFX_UsMATERIALOPACITY,         /*!< MATERIALOPACITY */
+	ePVRTPFX_UsMATERIALSHININESS,       /*!< MATERIALSHININESS */
+	ePVRTPFX_UsMATERIALCOLORAMBIENT,    /*!< MATERIALCOLORAMBIENT */
+	ePVRTPFX_UsMATERIALCOLORDIFFUSE,    /*!< MATERIALCOLORDIFFUSE */
+	ePVRTPFX_UsMATERIALCOLORSPECULAR,   /*!< MATERIALCOLORSPECULAR */
 
-	ePVRTPFX_UsLIGHTCOLOR,
-	ePVRTPFX_UsLIGHTPOSMODEL,
-	ePVRTPFX_UsLIGHTPOSWORLD,
-	ePVRTPFX_UsLIGHTPOSEYE,
-	ePVRTPFX_UsLIGHTDIRMODEL,
-	ePVRTPFX_UsLIGHTDIRWORLD,
-	ePVRTPFX_UsLIGHTDIREYE,
-	ePVRTPFX_UsLIGHTATTENUATION,
-	ePVRTPFX_UsLIGHTFALLOFF,
+	ePVRTPFX_UsLIGHTCOLOR,              /*!< LIGHTCOLOR */
+	ePVRTPFX_UsLIGHTPOSMODEL,           /*!< LIGHTPOSMODEL */
+	ePVRTPFX_UsLIGHTPOSWORLD,           /*!< LIGHTPOSWORLD */
+	ePVRTPFX_UsLIGHTPOSEYE,             /*!< LIGHTPOSEYE */
+	ePVRTPFX_UsLIGHTDIRMODEL,           /*!< LIGHTDIRMODEL */
+	ePVRTPFX_UsLIGHTDIRWORLD,           /*!< LIGHTDIRWORLD */
+	ePVRTPFX_UsLIGHTDIREYE,             /*!< LIGHTDIREYE */
+	ePVRTPFX_UsLIGHTATTENUATION,        /*!< LIGHTATTENUATION */
+	ePVRTPFX_UsLIGHTFALLOFF,            /*!< LIGHTFALLOFF */
 
-	ePVRTPFX_UsEYEPOSMODEL,
-	ePVRTPFX_UsEYEPOSWORLD,
-	ePVRTPFX_UsTEXTURE,
-	ePVRTPFX_UsANIMATION,
+	ePVRTPFX_UsEYEPOSMODEL,             /*!< EYEPOSMODEL */
+	ePVRTPFX_UsEYEPOSWORLD,             /*!< EYEPOSWORLD */
+	ePVRTPFX_UsTEXTURE,                 /*!< TEXTURE */
+	ePVRTPFX_UsANIMATION,               /*!< ANIMATION */
 
-	ePVRTPFX_UsVIEWPORTPIXELSIZE,
-	ePVRTPFX_UsVIEWPORTCLIPPING,
-	ePVRTPFX_UsTIME,
-	ePVRTPFX_UsTIMECOS,
-	ePVRTPFX_UsTIMESIN,
-	ePVRTPFX_UsTIMETAN,
-	ePVRTPFX_UsTIME2PI,
-	ePVRTPFX_UsTIME2PICOS,
-	ePVRTPFX_UsTIME2PISIN,
-	ePVRTPFX_UsTIME2PITAN,
-	ePVRTPFX_UsRANDOM,
+	ePVRTPFX_UsVIEWPORTPIXELSIZE,       /*!< VIEWPORTPIXELSIZE */
+	ePVRTPFX_UsVIEWPORTCLIPPING,        /*!< VIEWPORTCLIPPING */
+	ePVRTPFX_UsTIME,                    /*!< TIME */
+	ePVRTPFX_UsTIMECOS,                 /*!< TIMECOS */
+	ePVRTPFX_UsTIMESIN,                 /*!< TIMESIN */
+	ePVRTPFX_UsTIMETAN,                 /*!< TIMETAN */
+	ePVRTPFX_UsTIME2PI,                 /*!< TIME2PI */
+	ePVRTPFX_UsTIME2PICOS,              /*!< TIME2PICOS */
+	ePVRTPFX_UsTIME2PISIN,              /*!< TIME2PISIN */
+	ePVRTPFX_UsTIME2PITAN,              /*!< TIME2PITAN */
+	ePVRTPFX_UsRANDOM,                  /*!< RANDOM */
 
-	ePVRTPFX_NumSemantics,
+	ePVRTPFX_NumSemantics               /*!< Semantic number */
 };
 
+/*!**************************************************************************
+ @brief        Retrieves the list of semantics.
+ ***************************************************************************/
 const SPVRTPFXUniformSemantic* PVRTPFXSemanticsGetSemanticList();
+
+/*! @} */
 
 #endif /* PVRTPFXSEMANTICS_H */
 

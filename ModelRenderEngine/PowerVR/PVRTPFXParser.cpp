@@ -4,11 +4,11 @@
 
  @Title        PVRTPFXParser
 
- @Version       @Version      
+ @Version      
 
  @Copyright    Copyright (c) Imagination Technologies Limited.
 
- @Platform     Windows + Linux
+ @Platform     ANSI compatible
 
  @Description  PFX file parser.
 
@@ -417,6 +417,7 @@ void SPVRTPFXParserShader::Copy(const SPVRTPFXParserShader& rhs)
 	bUseFileName	= rhs.bUseFileName;
 	nGLSLBinarySize = rhs.nGLSLBinarySize;
 	nFirstLineNumber= rhs.nFirstLineNumber;
+	nLastLineNumber = rhs.nLastLineNumber;
 }
 
 /****************************************************************************
@@ -527,7 +528,7 @@ bool CPVRTPFXParser::Parse(CPVRTString * const pReturnError)
 		eCmds_FragmentShader,
 		eCmds_Effect,
 
-		eCmds_Size,
+		eCmds_Size
 	};
 
 	const CPVRTHash ParserCommands[] =
@@ -1147,7 +1148,7 @@ bool CPVRTPFXParser::ParseHeader(int nStartLine, int nEndLine, CPVRTString * con
 		eCmds_Description,
 		eCmds_Copyright,
 
-		eCmds_Size,
+		eCmds_Size
 	};
 
 	const CPVRTHash HeaderCommands[] =
@@ -2064,7 +2065,7 @@ bool CPVRTPFXParser::ParseShader(int nStartLine, int nEndLine, CPVRTString * con
 		eCmds_File,
 		eCmds_BinaryFile,
 
-		eCmds_Size,
+		eCmds_Size
 	};
 
 	const CPVRTHash ShaderCommands[] = 
@@ -2084,6 +2085,7 @@ bool CPVRTPFXParser::ParseShader(int nStartLine, int nEndLine, CPVRTString * con
 	shader.pszGLSLBinaryFile= NULL;
 	shader.pbGLSLBinary		= NULL;
 	shader.nFirstLineNumber	= 0;
+	shader.nLastLineNumber  = 0;
 
 	for(int i = nStartLine+1; i < nEndLine; i++)
 	{
@@ -2125,6 +2127,8 @@ bool CPVRTPFXParser::ParseShader(int nStartLine, int nEndLine, CPVRTString * con
 				{
 					return false;
 				}
+				
+				shader.nLastLineNumber = m_psContext->pnFileLineNumber[i];
 
 				shader.pszGLSLcode = (char*)malloc((GLSLCode.size()+1) * sizeof(char));
 				strcpy(shader.pszGLSLcode, GLSLCode.c_str());
@@ -2182,7 +2186,7 @@ bool CPVRTPFXParser::ParseShader(int nStartLine, int nEndLine, CPVRTString * con
 					*pReturnError = PVRTStringFromFormattedStr("Error loading file '%s' in [%s] on line %d\n", str, pszBlockName, m_psContext->pnFileLineNumber[i]);
 					return false;
 				}
-				shader.pszGLSLcode = new char[GLSLFile.Size() + 1];
+				shader.pszGLSLcode = (char*)malloc((GLSLFile.Size()+1) * sizeof(char));
 				memcpy(shader.pszGLSLcode, (const char*) GLSLFile.DataPtr(), GLSLFile.Size());
 				shader.pszGLSLcode[GLSLFile.Size()] = '\0';
 
@@ -2410,7 +2414,7 @@ bool CPVRTPFXParser::ParseEffect(SPVRTPFXParserEffect &effect, const int nStartL
 		eCmds_Name,
 		eCmds_Target,
 
-		eCmds_Size,
+		eCmds_Size
 	};
 
 	const CPVRTHash EffectCommands[] = 

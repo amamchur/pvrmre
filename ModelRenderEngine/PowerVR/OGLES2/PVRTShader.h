@@ -1,37 +1,34 @@
-/******************************************************************************
+/*!****************************************************************************
 
- @File         PVRTShader.h
-
- @Title        OGLES2/PVRTShader
-
- @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  Shader handling for OpenGL ES 2.0
+ @file         OGLES2/PVRTShader.h
+ @ingroup      API_OGLES2
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief        Shader handling for OpenGL ES 2.0
 
 ******************************************************************************/
 #ifndef _PVRTSHADER_H_
 #define _PVRTSHADER_H_
+
+/*!
+ @addtogroup API_OGLES2
+ @{
+*/
 
 #include "PVRTContext.h"
 #include "../PVRTString.h"
 #include "../PVRTError.h"
 
 /*!***************************************************************************
- @Function		PVRTShaderLoadSourceFromMemory
- @Input			pszShaderCode		shader source code
- @Input			Type				type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
- @Output		pObject				the resulting shader object
- @Output		pReturnError		the error message if it failed
- @Input			aszDefineArray		Array of defines to be pre-appended to shader string
- @Input			uiDefArraySize		Size of the define array
- @Return		PVR_SUCCESS on success and PVR_FAIL on failure (also fills the str string)
- @Description	Loads a shader source code into memory and compiles it.
+ @brief      	Loads a shader source code into memory and compiles it.
 				It also pre-appends the array of defines that have been passed in
 				to the source code before compilation.
+ @param[in]		pszShaderCode		shader source code
+ @param[in]		Type				type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
+ @param[out]	pObject				the resulting shader object
+ @param[out]	pReturnError		the error message if it failed
+ @param[in]		aszDefineArray		Array of defines to be pre-appended to shader string
+ @param[in]		uiDefArraySize		Size of the define array
+ @return		PVR_SUCCESS on success and PVR_FAIL on failure (also fills the str string)
 *****************************************************************************/
 EPVRTError PVRTShaderLoadSourceFromMemory(	const char* pszShaderCode,
 											const GLenum Type,
@@ -40,15 +37,14 @@ EPVRTError PVRTShaderLoadSourceFromMemory(	const char* pszShaderCode,
 											const char* const* aszDefineArray=0, GLuint uiDefArraySize=0);
 
 /*!***************************************************************************
- @Function		PVRTShaderLoadBinaryFromMemory
- @Input			ShaderData		shader compiled binary data
- @Input			Size			size of shader binary data in bytes
- @Input			Type			type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
- @Input			Format			shader binary format
- @Output		pObject			the resulting shader object
- @Output		pReturnError	the error message if it failed
- @Return		PVR_SUCCESS on success and PVR_FAIL on failure (also fills the str string)
- @Description	Takes a shader binary from memory and passes it to the GL.
+ @brief      	Takes a shader binary from memory and passes it to the GL.
+ @param[in]		ShaderData		shader compiled binary data
+ @param[in]		Size			size of shader binary data in bytes
+ @param[in]		Type			type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
+ @param[in]		Format			shader binary format
+ @param[out]	pObject			the resulting shader object
+ @param[out]	pReturnError	the error message if it failed
+ @return		PVR_SUCCESS on success and PVR_FAIL on failure (also fills the str string)
 *****************************************************************************/
 EPVRTError PVRTShaderLoadBinaryFromMemory(	const void*  const ShaderData,
 											const size_t Size,
@@ -58,19 +54,18 @@ EPVRTError PVRTShaderLoadBinaryFromMemory(	const void*  const ShaderData,
 											CPVRTString*  const pReturnError);
 
 /*!***************************************************************************
- @Function		PVRTShaderLoadFromFile
- @Input			pszBinFile			binary shader filename
- @Input			pszSrcFile			source shader filename
- @Input			Type				type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
- @Input			Format				shader binary format, or 0 for source shader
- @Output		pObject				the resulting shader object
- @Output		pReturnError		the error message if it failed
- @Input			pContext			Context
- @Input			aszDefineArray		Array of defines to be pre-appended to shader string
- @Input			uiDefArraySize		Size of the define array
- @Return		PVR_SUCCESS on success and PVR_FAIL on failure (also fills pReturnError)
- @Description	Loads a shader file into memory and passes it to the GL. 
+ @brief      	Loads a shader file into memory and passes it to the GL. 
 				It also passes defines that need to be pre-appended to the shader before compilation.
+ @param[in]		pszBinFile			binary shader filename
+ @param[in]		pszSrcFile			source shader filename
+ @param[in]		Type				type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
+ @param[in]		Format				shader binary format, or 0 for source shader
+ @param[out]	pObject				the resulting shader object
+ @param[out]	pReturnError		the error message if it failed
+ @param[in]		pContext			Context
+ @param[in]		aszDefineArray		Array of defines to be pre-appended to shader string
+ @param[in]		uiDefArraySize		Size of the define array
+ @return		PVR_SUCCESS on success and PVR_FAIL on failure (also fills pReturnError)
 *****************************************************************************/
 EPVRTError PVRTShaderLoadFromFile(	const char* const pszBinFile,
 									const char* const pszSrcFile,
@@ -82,15 +77,14 @@ EPVRTError PVRTShaderLoadFromFile(	const char* const pszBinFile,
 									const char* const* aszDefineArray=0, GLuint uiDefArraySize=0);
 
 /*!***************************************************************************
- @Function		PVRTCreateProgram
- @Output		pProgramObject			the created program object
- @Input			VertexShader			the vertex shader to link
- @Input			FragmentShader			the fragment shader to link
- @Input			pszAttribs				an array of attribute names
- @Input			i32NumAttribs			the number of attributes to bind
- @Output		pReturnError			the error message if it failed
- @Returns		PVR_SUCCESS on success, PVR_FAIL if failure
- @Description	Links a shader program.
+ @brief      	Links a shader program.
+ @param[out]	pProgramObject			the created program object
+ @param[in]		VertexShader			the vertex shader to link
+ @param[in]		FragmentShader			the fragment shader to link
+ @param[in]		pszAttribs				an array of attribute names
+ @param[in]		i32NumAttribs			the number of attributes to bind
+ @param[out]	pReturnError			the error message if it failed
+ @return		PVR_SUCCESS on success, PVR_FAIL if failure
 *****************************************************************************/
 EPVRTError PVRTCreateProgram(	GLuint* const pProgramObject,
 								const GLuint VertexShader,
@@ -98,6 +92,8 @@ EPVRTError PVRTCreateProgram(	GLuint* const pProgramObject,
 								const char** const pszAttribs,
 								const int i32NumAttribs,
 								CPVRTString* const pReturnError);
+
+/*! @} */
 
 #endif
 

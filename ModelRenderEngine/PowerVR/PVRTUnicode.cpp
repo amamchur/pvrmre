@@ -324,9 +324,13 @@ bool PVRTUnicodeValidUTF8(const PVRTuint8* const pUTF8)
 		uiIndex = 0;
 		while(uiIndex < uiTailLen)
 		{
-			if((pC[uiIndex++] & 0xC0) != 0x80)
+			if((pC[uiIndex] & 0xC0) != 0x80)
 				return false;		// Invalid tail byte!
+			
+			c32 = (c32 << BYTES_PER_TAIL) + (pC[uiIndex] & TAIL_MASK);
+			uiIndex++;
 		}
+		
 		pC += uiIndex;
 
 		// Check overlong values.

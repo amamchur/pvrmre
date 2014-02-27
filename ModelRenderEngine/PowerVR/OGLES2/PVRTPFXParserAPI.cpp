@@ -1,8 +1,8 @@
 /******************************************************************************
 
- @File         PVRTPFXParserAPI.cpp
+ @File         OGLES2/PVRTPFXParserAPI.cpp
 
- @Title        PVRTPFXParserAPI
+ @Title        OGLES2/PVRTPFXParserAPI
 
  @Version      
 
@@ -426,7 +426,12 @@ void CPVRTPFXEffect::Destroy()
 	{
 		if(m_uiProgram != 0)
 		{
-			glDeleteProgram(m_uiProgram);
+            GLint val;
+            glGetProgramiv(m_uiProgram, GL_DELETE_STATUS, &val);
+            if(val == GL_FALSE)
+            {
+                glDeleteProgram(m_uiProgram);
+            }
 			m_uiProgram = 0;
 		}
 	}
@@ -498,6 +503,7 @@ static unsigned int GetSemantics(
 	*/
 	nCount = 0;
 	nCountUnused = 0;
+	char szTmpUniformName[2048];		// Temporary buffer to use for building uniform names.
 
 	for(j = 0; j < aParams.GetSize(); ++j)
 	{
@@ -516,6 +522,15 @@ static unsigned int GetSemantics(
 			else
 			{
 				nLocation = glGetUniformLocation(uiProgram, aParams[j].pszName);
+				
+				// Check for array. Workaround for some OpenGL:ES implementations which require array element appended to uniform name
+				// in order to return the correct location.
+				if(nLocation == -1)
+				{
+					strcpy(szTmpUniformName, aParams[j].pszName);
+					strcat(szTmpUniformName, "[0]");
+					nLocation = glGetUniformLocation(uiProgram, szTmpUniformName);
+				}
 			}
 
 			if(nLocation != -1)
@@ -812,7 +827,17 @@ void CPVRTPFXEffect::SetTexture(const unsigned int nIdx, const GLuint ui, const 
 *****************************************************************************/
 void CPVRTPFXEffect::SetDefaultUniformValue(const char *const pszName, const SPVRTSemanticDefaultData *psDefaultValue)
 {
+	
 	GLint nLocation = glGetUniformLocation(m_uiProgram, pszName);
+	// Check for array. Workaround for some OpenGL:ES implementations which require array element appended to uniform name
+	// in order to return the correct location.
+	if(nLocation == -1)
+	{
+		char szTmpUniformName[2048];
+		strcpy(szTmpUniformName, pszName);
+		strcat(szTmpUniformName, "[0]");
+		nLocation = glGetUniformLocation(m_uiProgram, szTmpUniformName);
+	}
 
 	switch(psDefaultValue->eType)
 	{

@@ -4,7 +4,7 @@
 
  @Title        PVRTResourceFile.cpp
 
- @Version       @Version      
+ @Version      
 
  @Copyright    Copyright (c) Imagination Technologies Limited.
 
@@ -44,6 +44,7 @@ static void* LoadFileFunc(const char* pFilename, char** pData, size_t &size)
 		if (BytesRead != size)
 		{
 			delete [] pTmp;
+			pTmp = NULL;
 			size = 0;
 		}
 		else
@@ -339,4 +340,3 @@ const char* CPVRTMemoryFileSystem::GetFilename(int i32Index)
 /*****************************************************************************
  End of file (PVRTResourceFile.cpp)
 *****************************************************************************/
-

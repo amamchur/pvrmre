@@ -4,7 +4,7 @@
 
  @Title        PVRTString
 
- @Version       @Version      
+ @Version      
 
  @Copyright    Copyright (c) Imagination Technologies Limited.
 
@@ -1622,7 +1622,11 @@ CPVRTString CPVRTString::format(const char *pFormat, ...)
 	va_list arg;
 
 	va_start(arg, pFormat);
-	size_t	bufSize = vsnprintf(NULL,0,pFormat,arg);
+#if defined(_WIN32)
+	size_t bufSize = _vscprintf(pFormat,arg);
+#else
+	size_t bufSize = vsnprintf(NULL,0,pFormat,arg);
+#endif
 	va_end(arg);
 	
 	char*	buf=new char[bufSize + 1];
@@ -1885,7 +1889,11 @@ CPVRTString PVRTStringFromFormattedStr(const char *pFormat, ...)
 	va_list arg;
 
 	va_start(arg, pFormat);
+#if defined(_WIN32)
+	size_t bufSize = _vscprintf(pFormat,arg);
+#else
 	size_t bufSize = vsnprintf(NULL,0,pFormat,arg);
+#endif
 	va_end(arg);
 
 	char* buf = new char[bufSize + 1];

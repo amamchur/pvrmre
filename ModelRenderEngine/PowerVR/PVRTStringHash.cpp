@@ -4,7 +4,7 @@
 
  @Title        String Hash
 
- @Version       @Version      
+ @Version      
 
  @Copyright    Copyright (c) Imagination Technologies Limited.
 

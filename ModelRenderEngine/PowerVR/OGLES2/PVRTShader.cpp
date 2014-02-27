@@ -1,8 +1,8 @@
 /******************************************************************************
 
- @File         PVRTShader.cpp
+ @File         OGLES2/PVRTShader.cpp
 
- @Title        PVRTShader
+ @Title        OGLES2/PVRTShader
 
  @Version      
 
@@ -18,6 +18,8 @@
 #include "PVRTShader.h"
 #include "PVRTResourceFile.h"
 #include "PVRTGlobal.h"
+#include <ctype.h>
+#include <string.h>
 
 /*!***************************************************************************
  @Function		PVRTShaderLoadSourceFromMemory
@@ -40,12 +42,45 @@ EPVRTError PVRTShaderLoadSourceFromMemory(	const char* pszShaderCode,
 {
 	// Append define's here if there are any
 	CPVRTString pszShaderString;
-	for(GLuint i = 0 ; i < uiDefArraySize; ++i)
+
+	if(uiDefArraySize > 0)
 	{
-		pszShaderString += "#define ";
-		pszShaderString += aszDefineArray[i];
-		pszShaderString += "\n";
+		while(isspace(*pszShaderCode))
+			++pszShaderCode;
+
+		if(*pszShaderCode == '#')
+		{
+			const char* tmp = pszShaderCode + 1;
+
+			while(isspace(*tmp))
+				++tmp;
+
+			if(strncmp(tmp, "version", 7) == 0)
+			{
+				const char* c = strchr(pszShaderCode, '\n');
+
+				if(c)
+				{
+					size_t length = c - pszShaderCode + 1;
+					pszShaderString = CPVRTString(pszShaderCode, length);
+					pszShaderCode += length;
+				}
+				else
+				{
+					pszShaderString = CPVRTString(pszShaderCode) + "\n";
+					pszShaderCode = '\0';
+				}
+			}
+		}
+
+		for(GLuint i = 0 ; i < uiDefArraySize; ++i)
+		{
+			pszShaderString += "#define ";
+			pszShaderString += aszDefineArray[i];
+			pszShaderString += "\n";
+		}
 	}
+
 	// Append the shader code to the string
 	pszShaderString += pszShaderCode;
 

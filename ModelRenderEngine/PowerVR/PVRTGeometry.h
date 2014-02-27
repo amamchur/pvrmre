@@ -1,16 +1,8 @@
-/******************************************************************************
+/*!****************************************************************************
 
- @File         PVRTGeometry.h
-
- @Title        PVRTGeometry
-
- @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     Independant
-
- @Description  Code to affect triangle mesh geometry.
+ @file         PVRTGeometry.h
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief        Code to affect triangle mesh geometry.
 
 ******************************************************************************/
 #ifndef _PVRTGEOMETRY_H_
@@ -30,16 +22,15 @@
 ****************************************************************************/
 
 /*!***************************************************************************
- @Function		PVRTGeometrySort
- @Modified		pVtxData		Pointer to array of vertices
- @Modified		pwIdx			Pointer to array of indices
- @Input			nStride			Size of a vertex (in bytes)
- @Input			nVertNum		Number of vertices. Length of pVtxData array
- @Input			nTriNum			Number of triangles. Length of pwIdx array is 3* this
- @Input			nBufferVtxLimit	Number of vertices that can be stored in a buffer
- @Input			nBufferTriLimit	Number of triangles that can be stored in a buffer
- @Input			dwFlags			PVRTGEOMETRY_SORT_* flags
- @Description	Triangle sorter
+ @brief      	    Triangle sorter
+ @param[in,out]		pVtxData		Pointer to array of vertices
+ @param[in,out]		pwIdx			Pointer to array of indices
+ @param[in]			nStride			Size of a vertex (in bytes)
+ @param[in]			nVertNum		Number of vertices. Length of pVtxData array
+ @param[in]			nTriNum			Number of triangles. Length of pwIdx array is 3* this
+ @param[in]			nBufferVtxLimit	Number of vertices that can be stored in a buffer
+ @param[in]			nBufferTriLimit	Number of triangles that can be stored in a buffer
+ @param[in]			dwFlags			PVRTGEOMETRY_SORT_* flags
 *****************************************************************************/
 void PVRTGeometrySort(
 	void				* const pVtxData,

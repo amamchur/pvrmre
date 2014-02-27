@@ -1,27 +1,29 @@
-/******************************************************************************
+/*!****************************************************************************
 
- @File         PVRTSingleton.h
-
- @Title        PVRTSingleton
-
- @Version       @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  Singleton template Pattern Usage: Inherit from CPVRTSingleton
+ @file         PVRTSingleton.h
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief        Singleton template. 
+ @details      Pattern Usage: Inherit from CPVRTSingleton
                class like this: class Foo : public CPVRTSingleton<Foo> { ... };
 
 ******************************************************************************/
 #ifndef __PVRTSINGLETON__
 #define __PVRTSINGLETON__
 
+/*!****************************************************************************
+ @class        CPVRTSingleton
+ @brief        Singleton template.
+ @details      Pattern Usage: Inherit from CPVRTSingleton class like this: 
+               class Foo : public CPVRTSingleton<Foo> { ... };
+******************************************************************************/
 template<typename T> class CPVRTSingleton
 {
 private:
+    /*! @brief  Constructor. */
 	CPVRTSingleton(const CPVRTSingleton&);
-	CPVRTSingleton & operator=(const CPVRTSingleton&);
+	
+    /*! @brief  Deconstructor. */
+    CPVRTSingleton & operator=(const CPVRTSingleton&);
 
 public:
 	static T& inst()

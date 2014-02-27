@@ -4,7 +4,7 @@
 
  @Title        PVRTVector
 
- @Version       @Version      
+ @Version      
 
  @Copyright    Copyright (c) Imagination Technologies Limited.
 

@@ -1,8 +1,8 @@
 /******************************************************************************
 
- @File         PVRTBackground.cpp
+ @File         OGLES2/PVRTBackground.cpp
 
- @Title        PVRTBackground
+ @Title        OGLES2/PVRTBackground
 
  @Version      
 
@@ -57,12 +57,13 @@ CPVRTBackground::CPVRTBackground(void)
 *****************************************************************************/
 CPVRTBackground::~CPVRTBackground(void)
 {
-	Destroy();
+	delete m_pAPI;
+	m_pAPI = 0;
 }
 
 /*!***************************************************************************
  @Function		Destroy
- @Description	Destroys the background. It's called by the destructor.
+ @Description	Destroys the background and releases API specific resources
 *****************************************************************************/
 void CPVRTBackground::Destroy()
 {

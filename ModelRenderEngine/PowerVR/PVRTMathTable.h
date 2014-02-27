@@ -1,27 +1,24 @@
-/******************************************************************************
+/*!****************************************************************************
 
- @File         PVRTMathTable.h
-
- @Title        PVRTMathTable
-
- @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  Trigonometric lookup table. This is a low-precision lookup table
-               that should only be used for trigonometric operations that do not
-               require high precision.
+ @file         PVRTMathTable.h
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief        Trigonometric lookup table. 
+ @details      This is a low-precision lookup table that should only be used 
+               for trigonometric operations that do not require high precision.
 
 ******************************************************************************/
 #ifndef _TRIGTABLE
 #define _TRIGTABLE
 
-/* Define number of entries in table */
+/*! 
+ @def   NUM_ENTRIES
+ @brief Define number of entries in table = 1024
+*/
 #define NUM_ENTRIES 1024
 
-/* Fixed-point lookup tables for all trigonometric functions */
+// Fixed-point lookup tables for all trigonometric functions */
+
+ /*! @brief COS value lookup table */
 const int cos_val[]={
 (int)0x00010000,(int)0x0000FFFE,(int)0x0000FFFB,(int)0x0000FFF4,(int)0x0000FFEC,(int)0x0000FFE1,(int)0x0000FFD3,(int)0x0000FFC3,(int)0x0000FFB0,(int)0x0000FF9B,
 (int)0x0000FF84,(int)0x0000FF6A,(int)0x0000FF4E,(int)0x0000FF2F,(int)0x0000FF0D,(int)0x0000FEEA,(int)0x0000FEC3,(int)0x0000FE9B,(int)0x0000FE6F,(int)0x0000FE42,
@@ -127,6 +124,8 @@ const int cos_val[]={
 (int)0x0000FF2F,(int)0x0000FF4E,(int)0x0000FF6A,(int)0x0000FF84,(int)0x0000FF9B,(int)0x0000FFB0,(int)0x0000FFC3,(int)0x0000FFD3,(int)0x0000FFE1,(int)0x0000FFEC,
 (int)0x0000FFF4,(int)0x0000FFFB,(int)0x0000FFFE,(int)0x00010000,
 0};
+
+ /*! @brief SIN value lookup table */
 const int sin_val[]={
 (int)0x00000000,(int)0x00000192,(int)0x00000325,(int)0x000004B7,(int)0x00000649,(int)0x000007DC,(int)0x0000096E,(int)0x00000B00,(int)0x00000C92,(int)0x00000E24,
 (int)0x00000FB6,(int)0x00001148,(int)0x000012D9,(int)0x0000146B,(int)0x000015FC,(int)0x0000178D,(int)0x0000191D,(int)0x00001AAE,(int)0x00001C3E,(int)0x00001DCE,
@@ -232,6 +231,8 @@ const int sin_val[]={
 (int)0xFFFFEB95,(int)0xFFFFED27,(int)0xFFFFEEB8,(int)0xFFFFF04A,(int)0xFFFFF1DC,(int)0xFFFFF36E,(int)0xFFFFF500,(int)0xFFFFF692,(int)0xFFFFF824,(int)0xFFFFF9B7,
 (int)0xFFFFFB49,(int)0xFFFFFCDC,(int)0xFFFFFE6E,(int)0x00000000,
 0};
+
+ /*! @brief TAN value lookup table */
 const int tan_val[]={
 (int)0x00000000,(int)0x00000192,(int)0x00000325,(int)0x000004B7,(int)0x0000064A,(int)0x000007DD,(int)0x00000970,(int)0x00000B03,(int)0x00000C96,(int)0x00000E2A,
 (int)0x00000FBE,(int)0x00001152,(int)0x000012E6,(int)0x0000147B,(int)0x00001611,(int)0x000017A6,(int)0x0000193D,(int)0x00001AD3,(int)0x00001C6A,(int)0x00001E02,
@@ -337,6 +338,8 @@ const int tan_val[]={
 (int)0xFFFFEB85,(int)0xFFFFED1A,(int)0xFFFFEEAE,(int)0xFFFFF042,(int)0xFFFFF1D6,(int)0xFFFFF36A,(int)0xFFFFF4FD,(int)0xFFFFF690,(int)0xFFFFF823,(int)0xFFFFF9B6,
 (int)0xFFFFFB49,(int)0xFFFFFCDB,(int)0xFFFFFE6E,(int)0x00000000,
 0};
+
+ /*! @brief ACOS value lookup table */
 const int acos_val[]={
 (int)0x0003243F,(int)0x0003143C,(int)0x00030D9A,(int)0x00030882,(int)0x00030436,(int)0x0003006C,(int)0x0002FCFF,(int)0x0002F9D8,(int)0x0002F6E9,(int)0x0002F427,
 (int)0x0002F18B,(int)0x0002EF0F,(int)0x0002ECAF,(int)0x0002EA68,(int)0x0002E836,(int)0x0002E618,(int)0x0002E40C,(int)0x0002E20F,(int)0x0002E021,(int)0x0002DE40,

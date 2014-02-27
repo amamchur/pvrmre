@@ -149,7 +149,7 @@ void PVRTMatrixRotationXF(
 	float		fCosine, fSine;
 
     /* Precompute cos and sin */
-#if defined(BUILD_DX9) || defined(BUILD_D3DM) || defined(BUILD_DX10) || defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	fCosine	= (float)PVRTFCOS(-fAngle);
     fSine	= (float)PVRTFSIN(-fAngle);
 #else
@@ -177,7 +177,7 @@ void PVRTMatrixRotationYF(
 	float		fCosine, fSine;
 
 	/* Precompute cos and sin */
-#if defined(BUILD_DX9) || defined(BUILD_D3DM) || defined(BUILD_DX10) || defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	fCosine	= (float)PVRTFCOS(-fAngle);
     fSine	= (float)PVRTFSIN(-fAngle);
 #else
@@ -205,7 +205,7 @@ void PVRTMatrixRotationZF(
 	float		fCosine, fSine;
 
 	/* Precompute cos and sin */
-#if defined(BUILD_DX9) || defined(BUILD_D3DM) || defined(BUILD_DX10) || defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	fCosine =	(float)PVRTFCOS(-fAngle);
     fSine =		(float)PVRTFSIN(-fAngle);
 #else
@@ -326,7 +326,7 @@ void PVRTMatrixInverseExF(
 	PVRTMATRIXf			&mOut,
 	const PVRTMATRIXf	&mIn)
 {
-	PVRTMATRIXf		mTmp;
+	PVRTMATRIXf		mTmp = {0};
 	float 			*ppfRows[4];
 	float 			pfRes[4];
 	float 			pfIn[20];

@@ -1,16 +1,8 @@
-/******************************************************************************
+/*!****************************************************************************
 
- @File         PVRTBackground.h
-
- @Title        PVRTBackground
-
- @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  Function to draw a background texture.
+ @file         PVRTBackground.h
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief        Function to draw a background texture.
 
 ******************************************************************************/
 #ifndef __PVRTBACKGROUND_H__
@@ -25,75 +17,54 @@
 ** Structures
 ****************************************************************************/
 /*!***************************************************************************
-@Struct SPVRTBackgroundAPI
-@Brief A struct for storing API specific variables
+ @struct SPVRTBackgroundAPI
+ @brief A struct for storing API specific variables
 *****************************************************************************/
 struct SPVRTBackgroundAPI;
 
 /*!***************************************************************************
-@Class CPVRTBackground
-@Brief A class for drawing a fullscreen textured background
+ @class CPVRTBackground
+ @brief A class for drawing a fullscreen textured background
 *****************************************************************************/
 class CPVRTBackground
 {
 	public:
 		/*!***************************************************************************
-		 @Function			CPVRTBackground
-	 	 @Description		Init some values.
+	 	 @brief		Initialise some values.
 		*****************************************************************************/
 		CPVRTBackground(void);
 		/*!***************************************************************************
-		 @Function			~CPVRTBackground
-		 @Description		Calls Destroy()
+		 @brief		Calls Destroy()
 		*****************************************************************************/
 		~CPVRTBackground(void);
 		/*!***************************************************************************
-		 @Function		Destroy
-		 @Description	Destroys the background. It's called by the destructor.
+		 @brief 	Destroys the background and releases API specific resources
 		*****************************************************************************/
 		void Destroy();
+
 		/*!***************************************************************************
-		 @Function		Init
-		 @Input			pContext	A pointer to a PVRTContext
-		 @Input			bRotate		true to rotate texture 90 degrees.
-		 @Input			pszError	An option string for returning errors
-		 @Return 		PVR_SUCCESS on success
-		 @Description	Initialises the background
+		 @brief      	Initialises the background
+		 @param[in]		pContext	A pointer to a PVRTContext
+		 @param[in]		bRotate		true to rotate texture 90 degrees.
+		 @param[in]		pszError	An option string for returning errors
+		 @return  		PVR_SUCCESS on success
 		*****************************************************************************/
 		EPVRTError Init(const SPVRTContext * const pContext, const bool bRotate, CPVRTString *pszError = 0);
 
 #if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
 		/*!***************************************************************************
-		 @Function		Draw
-		 @Input			ui32Texture	Texture to use
-		 @Return 		PVR_SUCCESS on success
-		 @Description	Draws a texture on a quad covering the whole screen.
+		 @brief      	Draws a texture on a quad covering the whole screen.
+		 @param[in]		ui32Texture	Texture to use
+		 @return  		PVR_SUCCESS on success
 		*****************************************************************************/
 		EPVRTError Draw(const GLuint ui32Texture);
-#elif defined(BUILD_DX10)
-		/*!***************************************************************************
-		 @Function		Draw
-		 @Input			pTexture	Texture to use
-		 @Return 		PVR_SUCCESS on success
-		 @Description	Draws a texture on a quad covering the whole screen.
-		*****************************************************************************/
-		EPVRTError Draw(ID3D10ShaderResourceView *pTexture);
 #elif defined(BUILD_DX11)
 		/*!***************************************************************************
-		 @Function		Draw
-		 @Input			pTexture	Texture to use
-		 @Return 		PVR_SUCCESS on success
-		 @Description	Draws a texture on a quad covering the whole screen.
+		 @brief      	Draws a texture on a quad covering the whole screen.
+		 @param[in]		pTexture	Texture to use
+		 @return  		PVR_SUCCESS on success
 		*****************************************************************************/
 		EPVRTError Draw(ID3D11ShaderResourceView *pTexture);
-#elif defined(BUILD_DX9)
-		/*!***************************************************************************
-		 @Function		Draw
-		 @Input			pTexture	Texture to use
-		 @Return 		PVR_SUCCESS on success
-		 @Description	Draws a texture on a quad covering the whole screen.
-		*****************************************************************************/
-		EPVRTError Draw(IDirect3DBaseTexture9* pTexture);
 #endif
 
 	protected:

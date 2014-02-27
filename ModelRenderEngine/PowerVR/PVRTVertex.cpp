@@ -4,7 +4,7 @@
 
  @Title        PVRTVertex
 
- @Version       @Version      
+ @Version      
 
  @Copyright    Copyright (c) Imagination Technologies Limited.
 
@@ -148,6 +148,21 @@ void PVRTVertexRead(
 			v[1] = (unsigned char) (dwVal >> 16);
 			v[2] = (unsigned char) (dwVal >>  8);
 			v[3] = (unsigned char) (dwVal >>  0);
+
+			for(i = 0; i < 4; ++i)
+				pOut[i] = 1.0f / 255.0f * (float)v[i];
+		}
+		break;
+
+	case EPODDataABGR:
+		{
+			unsigned int dwVal = *(unsigned int*)pData;
+			unsigned char v[4];
+
+			v[0] = (unsigned char) (dwVal >> 0);
+			v[1] = (unsigned char) (dwVal >> 8);
+			v[2] = (unsigned char) (dwVal >> 16);
+			v[3] = (unsigned char) (dwVal >> 24);
 
 			for(i = 0; i < 4; ++i)
 				pOut[i] = 1.0f / 255.0f * (float)v[i];
@@ -299,6 +314,20 @@ void PVRTVertexWrite(
 				v[i] = 0;
 
 			*(unsigned int*)pOut = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+		}
+		break;
+
+	case EPODDataABGR:
+		{
+			unsigned char v[4];
+
+			for(i = 0; i < nCnt; ++i)
+				v[i] = (unsigned char)PVRT_CLAMP(pData[i] * 255.0f, 0.0f, 255.0f);
+
+			for(; i < 4; ++i)
+				v[i] = 0;
+
+			*(unsigned int*)pOut = (v[3] << 24) | (v[2] << 16) | (v[1] << 8) | v[0];
 		}
 		break;
 
@@ -607,7 +636,7 @@ EPVRTError PVRTVertexGenerateTangentSpace(
 	}
 
 	// Allocate some work space
-	pui32IdxNew		= (unsigned int*)malloc(nTriNum * 3 * sizeof(*pui32IdxNew));
+	pui32IdxNew		= (unsigned int*)calloc(nTriNum * 3, sizeof(*pui32IdxNew));
 	_ASSERT(pui32IdxNew);
 	psVtxData		= (SVtxData*)calloc(nVtxNum, sizeof(*psVtxData));
 	_ASSERT(psVtxData);
@@ -615,6 +644,9 @@ EPVRTError PVRTVertexGenerateTangentSpace(
 	_ASSERT(psTSpass);
 	if(!pui32IdxNew || !psVtxData || !psTSpass)
 	{
+		free(pui32IdxNew);
+		free(psVtxData);
+		free(psTSpass);
 		return PVR_FAIL;
 	}
 

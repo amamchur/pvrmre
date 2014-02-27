@@ -1,16 +1,8 @@
-/******************************************************************************
+/*!****************************************************************************
 
- @File         PVRTTriStrip.h
-
- @Title        PVRTTriStrip
-
- @Version       @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     Independent
-
- @Description  Strips a triangle list.
+ @file         PVRTTriStrip.h
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief        Strips a triangle list.
 
 ******************************************************************************/
 #ifndef _PVRTTRISTRIP_H_
@@ -22,13 +14,12 @@
 ****************************************************************************/
 
 /*!***************************************************************************
- @Function			PVRTTriStrip
- @Output			ppui32Strips
- @Output			ppnStripLen
- @Output			pnStripCnt
- @Input				pui32TriList
- @Input				nTriCnt
- @Description		Reads a triangle list and generates an optimised triangle strip.
+ @brief      		Reads a triangle list and generates an optimised triangle strip.
+ @param[out]		ppui32Strips
+ @param[out]		ppnStripLen
+ @param[out]		pnStripCnt
+ @param[in]			pui32TriList
+ @param[in]			nTriCnt
 *****************************************************************************/
 void PVRTTriStrip(
 	unsigned int			**ppui32Strips,
@@ -39,11 +30,10 @@ void PVRTTriStrip(
 
 
 /*!***************************************************************************
- @Function			PVRTTriStripList
- @Modified			pui32TriList
- @Input				nTriCnt
- @Description		Reads a triangle list and generates an optimised triangle strip. Result is
+ @brief      		Reads a triangle list and generates an optimised triangle strip. Result is
  					converted back to a triangle list.
+ @param[in,out]		pui32TriList
+ @param[in]			nTriCnt
 *****************************************************************************/
 void PVRTTriStripList(unsigned int * const pui32TriList, const unsigned int nTriCnt);
 

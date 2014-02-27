@@ -1,16 +1,9 @@
-/******************************************************************************
+/*!****************************************************************************
 
- @File         PVRTBackgroundShaders.h
-
- @Title        OGLES2\PVRTBackgroundShaders
-
- @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  The shaders used by PVRTBackground. Created by Filewrap 1.0. DO
+ @file         OGLES2/PVRTBackgroundShaders.h
+ @ingroup      API_OGLES2
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief        The shaders used by PVRTBackground. Created by Filewrap 1.0. DO
                NOT EDIT.
 
 ******************************************************************************/
@@ -114,5 +107,4 @@ A32BIT _BackgroundVertShader_vsc[] = {
 static int _BackgroundVertShader_vsc_size = 435;
 
 // ******** End: BackgroundVertShader.vsc ********
-
 

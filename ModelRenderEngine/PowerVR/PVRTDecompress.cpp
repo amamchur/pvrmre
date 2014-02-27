@@ -635,7 +635,7 @@ static int pvrtcDecompress(	PVRTuint8 *pCompressedData,
 	if (ui8Bpp==2)
 		ui32WordWidth=8;
 
-	PVRTCWord *pWords = (PVRTCWord *)pCompressedData;
+	PVRTuint32 *pWordMembers = (PVRTuint32 *)pCompressedData;
 	Pixel32 *pOutData = pDecompressedData;
 
 	// Calculate number of words
@@ -662,10 +662,25 @@ static int pvrtcDecompress(	PVRTuint8 *pCompressedData,
 			indices.S[0] = wrapWordIndex(i32NumXWords, wordX + 1);
 			indices.S[1] = wrapWordIndex(i32NumYWords, wordY + 1);
 
-			PVRTCWord P = pWords[TwiddleUV(i32NumXWords,i32NumYWords,indices.P[0], indices.P[1])];
-			PVRTCWord Q = pWords[TwiddleUV(i32NumXWords,i32NumYWords,indices.Q[0], indices.Q[1])];
-			PVRTCWord R = pWords[TwiddleUV(i32NumXWords,i32NumYWords,indices.R[0], indices.R[1])];
-			PVRTCWord S = pWords[TwiddleUV(i32NumXWords,i32NumYWords,indices.S[0], indices.S[1])];
+			//Work out the offsets into the twiddle structs, multiply by two as there are two members per word.
+			PVRTuint32 WordOffsets[4] =
+			{
+				TwiddleUV(i32NumXWords,i32NumYWords,indices.P[0], indices.P[1])*2,
+				TwiddleUV(i32NumXWords,i32NumYWords,indices.Q[0], indices.Q[1])*2,
+				TwiddleUV(i32NumXWords,i32NumYWords,indices.R[0], indices.R[1])*2,
+				TwiddleUV(i32NumXWords,i32NumYWords,indices.S[0], indices.S[1])*2,
+			};
+
+			//Access individual elements to fill out PVRTCWord
+			PVRTCWord P,Q,R,S;
+			P.u32ColourData = pWordMembers[WordOffsets[0]+1];
+			P.u32ModulationData = pWordMembers[WordOffsets[0]];
+			Q.u32ColourData = pWordMembers[WordOffsets[1]+1];
+			Q.u32ModulationData = pWordMembers[WordOffsets[1]];
+			R.u32ColourData = pWordMembers[WordOffsets[2]+1];
+			R.u32ModulationData = pWordMembers[WordOffsets[2]];
+			S.u32ColourData = pWordMembers[WordOffsets[3]+1];
+			S.u32ModulationData = pWordMembers[WordOffsets[3]];
 							
 			// assemble 4 words into struct to get decompressed pixels from
 			pvrtcGetDecompressedPixels(P,Q,R,S,pPixels,ui8Bpp);

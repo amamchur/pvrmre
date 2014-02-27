@@ -12,8 +12,12 @@
 
  @Description  Set of mathematical functions involving matrices, vectors and
                quaternions.
+               The general matrix format used is directly compatible with, for example,
+               both DirectX and OpenGL. For the reasons why, read this:
+               http://research.microsoft.com/~hollasch/cgindex/math/matrix/column-vec.html
 
 ******************************************************************************/
+
 #include "PVRTContext.h"
 #include <math.h>
 #include <string.h>
@@ -150,7 +154,7 @@ void PVRTMatrixRotationXX(
 	int		fCosine, fSine;
 
     /* Precompute cos and sin */
-#if defined(BUILD_DX9) || defined(BUILD_D3DM) || defined(BUILD_DX10) || defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	fCosine	= PVRTXCOS(-fAngle);
     fSine	= PVRTXSIN(-fAngle);
 #else
@@ -178,7 +182,7 @@ void PVRTMatrixRotationYX(
 	int		fCosine, fSine;
 
 	/* Precompute cos and sin */
-#if defined(BUILD_DX9) || defined(BUILD_D3DM) || defined(BUILD_DX10) || defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	fCosine	= PVRTXCOS(-fAngle);
     fSine	= PVRTXSIN(-fAngle);
 #else
@@ -206,7 +210,7 @@ void PVRTMatrixRotationZX(
 	int		fCosine, fSine;
 
 	/* Precompute cos and sin */
-#if defined(BUILD_DX9) || defined(BUILD_D3DM) || defined(BUILD_DX10) || defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	fCosine = PVRTXCOS(-fAngle);
     fSine   = PVRTXSIN(-fAngle);
 #else

@@ -1,8 +1,8 @@
 /******************************************************************************
 
- @File         PVRTgles2Ext.cpp
+ @File         OGLES2/PVRTgles2Ext.cpp
 
- @Title        PVRTgles2Ext
+ @Title        OGLES2/PVRTgles2Ext
 
  @Version      
 
@@ -44,6 +44,16 @@ void CPVRTgles2Ext::LoadExtensions()
 	glIsVertexArrayOES = 0;
 	glRenderbufferStorageMultisampleIMG = 0;
 	glFramebufferTexture2DMultisampleIMG = 0;
+	glGenQueriesEXT = 0;
+	glDeleteQueriesEXT = 0;
+	glIsQueryEXT = 0;
+	glBeginQueryEXT = 0;
+	glEndQueryEXT = 0;
+	glGetQueryivEXT = 0;
+	glGetQueryObjectuivEXT = 0;
+	glRenderbufferStorageMultisampleEXT = 0;
+	glFramebufferTexture2DMultisampleEXT = 0;
+	glDrawBuffersEXT = 0;
 
 	// Supported extensions provide new entry points for OpenGL ES 2.0.
 
@@ -80,8 +90,21 @@ void CPVRTgles2Ext::LoadExtensions()
 	/* GL_IMG_multisampled_render_to_texture */
 	if (strstr((char *)pszGLExtensions, "GL_IMG_multisampled_render_to_texture"))
 	{
-		glRenderbufferStorageMultisampleIMG = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEIMG)PVRGetProcAddress(glRenderbufferStorageMultisampleIMG);
-		glFramebufferTexture2DMultisampleIMG = (PFNGLFRAMEBUFFERTEXTURE2DMULTISAMPLEIMG)PVRGetProcAddress(glFramebufferTexture2DMultisampleIMG);
+		glRenderbufferStorageMultisampleIMG = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEIMG) PVRGetProcAddress(glRenderbufferStorageMultisampleIMG);
+		glFramebufferTexture2DMultisampleIMG = (PFNGLFRAMEBUFFERTEXTURE2DMULTISAMPLEIMG) PVRGetProcAddress(glFramebufferTexture2DMultisampleIMG);
+	}
+	
+	/* GL_EXT_multisampled_render_to_texture */
+	if (strstr((char *)pszGLExtensions, "GL_EXT_multisampled_render_to_texture"))
+	{
+		glRenderbufferStorageMultisampleEXT = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXT) PVRGetProcAddress(glRenderbufferStorageMultisampleEXT);
+		glFramebufferTexture2DMultisampleEXT = (PFNGLFRAMEBUFFERTEXTURE2DMULTISAMPLEEXT) PVRGetProcAddress(glFramebufferTexture2DMultisampleEXT);
+	}
+	
+	/* GL_EXT_draw_buffers */
+	if (strstr((char *)pszGLExtensions, "GL_EXT_draw_buffers"))
+	{
+		glDrawBuffersEXT = (PFNGLDRAWBUFFERSEXT) PVRGetProcAddress(glDrawBuffersEXT);
 	}
 #endif
 
@@ -93,6 +116,17 @@ void CPVRTgles2Ext::LoadExtensions()
 	}
 #endif
 
+	/* GL_EXT_occlusion_query_boolean */
+	if (strstr((char *)pszGLExtensions, "GL_EXT_occlusion_query_boolean"))
+	{
+		glGenQueriesEXT = (PFNGLGENQUERIESEXT) PVRGetProcAddress(glGenQueriesEXT);
+		glDeleteQueriesEXT = (PFNGLDELETEQUERIESEXT) PVRGetProcAddress(glDeleteQueriesEXT);
+		glIsQueryEXT = (PFNGLISQUERYEXT) PVRGetProcAddress(glIsQueryEXT);
+		glBeginQueryEXT = (PFNGLBEGINQUERYEXT) PVRGetProcAddress(glBeginQueryEXT);
+		glEndQueryEXT = (PFNGLENDQUERYEXT) PVRGetProcAddress(glEndQueryEXT);
+		glGetQueryivEXT = (PFNGLGETQUERYIVEXT) PVRGetProcAddress(glGetQueryivEXT);
+		glGetQueryObjectuivEXT = (PFNGLGETQUERYOBJECTUIVEXT) PVRGetProcAddress(glGetQueryObjectuivEXT);
+	}
 }
 
 /*!***********************************************************************

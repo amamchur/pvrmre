@@ -4,7 +4,7 @@
 
  @Title        PVRTQuaternionF
 
- @Version       @Version      
+ @Version      
 
  @Copyright    Copyright (c) Imagination Technologies Limited.
 
@@ -227,7 +227,7 @@ void PVRTMatrixRotationQuaternionF(
 {
 	const PVRTQUATERNIONf *pQ;
 
-#if defined(BUILD_DX9) || defined(BUILD_D3DM) || defined(BUILD_DX10) || defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	PVRTQUATERNIONf qInv;
 
 	qInv.x = -quat.x;
@@ -276,9 +276,10 @@ void PVRTMatrixQuaternionMultiplyF(
 	const PVRTQUATERNIONf	&qB)
 {
 	PVRTVECTOR3f	CrossProduct;
+	PVRTQUATERNIONf qRet;
 
 	/* Compute scalar component */
-	qOut.w = (qA.w*qB.w) - (qA.x*qB.x + qA.y*qB.y + qA.z*qB.z);
+	qRet.w = (qA.w*qB.w) - (qA.x*qB.x + qA.y*qB.y + qA.z*qB.z);
 
 	/* Compute cross product */
 	CrossProduct.x = qA.y*qB.z - qA.z*qB.y;
@@ -286,12 +287,15 @@ void PVRTMatrixQuaternionMultiplyF(
 	CrossProduct.z = qA.x*qB.y - qA.y*qB.x;
 
 	/* Compute result vector */
-	qOut.x = (qA.w * qB.x) + (qB.w * qA.x) + CrossProduct.x;
-	qOut.y = (qA.w * qB.y) + (qB.w * qA.y) + CrossProduct.y;
-	qOut.z = (qA.w * qB.z) + (qB.w * qA.z) + CrossProduct.z;
+	qRet.x = (qA.w * qB.x) + (qB.w * qA.x) + CrossProduct.x;
+	qRet.y = (qA.w * qB.y) + (qB.w * qA.y) + CrossProduct.y;
+	qRet.z = (qA.w * qB.z) + (qB.w * qA.z) + CrossProduct.z;
 
 	/* Normalize resulting quaternion */
-	PVRTMatrixQuaternionNormalizeF(qOut);
+	PVRTMatrixQuaternionNormalizeF(qRet);
+
+	/* Copy result to mOut */
+	qOut = qRet;
 }
 
 /*****************************************************************************

@@ -35,18 +35,8 @@
 		84D095BD179BF1DF0099D413 /* texture_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84D095BB179BF1DF0099D413 /* texture_buffer.cpp */; };
 		84F80D2D181AEC25006AB5FD /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F80D2C181AEC25006AB5FD /* AppIcon.png */; };
 		84F80D30181AEC4B006AB5FD /* AppIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */; };
-		87CB35E3172E697300D3CA2C /* libOGLES2Tools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CB35E2172E696D00D3CA2C /* libOGLES2Tools.a */; };
+		87926FAF18BF8CFF00902BC5 /* libOGLES2Tools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87926FAE18BF8CFF00902BC5 /* libOGLES2Tools.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		87CB35E1172E696D00D3CA2C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */;
-			proxyType = 2;
-			remoteGlobalIDString = F8748A3A0FF221480052D400;
-			remoteInfo = OGLES2Tools;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		842564B7172F002C0079B651 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -91,7 +81,7 @@
 		84D095BC179BF1DF0099D413 /* texture_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture_buffer.h; sourceTree = "<group>"; };
 		84F80D2C181AEC25006AB5FD /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppIcon.png; path = ../AppIcon.png; sourceTree = "<group>"; };
 		84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon@2x.png"; path = "../AppIcon@2x.png"; sourceTree = "<group>"; };
-		87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OGLES2Tools.xcode; path = PowerVR/OGLES2/Build/iOS/OGLES2Tools.xcode; sourceTree = "<group>"; };
+		87926FAE18BF8CFF00902BC5 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libOGLES2Tools.a; path = "PowerVR/OGLES2/Build/iOS/build/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87926FAF18BF8CFF00902BC5 /* libOGLES2Tools.a in Frameworks */,
 				8431344A1820788000B1CC46 /* libz.dylib in Frameworks */,
 				842564BF172F1B110079B651 /* ImageIO.framework in Frameworks */,
 				842564B8172F002C0079B651 /* AssetsLibrary.framework in Frameworks */,
@@ -107,7 +98,6 @@
 				843D4112172C38EF00AC2DA1 /* UIKit.framework in Frameworks */,
 				843D4114172C38EF00AC2DA1 /* Foundation.framework in Frameworks */,
 				843D4116172C38EF00AC2DA1 /* CoreGraphics.framework in Frameworks */,
-				87CB35E3172E697300D3CA2C /* libOGLES2Tools.a in Frameworks */,
 				843134461820775500B1CC46 /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -129,7 +119,6 @@
 		843D4105172C38EF00AC2DA1 = {
 			isa = PBXGroup;
 			children = (
-				87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */,
 				8431343F1820775500B1CC46 /* TestFlightSDK */,
 				843D4117172C38EF00AC2DA1 /* ModelRenderEngine */,
 				843D4110172C38EF00AC2DA1 /* Frameworks */,
@@ -148,6 +137,7 @@
 		843D4110172C38EF00AC2DA1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				87926FAE18BF8CFF00902BC5 /* libOGLES2Tools.a */,
 				843134491820788000B1CC46 /* libz.dylib */,
 				842564BE172F1B110079B651 /* ImageIO.framework */,
 				842564B7172F002C0079B651 /* AssetsLibrary.framework */,
@@ -212,14 +202,6 @@
 			name = Engine;
 			sourceTree = "<group>";
 		};
-		87CB35DE172E696C00D3CA2C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				87CB35E2172E696D00D3CA2C /* libOGLES2Tools.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -249,6 +231,11 @@
 				CLASSPREFIX = MRE;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Andrii Mamchur";
+				TargetAttributes = {
+					843D410D172C38EF00AC2DA1 = {
+						DevelopmentTeam = 98D64ECLWX;
+					};
+				};
 			};
 			buildConfigurationList = 843D4109172C38EF00AC2DA1 /* Build configuration list for PBXProject "ModelRenderEngine" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -260,28 +247,12 @@
 			mainGroup = 843D4105172C38EF00AC2DA1;
 			productRefGroup = 843D410F172C38EF00AC2DA1 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 87CB35DE172E696C00D3CA2C /* Products */;
-					ProjectRef = 87CB35DD172E696C00D3CA2C /* OGLES2Tools.xcode */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				843D410D172C38EF00AC2DA1 /* ModelRenderEngine */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		87CB35E2172E696D00D3CA2C /* libOGLES2Tools.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libOGLES2Tools.a;
-			remoteRef = 87CB35E1172E696D00D3CA2C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		843D410C172C38EF00AC2DA1 /* Resources */ = {
@@ -402,8 +373,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Andrii Mamchur (36ULA927RR)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Andrii Mamchur (36ULA927RR)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ModelRenderEngine/ModelRenderEngine-Prefix.pch";
@@ -414,8 +385,8 @@
 					"\"$(SRCROOT)/TestFlightSDK\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7F06D51C-D41E-470D-8925-424C77C4C57B";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7F06D51C-D41E-470D-8925-424C77C4C57B";
+				PROVISIONING_PROFILE = "A445890E-9541-40D8-92DF-B0DF1F05C0DB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = ./PowerVR/OGLES2;
 				WRAPPER_EXTENSION = app;
 			};
@@ -425,8 +396,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Andrii Mamchur (36ULA927RR)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Andrii Mamchur (36ULA927RR)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ModelRenderEngine/ModelRenderEngine-Prefix.pch";
@@ -437,8 +408,8 @@
 					"\"$(SRCROOT)/TestFlightSDK\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7F06D51C-D41E-470D-8925-424C77C4C57B";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7F06D51C-D41E-470D-8925-424C77C4C57B";
+				PROVISIONING_PROFILE = "A445890E-9541-40D8-92DF-B0DF1F05C0DB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = ./PowerVR/OGLES2;
 				WRAPPER_EXTENSION = app;
 			};

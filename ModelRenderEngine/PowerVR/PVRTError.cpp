@@ -69,4 +69,3 @@ void PVRTErrorOutputDebug(char const * const format, ...)
 End of file (PVRTError.cpp)
 *****************************************************************************/
 
-

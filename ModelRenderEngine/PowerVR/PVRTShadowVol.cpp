@@ -4,7 +4,7 @@
 
  @Title        PVRTShadowVol
 
- @Version       @Version      
+ @Version      
 
  @Copyright    Copyright (c) Imagination Technologies Limited.
 
@@ -381,7 +381,7 @@ bool PVRTShadowVolMeshInitMesh(
 	const SPVRTContext		* const pContext)
 {
 	unsigned int	nCurr;
-#if defined(BUILD_DX9) || defined(BUILD_DX10) || defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	HRESULT			hRes;
 #endif
 	SVertexShVol	*pvData;
@@ -406,20 +406,6 @@ bool PVRTShadowVolMeshInitMesh(
 	*/
 	_ASSERT(psMesh->pivb == NULL);
 	_RPT3(_CRT_WARN, "ShadowMeshInitMesh() %5d byte VB (%3dv x 2 x size(%d))\n", psMesh->nV * 2 * sizeof(*pvData), psMesh->nV, sizeof(*pvData));
-
-#if defined(BUILD_DX9)
-	hRes = pContext->pDev->CreateVertexBuffer(psMesh->nV * 2 * sizeof(*pvData), D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &psMesh->pivb, NULL);
-	if(FAILED(hRes)) {
-		_ASSERT(false);
-		return false;
-	}
-
-	hRes = psMesh->pivb->Lock(0, 0, (void**)&pvData, 0);
-	if(FAILED(hRes)) {
-		_ASSERT(false);
-		return false;
-	}
-#endif
 
 #if defined(BUILD_DX11)
 	D3D11_BUFFER_DESC sVBBufferDesc;
@@ -451,7 +437,17 @@ bool PVRTShadowVolMeshInitMesh(
 	pvData = (SVertexShVol*) data.pData;
 #endif
 
-#if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
+#if defined(BUILD_OGL)
+	_ASSERT(pContext && pContext->pglExt);
+	if (!pContext || !pContext->pglExt)
+		return false;
+	pContext->pglExt->glGenBuffersARB(1, &psMesh->pivb);
+	pContext->pglExt->glBindBufferARB(GL_ARRAY_BUFFER_ARB, psMesh->pivb);
+	pContext->pglExt->glBufferDataARB(GL_ARRAY_BUFFER_ARB, psMesh->nV * 2 * sizeof(*pvData), NULL, GL_STREAM_DRAW_ARB);
+	pvData = (SVertexShVol*)pContext->pglExt->glMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
+#endif
+
+#if defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
 	psMesh->pivb = malloc(psMesh->nV * 2 * sizeof(*pvData));
 	pvData = (SVertexShVol*)psMesh->pivb;
 #endif
@@ -474,28 +470,11 @@ bool PVRTShadowVolMeshInitMesh(
 		pvData[nCurr + psMesh->nV].dwExtrude	= 0x04030201;		// Order is wzyx
 	}
 
-#if defined(BUILD_DX9)
-	psMesh->pivb->Unlock();
+#if defined(BUILD_OGL)
+	pContext->pglExt->glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
+	pContext->pglExt->glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
 #endif
 
-#if defined(BUILD_DX10)
-	D3D10_BUFFER_DESC sBufDesc;
-	sBufDesc.ByteWidth		= psMesh->nV * 2 * sizeof(*pvData);
-	sBufDesc.Usage			= D3D10_USAGE_IMMUTABLE;
-	sBufDesc.BindFlags		= D3D10_BIND_VERTEX_BUFFER;
-	sBufDesc.CPUAccessFlags	= 0;
-	sBufDesc.MiscFlags		= 0;
-
-	D3D10_SUBRESOURCE_DATA sSRData;
-	sSRData.pSysMem				= pvData;
-
-	hRes = pContext->pDev->CreateBuffer(&sBufDesc, &sSRData, &psMesh->pivb);
-	if(FAILED(hRes))
-	{
-		_ASSERT(false);
-		return false;
-	}
-#endif
 #if defined(BUILD_DX11)
 	pDeviceContext->Unmap(psMesh->pivb, 0);
 #endif
@@ -515,7 +494,7 @@ bool PVRTShadowVolMeshInitVol(
 	const PVRTShadowVolShadowMesh	* const psMesh,
 	const SPVRTContext		* const pContext)
 {
-#if defined(BUILD_DX9) || defined(BUILD_DX10) || defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	HRESULT hRes;
 #endif
 #if defined(BUILD_OGLES2) || defined(BUILD_OGLES) || defined(BUILD_OGL) || defined(BUILD_OGLES3)
@@ -527,36 +506,13 @@ bool PVRTShadowVolMeshInitVol(
 	_ASSERT(psMesh->nE);
 	_ASSERT(psMesh->nT);
 
-	_RPT1(_CRT_WARN, "ShadowMeshInitVol() %5d byte IB\n", psMesh->nT * 2 * 3 * sizeof(unsigned short));
+	_RPT1(_CRT_WARN, "ShadowMeshInitVol() %5lu byte IB\n", psMesh->nT * 2 * 3 * sizeof(unsigned short));
 
 	/*
 		Allocate a index buffer for the shadow volumes
 	*/
 #if defined(_DEBUG)
 	psVol->nIdxCntMax = psMesh->nT * 2 * 3;
-#endif
-#if defined(BUILD_DX9)
-	hRes = pContext->pDev->CreateIndexBuffer(psMesh->nT * 2 * 3 * sizeof(unsigned short),
-		D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_DEFAULT, &psVol->piib, NULL);
-	if(FAILED(hRes)) {
-		_ASSERT(false);
-		return false;
-	}
-#endif
-#if defined(BUILD_DX10)
-	D3D10_BUFFER_DESC sIdxBuferDesc;
-	sIdxBuferDesc.ByteWidth		= psMesh->nT * 2 * 3 * sizeof(unsigned short);
-	sIdxBuferDesc.Usage			= D3D10_USAGE_DYNAMIC;
-	sIdxBuferDesc.BindFlags		= D3D10_BIND_INDEX_BUFFER;
-	sIdxBuferDesc.CPUAccessFlags= 0;
-	sIdxBuferDesc.MiscFlags		= 0;
-
-	hRes = pContext->pDev->CreateBuffer(&sIdxBuferDesc, NULL, &psVol->piib) != S_OK;
-
-	if(FAILED(hRes)) {
-		_ASSERT(false);
-		return false;
-	}
 #endif
 #if defined(BUILD_DX11)
 	D3D11_BUFFER_DESC sIdxBuferDesc;
@@ -573,7 +529,16 @@ bool PVRTShadowVolMeshInitVol(
 		return false;
 	}
 #endif
-#if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
+#if defined(BUILD_OGL)
+	_ASSERT(pContext && pContext->pglExt);
+	if (!pContext || !pContext->pglExt)
+		return false;
+	pContext->pglExt->glGenBuffersARB(1, &psVol->piib);
+	pContext->pglExt->glBindBufferARB(GL_ARRAY_BUFFER_ARB, psVol->piib);
+	pContext->pglExt->glBufferDataARB(GL_ARRAY_BUFFER_ARB, psMesh->nT * 2 * 3 * sizeof(unsigned short), NULL, GL_STREAM_DRAW_ARB);
+#endif
+
+#if defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
 	psVol->piib = (unsigned short*)malloc(psMesh->nT * 2 * 3 * sizeof(unsigned short));
 #endif
 
@@ -599,12 +564,17 @@ void PVRTShadowVolMeshDestroyMesh(
 @Description	Releases all shadow volume mesh data created by PVRTShadowVolMeshInitMesh
 *************************************************************************/
 void PVRTShadowVolMeshReleaseMesh(
-	PVRTShadowVolShadowMesh		* const psMesh)
+	PVRTShadowVolShadowMesh		* const psMesh,
+	SPVRTContext				* const psContext)
 {
-#if defined(BUILD_DX9)
-	RELEASE(psMesh->pivb);
+#if defined(BUILD_OGL)
+	_ASSERT(psContext && psContext->pglExt);
+	if (!psContext || !psContext->pglExt)
+		return;
+	psContext->pglExt->glDeleteBuffersARB(1, &psMesh->pivb);
 #endif
-#if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
+#if defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
+	PVRT_UNREFERENCED_PARAMETER(psContext);
 	FREE(psMesh->pivb);
 #endif
 }
@@ -615,12 +585,18 @@ void PVRTShadowVolMeshReleaseMesh(
 @Description	Releases all data create by PVRTShadowVolMeshInitVol
 *************************************************************************/
 void PVRTShadowVolMeshReleaseVol(
-	PVRTShadowVolShadowVol			* const psVol)
+	PVRTShadowVolShadowVol			* const psVol,
+	SPVRTContext					* const psContext)
 {
-#if defined(BUILD_DX9)
-	RELEASE(psVol->piib);
+#if defined(BUILD_OGL)
+	_ASSERT(psContext && psContext->pglExt);
+	if (!psContext || !psContext->pglExt)
+		return;
+	psContext->pglExt->glDeleteBuffersARB(1, &psVol->piib);
 #endif
-#if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
+
+#if defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
+	PVRT_UNREFERENCED_PARAMETER(psContext);
 	FREE(psVol->piib);
 #endif
 }
@@ -668,7 +644,7 @@ void PVRTShadowVolSilhouetteProjectedBuild(
 	PVRTShadowVolMTriangle	*psTri;
 	PVRTShadowVolMEdge		*psEdge;
 	unsigned short	*pwIdx;
-#if defined(BUILD_DX9) || defined(BUILD_DX10)|| defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	HRESULT			hRes;
 #endif
 	unsigned int	nCurr;
@@ -680,10 +656,6 @@ void PVRTShadowVolSilhouetteProjectedBuild(
 	_ASSERT(psVol && psVol->piib);
 #if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
 	PVRT_UNREFERENCED_PARAMETER(pContext);
-#endif
-#if defined(BUILD_DX9)
-	hRes = psVol->piib->Lock(0, 0, (void**)&pwIdx, D3DLOCK_DISCARD);
-	_ASSERT(SUCCEEDED(hRes));
 #endif
 #if defined(BUILD_DX11)
 	_ASSERT(pContext);
@@ -699,7 +671,15 @@ void PVRTShadowVolSilhouetteProjectedBuild(
 
 	_ASSERT(SUCCEEDED(hRes));
 #endif
-#if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
+#if defined(BUILD_OGL)
+	_ASSERT(pContext && pContext->pglExt);
+	if (!pContext || !pContext->pglExt)
+		return;
+
+	pContext->pglExt->glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, psVol->piib);
+	pwIdx = (unsigned short*)pContext->pglExt->glMapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
+#endif
+#if defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
 	pwIdx = psVol->piib;
 #endif
 
@@ -806,24 +786,11 @@ void PVRTShadowVolSilhouetteProjectedBuild(
 		_ASSERT(pwIdx[nCurr] < psMesh->nV*2);
 	}
 #endif
-
-#if defined(BUILD_DX9)
-	psVol->piib->Unlock();
+#if defined(BUILD_OGL)
+	pContext->pglExt->glUnmapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB);
+	pContext->pglExt->glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
 #endif
-#if defined(BUILD_DX10)
-    D3D10_BUFFER_DESC sIdxBufferDesc;
-    sIdxBufferDesc.ByteWidth = psVol->nIdxCnt * sizeof(WORD);
-    sIdxBufferDesc.Usage = D3D10_USAGE_DEFAULT;
-    sIdxBufferDesc.BindFlags = D3D10_BIND_INDEX_BUFFER;
-    sIdxBufferDesc.CPUAccessFlags = 0;
-    sIdxBufferDesc.MiscFlags = 0;
 
-    D3D10_SUBRESOURCE_DATA sIdxBufferData;
-    ZeroMemory(&sIdxBufferData, sizeof(D3D10_SUBRESOURCE_DATA));
-    sIdxBufferData.pSysMem = pwIdx;
-    hRes = pContext->pDev->CreateBuffer(&sIdxBufferDesc, &sIdxBufferData, &psVol->piib);
-	_ASSERT(SUCCEEDED(hRes));
-#endif
 #if defined(BUILD_DX11)
 	pDeviceContext->Unmap(psVol->piib, 0);
 #endif
@@ -1302,23 +1269,7 @@ int PVRTShadowVolSilhouetteProjectedRender(
 	const PVRTShadowVolShadowVol	* const psVol,
 	const SPVRTContext				* const pContext)
 {
-#if defined(BUILD_DX9)
-	HRESULT	hRes;
-
-	_ASSERT(psMesh->pivb);
-	pContext->pDev->SetStreamSource(0, psMesh->pivb, 0, sizeof(SVertexShVol));
-	pContext->pDev->SetIndices(psVol->piib);
-
-	_ASSERT(psVol->nIdxCnt <= psVol->nIdxCntMax);
-	_ASSERT(psVol->nIdxCnt % 3 == 0);
-	_ASSERT(psVol->nIdxCnt / 3 <= 0xFFFF);
-	hRes = pContext->pDev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, psMesh->nV * 2, 0, psVol->nIdxCnt / 3);
-	_ASSERT(SUCCEEDED(hRes));
-
-	return psVol->nIdxCnt / 3;
-#endif
-
-#if defined(BUILD_DX10) || defined(BUILD_DX11)
+#if defined(BUILD_DX11)
 	return 0; // Not implemented yet
 #endif
 
@@ -1334,22 +1285,26 @@ int PVRTShadowVolSilhouetteProjectedRender(
 #if defined(BUILD_OGL)
 	_ASSERT(pContext && pContext->pglExt);
 
-	pContext->pglExt->glVertexAttribPointerARB(0, 3, GL_FLOAT, GL_FALSE, sizeof(SVertexShVol), &((SVertexShVol*)psMesh->pivb)[0].x);
+	//Bind the buffers
+	pContext->pglExt->glBindBufferARB(GL_ARRAY_BUFFER_ARB, psMesh->pivb);
+	pContext->pglExt->glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, psVol->piib);
+	
 	pContext->pglExt->glEnableVertexAttribArrayARB(0);
-
-	pContext->pglExt->glVertexAttribPointerARB(1, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(SVertexShVol), &((SVertexShVol*)psMesh->pivb)[0].dwExtrude);
 	pContext->pglExt->glEnableVertexAttribArrayARB(1);
+	
+	pContext->pglExt->glVertexAttribPointerARB(0, 3, GL_FLOAT, GL_FALSE, sizeof(SVertexShVol), (void*)0);
+	pContext->pglExt->glVertexAttribPointerARB(1, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(SVertexShVol), (void*)12);
 
-
-
-	glDrawElements(GL_TRIANGLES, psVol->nIdxCnt, GL_UNSIGNED_SHORT, psVol->piib);
+	glDrawElements(GL_TRIANGLES, psVol->nIdxCnt, GL_UNSIGNED_SHORT, NULL);
 
 	pContext->pglExt->glDisableVertexAttribArrayARB(0);
 	pContext->pglExt->glDisableVertexAttribArrayARB(1);
 
+	pContext->pglExt->glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
+	pContext->pglExt->glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
+
 	return psVol->nIdxCnt / 3;
-#else
-#if defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
+#elif defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
 	PVRT_UNREFERENCED_PARAMETER(pContext);
 	GLint i32CurrentProgram;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &i32CurrentProgram);
@@ -1369,8 +1324,7 @@ int PVRTShadowVolSilhouetteProjectedRender(
 
 	return psVol->nIdxCnt / 3;
 
-#else
-#if defined(BUILD_OGLES)
+#elif defined(BUILD_OGLES)
 	_ASSERT(pContext && pContext->pglesExt);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -1389,8 +1343,7 @@ int PVRTShadowVolSilhouetteProjectedRender(
 
 	return psVol->nIdxCnt / 3;
 #endif
-#endif
-#endif
+
 #endif
 }
 

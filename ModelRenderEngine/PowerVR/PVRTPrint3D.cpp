@@ -1,16 +1,8 @@
 /******************************************************************************
 
- @File         PVRTPrint3D.cpp
-
- @Title        PVRTPrint3D
-
- @Version       @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  Displays a text string using 3D polygons. Can be done in two ways:
+ @file         PVRTPrint3D.cpp
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief        Displays a text string using 3D polygons. Can be done in two ways:
                using a window defined by the user or writing straight on the
                screen.
 
@@ -36,7 +28,12 @@
 
 /* Print3D texture data */
 #include "PVRTPrint3DIMGLogo.h"
-#include "PVRTPrint3DArialBold.h"
+#include "PVRTPrint3DHelveticaBold.h"
+
+static inline float PVRTMakeWhole(float f)
+{
+	return floorf(f + 0.5f);
+}
 
 
 /****************************************************************************
@@ -47,11 +44,6 @@
 #define MAX_CACHED_VTX			(0x00100000)
 #define LINES_SPACING			(29.0f)
 #define PVRPRINT3DVERSION		(1)
-
-inline float PVRTMakeWhole(float fVal)
-{
-	return (float)((int)fVal);
-}
 
 #if defined(_WIN32)
 #define vsnprintf _vsnprintf
@@ -73,11 +65,11 @@ static const unsigned int PVRTPRINT3D_INVALID_CHAR = 0xFDFDFDFD;
 ** Auxiliary functions
 ****************************************************************************/
 /*!***************************************************************************
-@Function		CharacterCompareFunc
-@Input			pA
-@Input			pB
-@Return			PVRTint32	
-@Description	Compares two characters for binary search.
+@fn       		CharacterCompareFunc
+@param[in]		pA
+@param[in]		pB
+@return			PVRTint32	
+@brief      	Compares two characters for binary search.
 *****************************************************************************/
 PVRTint32 CPVRTPrint3D::CharacterCompareFunc(const void* pA, const void* pB)
 {
@@ -85,11 +77,11 @@ PVRTint32 CPVRTPrint3D::CharacterCompareFunc(const void* pA, const void* pB)
 }
 
 /*!***************************************************************************
-@Function		KerningCompareFunc
-@Input			pA
-@Input			pB
-@Return			PVRTint32	
-@Description	Compares two kerning pairs for binary search.
+@fn       		KerningCompareFunc
+@param[in]		pA
+@param[in]		pB
+@return			PVRTint32	
+@brief      	Compares two kerning pairs for binary search.
 *****************************************************************************/
 PVRTint32 CPVRTPrint3D::KerningCompareFunc(const void* pA, const void* pB)
 {
@@ -106,8 +98,8 @@ PVRTint32 CPVRTPrint3D::KerningCompareFunc(const void* pA, const void* pB)
 ** Class: CPVRTPrint3D
 ****************************************************************************/
 /*****************************************************************************
- @Function			CPVRTPrint3D
- @Description		Init some values.
+ @fn       		CPVRTPrint3D
+ @brief      	Init some values.
 *****************************************************************************/
 CPVRTPrint3D::CPVRTPrint3D() :	m_pAPI(NULL), m_uLogoToDisplay(ePVRTPrint3DLogoNone), m_pwFacesFont(NULL), m_pPrint3dVtx(NULL), m_bTexturesSet(false), m_pVtxCache(NULL), m_nVtxCache(0),
 								m_nVtxCacheMax(0), m_bRotate(false), m_nCachedNumVerts(0), m_pwzPreviousString(NULL), m_pszPreviousString(NULL), m_fPrevScale(0.0f), m_fPrevX(0.0f),
@@ -132,8 +124,8 @@ CPVRTPrint3D::CPVRTPrint3D() :	m_pAPI(NULL), m_uLogoToDisplay(ePVRTPrint3DLogoNo
 }
 
 /*****************************************************************************
- @Function			~CPVRTPrint3D
- @Description		De-allocate the working memory
+ @fn       		~CPVRTPrint3D
+ @brief      	De-allocate the working memory
 *****************************************************************************/
 CPVRTPrint3D::~CPVRTPrint3D()
 {
@@ -149,10 +141,10 @@ CPVRTPrint3D::~CPVRTPrint3D()
 }
 
 /*!***************************************************************************
-@Function		ReadMetaBlock
-@Input			pDataCursor
-@Return			bool	true if successful.
-@Description	Reads a single meta data block from the data file.
+@fn       		ReadMetaBlock
+@param[in]		pDataCursor
+@return			bool	true if successful.
+@brief      	Reads a single meta data block from the data file.
 *****************************************************************************/
 bool CPVRTPrint3D::ReadMetaBlock(const PVRTuint8** pDataCursor)
 {
@@ -220,11 +212,11 @@ bool CPVRTPrint3D::ReadMetaBlock(const PVRTuint8** pDataCursor)
 }
 
 /*!***************************************************************************
-@Function		LoadFontData
-@Input			texHeader
-@Input			MetaDataMap
-@Return			bool	true if successful.
-@Description	Loads font data bundled with the texture file.
+@fn       		LoadFontData
+@param[in]		texHeader
+@param[in]		MetaDataMap
+@return			bool	true if successful.
+@brief      	Loads font data bundled with the texture file.
 *****************************************************************************/
 bool CPVRTPrint3D::LoadFontData( const PVRTextureHeaderV3* texHeader, CPVRTMap<PVRTuint32, CPVRTMap<PVRTuint32, MetaDataBlock> >& MetaDataMap )
 {
@@ -241,8 +233,8 @@ bool CPVRTPrint3D::LoadFontData( const PVRTextureHeaderV3* texHeader, CPVRTMap<P
 	}
 	else
 	{
-		m_eFilterMethod[eFilterProc_Min] = eFilter_Nearest;
-		m_eFilterMethod[eFilterProc_Mag] = eFilter_Nearest;
+		m_eFilterMethod[eFilterProc_Min] = eFilter_Linear;
+		m_eFilterMethod[eFilterProc_Mag] = eFilter_Linear;
 		m_eFilterMethod[eFilterProc_Mip] = eFilter_None;
 	}
 
@@ -291,10 +283,10 @@ bool CPVRTPrint3D::LoadFontData( const PVRTextureHeaderV3* texHeader, CPVRTMap<P
 }
 
 /*!***************************************************************************
-@Function		FindCharacter
-@Input			character
-@Return			The character index, or PVRPRINT3D_INVALID_CHAR if not found.
-@Description	Finds a given character in the binary data and returns it's
+@fn       		FindCharacter
+@param[in]		character
+@return			The character index, or PVRPRINT3D_INVALID_CHAR if not found.
+@brief      	Finds a given character in the binary data and returns it's
 				index.
 *****************************************************************************/
 PVRTuint32 CPVRTPrint3D::FindCharacter(PVRTuint32 character) const
@@ -308,32 +300,32 @@ PVRTuint32 CPVRTPrint3D::FindCharacter(PVRTuint32 character) const
 }
 
 /*!***************************************************************************
-@Function		ApplyKerning
-@Input			cA
-@Input			cB
-@Output			fOffset
-@Description	Calculates kerning offset.
+@fn       		ApplyKerning
+@param[in]		cA
+@param[in]		cB
+@param[out]		fOffset
+@brief      	Calculates kerning offset.
 *****************************************************************************/
 void CPVRTPrint3D::ApplyKerning(const PVRTuint32 cA, const PVRTuint32 cB, float& fOffset) const
 {	
-	unsigned long long uiPairToSearch = ((unsigned long long)cA << 32) | (unsigned long long)cB;
+	PVRTuint64 uiPairToSearch = ((PVRTuint64)cA << 32) | (PVRTuint64)cB;
 	KerningPair* pItem = (KerningPair*)bsearch(&uiPairToSearch, m_pKerningPairs, m_uiNumKerningPairs, sizeof(KerningPair), KerningCompareFunc);
 	if(pItem)
 		fOffset += (float)pItem->iOffset;
 }
 
 /*!***************************************************************************
- @Function			SetTextures
- @Input				pContext		Context
- @Input				dwScreenX		Screen resolution along X
- @Input				dwScreenY		Screen resolution along Y
- @Input				bRotate			Rotate print3D by 90 degrees
- @Input				bMakeCopy		This instance of Print3D creates a copy
+ @fn       			SetTextures
+ @param[in]			pContext		Context
+ @param[in]			dwScreenX		Screen resolution along X
+ @param[in]			dwScreenY		Screen resolution along Y
+ @param[in]			bRotate			Rotate print3D by 90 degrees
+ @param[in]			bMakeCopy		This instance of Print3D creates a copy
 									of it's data instead of sharing with previous
 									contexts. Set this parameter if you require
 									thread safety.	
- @Return			PVR_SUCCESS or PVR_FAIL
- @Description		Initialization and texture upload. Should be called only once
+ @return			PVR_SUCCESS or PVR_FAIL
+ @brief      		Initialization and texture upload. Should be called only once
 					for a given context.
 *****************************************************************************/
 EPVRTError CPVRTPrint3D::SetTextures(
@@ -349,34 +341,38 @@ EPVRTError CPVRTPrint3D::SetTextures(
 
 	if(uiShortestEdge >= 720)
 	{
-		pData = (void*)_arialbd_56_pvr;
+		pData = (void*)_helvbd_56_pvr;
 	}
 	else if(uiShortestEdge >= 640)
 	{
-		pData = (void*)_arialbd_46_pvr;
+		pData = (void*)_helvbd_46_pvr;
 	}
 	else
 	{
-		pData = (void*)_arialbd_36_pvr;
+		pData = (void*)_helvbd_36_pvr;
 	}
+	
+	PVRT_UNREFERENCED_PARAMETER(_helvbd_36_pvr_size);
+	PVRT_UNREFERENCED_PARAMETER(_helvbd_46_pvr_size);
+	PVRT_UNREFERENCED_PARAMETER(_helvbd_56_pvr_size);
 
 	return SetTextures(pContext, pData, dwScreenX, dwScreenY, bRotate, bMakeCopy);
 }
 
 /*!***************************************************************************
-	@Function			SetTextures
-	@Input				pContext		Context
-	@Input				pTexData		User-provided font texture
-	@Input				uiDataSize		Size of the data provided
-	@Input				dwScreenX		Screen resolution along X
-	@Input				dwScreenY		Screen resolution along Y
-	@Input				bRotate			Rotate print3D by 90 degrees
-	@Input				bMakeCopy		This instance of Print3D creates a copy
-										of it's data instead of sharing with previous
-										contexts. Set this parameter if you require
-										thread safety.	
-	@Return			PVR_SUCCESS or PVR_FAIL
-	@Description		Initialization and texture upload of user-provided font 
+	@fn       		SetTextures
+	@param[in]		pContext		Context
+	@param[in]		pTexData		User-provided font texture
+	@param[in]		uiDataSize		Size of the data provided
+	@param[in]		dwScreenX		Screen resolution along X
+	@param[in]		dwScreenY		Screen resolution along Y
+	@param[in]		bRotate			Rotate print3D by 90 degrees
+	@param[in]		bMakeCopy		This instance of Print3D creates a copy
+									of it's data instead of sharing with previous
+									contexts. Set this parameter if you require
+									thread safety.	
+	@return			PVR_SUCCESS or PVR_FAIL
+	@brief      	Initialization and texture upload of user-provided font 
 					data. Should be called only once for a Print3D object.
 *****************************************************************************/
 EPVRTError CPVRTPrint3D::SetTextures(
@@ -418,31 +414,13 @@ EPVRTError CPVRTPrint3D::SetTextures(
 	if (m_bTexturesSet)
 		return PVR_SUCCESS;
 
-	if(!APIInit(pContext, bMakeCopy))
-		return PVR_FAIL;
-
-	/*
-		This is the texture with the fonts.
-	*/
-	PVRTextureHeaderV3 header;
-	CPVRTMap<PVRTuint32, CPVRTMap<PVRTuint32, MetaDataBlock> > MetaDataMap;
-	bStatus = APIUpLoadTexture((unsigned char *)pTexData, &header, MetaDataMap);
-	if (!bStatus) return PVR_FAIL;
-
-	/*
-		This is the associated font data with the default font
-	*/
-	bStatus = LoadFontData(&header, MetaDataMap);
-	if (!bStatus) return PVR_FAIL;
-
 	// INDEX BUFFERS
 	m_pwFacesFont = (unsigned short*)malloc(PVRTPRINT3D_MAX_RENDERABLE_LETTERS*2*3*sizeof(unsigned short));
 
 	if(!m_pwFacesFont)
+	{
 		return PVR_FAIL;
-
-	bStatus = APIUpLoadIcons(PVRTPrint3DIMGLogo);
-	if (!bStatus) return PVR_FAIL;
+	}
 
 	// Vertex indices for letters
 	for (i=0; i < PVRTPRINT3D_MAX_RENDERABLE_LETTERS; i++)
@@ -455,6 +433,31 @@ EPVRTError CPVRTPrint3D::SetTextures(
 		m_pwFacesFont[i*6+4] = 0+i*4;
 		m_pwFacesFont[i*6+5] = 2+i*4;
 	}
+
+
+	if(!APIInit(pContext, bMakeCopy))
+	{
+		return PVR_FAIL;
+	}
+	/*
+		This is the texture with the fonts.
+	*/
+	PVRTextureHeaderV3 header;
+	CPVRTMap<PVRTuint32, CPVRTMap<PVRTuint32, MetaDataBlock> > MetaDataMap;
+	bStatus = APIUpLoadTexture((unsigned char *)pTexData, &header, MetaDataMap);
+
+	if (!bStatus)
+	{
+		return PVR_FAIL;
+	}
+	/*
+		This is the associated font data with the default font
+	*/
+	bStatus = LoadFontData(&header, MetaDataMap);
+	
+	bStatus = APIUpLoadIcons(reinterpret_cast<const PVRTuint8* const>(PVRTPrint3DIMGLogo), reinterpret_cast<const PVRTuint8* const>(PVRTPrint3DPowerVRLogo));
+
+	if (!bStatus) return PVR_FAIL;
 
 	m_nVtxCacheMax = MIN_CACHED_VTX;
 	m_pVtxCache = (SPVRTPrint3DAPIVertex*)malloc(m_nVtxCacheMax * sizeof(*m_pVtxCache));
@@ -477,15 +480,15 @@ EPVRTError CPVRTPrint3D::SetTextures(
 }
 
 /*!***************************************************************************
-@Function		Print3D
-@Input			fPosX		X Position
-@Input			fPosY		Y Position
-@Input			fScale		Text scale
-@Input			Colour		ARGB colour
-@Input			UTF32		Array of UTF32 characters
-@Input			bUpdate		Whether to update the vertices
-@Return			EPVRTError	Success of failure
-@Description	Takes an array of UTF32 characters and generates the required mesh.
+@fn       		Print3D
+@param[in]		fPosX		X Position
+@param[in]		fPosY		Y Position
+@param[in]		fScale		Text scale
+@param[in]		Colour		ARGB colour
+@param[in]		UTF32		Array of UTF32 characters
+@param[in]		bUpdate		Whether to update the vertices
+@return			EPVRTError	Success of failure
+@brief      	Takes an array of UTF32 characters and generates the required mesh.
 *****************************************************************************/
 EPVRTError CPVRTPrint3D::Print3D(float fPosX, float fPosY, const float fScale, unsigned int Colour, const CPVRTArray<PVRTuint32>& UTF32, bool bUpdate)
 {
@@ -528,14 +531,14 @@ EPVRTError CPVRTPrint3D::Print3D(float fPosX, float fPosY, const float fScale, u
 }
 
 /*!***************************************************************************
- @Function			Print3D
- @Input				fPosX		Position of the text along X
- @Input				fPosY		Position of the text along Y
- @Input				fScale		Scale of the text
- @Input				Colour		Colour of the text
- @Input				pszFormat	Format string for the text
- @Return			PVR_SUCCESS or PVR_FAIL
- @Description		Display wide-char 3D text on screen.
+ @fn       			Print3D
+ @param[in]			fPosX		Position of the text along X
+ @param[in]			fPosY		Position of the text along Y
+ @param[in]			fScale		Scale of the text
+ @param[in]			Colour		Colour of the text
+ @param[in]			pszFormat	Format string for the text
+ @return			PVR_SUCCESS or PVR_FAIL
+ @brief      		Display wide-char 3D text on screen.
 					CPVRTPrint3D::SetTextures(...) must have been called
 					beforehand.
 					This function accepts formatting in the printf way.
@@ -552,7 +555,7 @@ EPVRTError CPVRTPrint3D::Print3D(float fPosX, float fPosY, const float fScale, u
 		Unfortunately only Windows seems to properly support non-ASCII characters formatted in
 		vswprintf.
 	*/
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(UNDER_CE)
 	va_list		args;
 	// Reading the arguments to create our Text string
 	va_start(args, pszFormat);
@@ -597,14 +600,14 @@ EPVRTError CPVRTPrint3D::Print3D(float fPosX, float fPosY, const float fScale, u
 }
 
 /*!***************************************************************************
- @Function			PVRTPrint3D
- @Input				fPosX		Position of the text along X
- @Input				fPosY		Position of the text along Y
- @Input				fScale		Scale of the text
- @Input				Colour		Colour of the text
- @Input				pszFormat	Format string for the text
- @Return			PVR_SUCCESS or PVR_FAIL
- @Description		Display 3D text on screen.
+ @fn       			PVRTPrint3D
+ @param[in]			fPosX		Position of the text along X
+ @param[in]			fPosY		Position of the text along Y
+ @param[in]			fScale		Scale of the text
+ @param[in]			Colour		Colour of the text
+ @param[in]			pszFormat	Format string for the text
+ @return			PVR_SUCCESS or PVR_FAIL
+ @brief      		Display 3D text on screen.
 					No window needs to be allocated to use this function.
 					However, CPVRTPrint3D::SetTextures(...) must have been called
 					beforehand.
@@ -648,12 +651,12 @@ EPVRTError CPVRTPrint3D::Print3D(float fPosX, float fPosY, const float fScale, u
 }
 
 /*!***************************************************************************
- @Function			DisplayDefaultTitle
- @Input				sTitle				Title to display
- @Input				sDescription		Description to display
- @Input				uDisplayLogo		1 = Display the logo
- @Return			PVR_SUCCESS or PVR_FAIL
- @Description		Creates a default title with predefined position and colours.
+ @fn       			DisplayDefaultTitle
+ @param[in]			sTitle				Title to display
+ @param[in]			sDescription		Description to display
+ @param[in]			uDisplayLogo		1 = Display the logo
+ @return			PVR_SUCCESS or PVR_FAIL
+ @brief      		Creates a default title with predefined position and colours.
 					It displays as well company logos when requested:
 					0 = No logo
 					1 = PowerVR logo
@@ -668,14 +671,23 @@ EPVRTError CPVRTPrint3D::DisplayDefaultTitle(const char * const pszTitle, const 
 	// Display Title
 	if(pszTitle)
 	{
-		if(Print3D(0.0f, 0.0f, 1.0f,  PVRTRGBA(255, 255, 0, 255), pszTitle) != PVR_SUCCESS)
+		if(Print3D(0.0f, -1.0f, 1.0f,  PVRTRGBA(255, 255, 255, 255), pszTitle) != PVR_SUCCESS)
 			eRet = PVR_FAIL;
 	}
+	
+	float fYVal;
+	if(m_bRotate)
+		fYVal = m_fScreenScale[0] * 480.0f;
+	else
+		fYVal = m_fScreenScale[1] * 480.0f;
 
 	// Display Description
 	if(pszDescription)
 	{
-        float fY = (float)(int((m_uiNextLineH / (480.0f/100.0f)) / m_fScreenScale[1]));
+        float fY;
+		float a = 320.0f/fYVal;
+		fY = m_uiNextLineH / (480.0f/100.0f) * a;
+		
 		if(Print3D(0.0f, fY, 0.8f,  PVRTRGBA(255, 255, 255, 255), pszDescription) != PVR_SUCCESS)
 			eRet = PVR_FAIL;
 	}
@@ -688,12 +700,12 @@ EPVRTError CPVRTPrint3D::DisplayDefaultTitle(const char * const pszTitle, const 
 }
 
 /*!***************************************************************************
- @Function			GetSize
- @Output			pfWidth				Width of the string in pixels
- @Output			pfHeight			Height of the string in pixels
- @Input				fFontSize			Font size
- @Input				sString				String to take the size of
- @Description		Returns the size of a string in pixels.
+ @fn       			MeasureText
+ @param[out]		pfWidth				Width of the string in pixels
+ @param[out]		pfHeight			Height of the string in pixels
+ @param[in]			fFontSize			Font size
+ @param[in]			sString				String to take the size of
+ @brief      		Returns the size of a string in pixels.
 *****************************************************************************/
 void CPVRTPrint3D::MeasureText(
 	float		* const pfWidth,
@@ -750,11 +762,11 @@ void CPVRTPrint3D::MeasureText(
 }
 
 /*!***************************************************************************
- @Function			GetSize
- @Output			pfWidth				Width of the string in pixels
- @Output			pfHeight			Height of the string in pixels
- @Input				pszUTF8				UTF8 string to take the size of
- @Description		Returns the size of a string in pixels.
+ @fn       			GetSize
+ @param[out]		pfWidth				Width of the string in pixels
+ @param[out]		pfHeight			Height of the string in pixels
+ @param[in]			pszUTF8				UTF8 string to take the size of
+ @brief      		Returns the size of a string in pixels.
 *****************************************************************************/
 void CPVRTPrint3D::MeasureText(
 	float		* const pfWidth,
@@ -768,12 +780,11 @@ void CPVRTPrint3D::MeasureText(
 }
 
 /*!***************************************************************************
-@Function			MeasureText
-@Output				pfWidth				Width of the string in pixels
-@Output				pfHeight			Height of the string in pixels
-@Input				pszUnicode			Wide character string to take the
-length of.
-@Description		Returns the size of a string in pixels.
+ @fn       			MeasureText
+ @param[out]		pfWidth		Width of the string in pixels
+ @param[out]		pfHeight	Height of the string in pixels
+ @param[in]			pszUnicode	Wide character string to take the length of.
+ @brief      		Returns the size of a string in pixels.
 *****************************************************************************/
 void CPVRTPrint3D::MeasureText(
 	float		* const pfWidth,
@@ -800,10 +811,10 @@ void CPVRTPrint3D::MeasureText(
 }
 
 /*!***************************************************************************
- @Function			GetAspectRatio
- @Output			dwScreenX		Screen resolution X
- @Output			dwScreenY		Screen resolution Y
- @Description		Returns the current resolution used by Print3D
+ @fn       			GetAspectRatio
+ @param[out]		dwScreenX		Screen resolution X
+ @param[out]		dwScreenY		Screen resolution Y
+ @brief      		Returns the current resolution used by Print3D
 *****************************************************************************/
 void CPVRTPrint3D::GetAspectRatio(unsigned int *dwScreenX, unsigned int *dwScreenY)
 {
@@ -819,8 +830,15 @@ void CPVRTPrint3D::GetAspectRatio(unsigned int *dwScreenX, unsigned int *dwScree
 **************************************************************/
 
 /*!***************************************************************************
- @Function			UpdateLine
- @Description
+ @brief             Update a single line
+ @param[in]			fZPos
+ @param[in]			XPos
+ @param[in]			YPos
+ @param[in]			fScale
+ @param[in]			Colour
+ @param[in]			Text
+ @param[in]			pVertices
+ @return            Number of vertices affected
 *****************************************************************************/
 unsigned int CPVRTPrint3D::UpdateLine(const float fZPos, float XPos, float YPos, const float fScale, const unsigned int Colour, const CPVRTArray<PVRTuint32>& Text, SPVRTPrint3DAPIVertex * const pVertices)
 {
@@ -834,7 +852,9 @@ unsigned int CPVRTPrint3D::UpdateLine(const float fZPos, float XPos, float YPos,
 		YPos *= ((float)m_ui32ScreenDim[1] / 480.0f);
 	}
 
-	YPos -= PVRTMakeWhole(m_uiAscent * fScale);
+	YPos -= m_uiAscent * fScale;
+	
+	YPos = PVRTMakeWhole(YPos);
 
 	float fPreXPos	= XPos;		// The original offset (after screen scale modification) of the X coordinate.
 
@@ -869,7 +889,7 @@ unsigned int CPVRTPrint3D::UpdateLine(const float fZPos, float XPos, float YPos,
 		}
 
 		fKernOffset = 0;
-		fYOffset	= PVRTMakeWhole(m_pYOffsets[uiIdx] * fScale);
+		fYOffset	= m_pYOffsets[uiIdx] * fScale;
 		fAOff		= PVRTMakeWhole(m_pCharMatrics[uiIdx].nXOff * fScale);					// The A offset. Could include overhang or underhang.
 		if(uiIndex < uiNumCharsInString - 1)
 		{
@@ -878,21 +898,21 @@ unsigned int CPVRTPrint3D::UpdateLine(const float fZPos, float XPos, float YPos,
 		}
 
 		/* Filling vertex data */
-		pVertices[VertexCount+0].sx		= f2vt(XPos + fAOff + 0.0f);
-		pVertices[VertexCount+0].sy		= f2vt(YPos + fYOffset + 0.0f);
+		pVertices[VertexCount+0].sx		= f2vt(XPos + fAOff);
+		pVertices[VertexCount+0].sy		= f2vt(YPos + fYOffset);
 		pVertices[VertexCount+0].sz		= f2vt(fZPos);
 		pVertices[VertexCount+0].rhw	= f2vt(1.0f);
 		pVertices[VertexCount+0].tu		= f2vt(m_pUVs[uiIdx].fUL);
 		pVertices[VertexCount+0].tv		= f2vt(m_pUVs[uiIdx].fVT);
 
 		pVertices[VertexCount+1].sx		= f2vt(XPos + fAOff + PVRTMakeWhole(m_pRects[uiIdx].nW * fScale));
-		pVertices[VertexCount+1].sy		= f2vt(YPos + fYOffset + 0.0f);
+		pVertices[VertexCount+1].sy		= f2vt(YPos + fYOffset);
 		pVertices[VertexCount+1].sz		= f2vt(fZPos);
 		pVertices[VertexCount+1].rhw	= f2vt(1.0f);
 		pVertices[VertexCount+1].tu		= f2vt(m_pUVs[uiIdx].fUR);
 		pVertices[VertexCount+1].tv		= f2vt(m_pUVs[uiIdx].fVT);
 
-		pVertices[VertexCount+2].sx		= f2vt(XPos + fAOff + 0.0f);
+		pVertices[VertexCount+2].sx		= f2vt(XPos + fAOff);
 		pVertices[VertexCount+2].sy		= f2vt(YPos + fYOffset - PVRTMakeWhole(m_pRects[uiIdx].nH * fScale));
 		pVertices[VertexCount+2].sz		= f2vt(fZPos);
 		pVertices[VertexCount+2].rhw	= f2vt(1.0f);
@@ -919,9 +939,9 @@ unsigned int CPVRTPrint3D::UpdateLine(const float fZPos, float XPos, float YPos,
 }
 
 /*!***************************************************************************
- @Function			DrawLineUP
- @Return			true or false
- @Description		Draw a single line of text.
+ @fn       			DrawLineUP
+ @return			true or false
+ @brief      		Draw a single line of text.
 *****************************************************************************/
 bool CPVRTPrint3D::DrawLine(SPVRTPrint3DAPIVertex *pVtx, unsigned int nVertices)
 {
@@ -959,8 +979,8 @@ bool CPVRTPrint3D::DrawLine(SPVRTPrint3DAPIVertex *pVtx, unsigned int nVertices)
 }
 
 /*!***************************************************************************
- @Function			SetProjection
- @Description		Sets projection matrix.
+ @fn       			SetProjection
+ @brief      		Sets projection matrix.
 *****************************************************************************/
 void CPVRTPrint3D::SetProjection(const PVRTMat4& mProj)
 {
@@ -969,8 +989,8 @@ void CPVRTPrint3D::SetProjection(const PVRTMat4& mProj)
 }
 
 /*!***************************************************************************
- @Function			SetModelView
- @Description		Sets model view matrix.
+ @fn       			SetModelView
+ @brief      		Sets model view matrix.
 *****************************************************************************/
 void CPVRTPrint3D::SetModelView(const PVRTMat4& mModelView)
 {
@@ -978,9 +998,9 @@ void CPVRTPrint3D::SetModelView(const PVRTMat4& mModelView)
 }
 
 /*!***************************************************************************
-	@Function			SetFiltering
-	@Input				eFilter				The method of texture filtering
-	@Description		Sets the method of texture filtering for the font texture.
+ @fn       		SetFiltering
+ @param[in]		eFilter				The method of texture filtering
+ @brief      	Sets the method of texture filtering for the font texture.
 					Print3D will attempt to pick the best method by default
 					but this method allows the user to override this.
 *****************************************************************************/
@@ -995,9 +1015,9 @@ void CPVRTPrint3D::SetFiltering(ETextureFilter eMin, ETextureFilter eMag, ETextu
 }
 
 /*!***************************************************************************
-@Function		GetFontAscent
-@Return			unsigned int	The ascent.
-@Description	Returns the 'ascent' of the font. This is typically the 
+ @fn       		GetFontAscent
+ @return		unsigned int	The ascent.
+ @brief      	Returns the 'ascent' of the font. This is typically the 
 				height from the baseline of the larget glyph in the set.
 *****************************************************************************/
 unsigned int CPVRTPrint3D::GetFontAscent()
@@ -1006,9 +1026,9 @@ unsigned int CPVRTPrint3D::GetFontAscent()
 }
 
 /*!***************************************************************************
-@Function		GetFontLineSpacing
-@Return			unsigned int	The line spacing.
-@Description	Returns the default line spacing (i.e baseline to baseline) 
+ @fn       		GetFontLineSpacing
+ @return		unsigned int	The line spacing.
+ @brief      	Returns the default line spacing (i.e baseline to baseline) 
 				for the font.
 *****************************************************************************/
 unsigned int CPVRTPrint3D::GetFontLineSpacing()

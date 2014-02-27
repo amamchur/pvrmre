@@ -1,16 +1,8 @@
-/******************************************************************************
+/*!****************************************************************************
 
- @File         PVRTShadowVol.h
-
- @Title        PVRTShadowVol
-
- @Version       @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  Declarations of functions relating to shadow volume generation.
+ @file         PVRTShadowVol.h
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief        Declarations of functions relating to shadow volume generation.
 
 ******************************************************************************/
 #ifndef _PVRTSHADOWVOL_H_
@@ -30,11 +22,18 @@
 /****************************************************************************
 ** Structures
 ****************************************************************************/
+
+/*!***********************************************************************
+ @brief      	Edge to form part of a shadow volume mesh.
+*************************************************************************/
 struct PVRTShadowVolMEdge {
 	unsigned short	wV0, wV1;		/*!< Indices of the vertices of the edge */
 	int				nVis;			/*!< Bit0 = Visible, Bit1 = Hidden, Bit2 = Reverse Winding */
 };
 
+/*!***********************************************************************
+ @brief      	Triangle to form part of a shadow volume mesh.
+*************************************************************************/
 struct PVRTShadowVolMTriangle {
 	unsigned short	w[3];			/*!< Source indices of the triangle */	
 	unsigned int    wE0, wE1, wE2;  /*!< Indices of the edges of the triangle */
@@ -42,42 +41,39 @@ struct PVRTShadowVolMTriangle {
 	int			nWinding;			/*!< BitN = Correct winding for edge N */
 };
 
+/*!***********************************************************************
+ @brief      	Shadow volume mesh.
+*************************************************************************/
 struct PVRTShadowVolShadowMesh {
-	PVRTVECTOR3		*pV;	/*!< Unique vertices in object space */
-	PVRTShadowVolMEdge		*pE;
-	PVRTShadowVolMTriangle	*pT;
-	unsigned int	nV;		/*!< Vertex count */
-	unsigned int	nE;		/*!< Edge count */
-	unsigned int	nT;		/*!< Triangle count */
+	PVRTVECTOR3		*pV;	        /*!< Unique vertices in object space */
+	PVRTShadowVolMEdge		*pE;    /*!< Unique edges in object space */
+	PVRTShadowVolMTriangle	*pT;    /*!< Unique triangles in object space */
+	unsigned int	nV;		        /*!< Vertex count */
+	unsigned int	nE;		        /*!< Edge count */
+	unsigned int	nT;		        /*!< Triangle count */
 
-#ifdef BUILD_DX9
-	IDirect3DVertexBuffer9	*pivb;		/*!< Two copies of the vertices */
-#endif
-#ifdef BUILD_DX10
-	ID3D10Buffer	*pivb;		/*!< Two copies of the vertices */
-#endif
 #ifdef BUILD_DX11
 	ID3D11Buffer	*pivb;		/*!< Two copies of the vertices */
 #endif
-#if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
+#if defined(BUILD_OGL)
+	unsigned int	pivb;	/*!< Two copies of the vertices */
+#endif
+#if defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
 	void			*pivb;		/*!< Two copies of the vertices */
 #endif
 };
 
-/*
-	Renderable shadow-volume information:
-*/
+/*!***********************************************************************
+ @brief      	Renderable shadow-volume information.
+*************************************************************************/
 struct PVRTShadowVolShadowVol {
-#ifdef BUILD_DX9
-	IDirect3DIndexBuffer9	*piib;		/*!< Indices to render the volume */
-#endif
-#ifdef BUILD_DX10
-	ID3D10Buffer			*piib;		/*!< Indices to render the volume */
-#endif
 #ifdef BUILD_DX11
 	ID3D11Buffer	*piib;		/*!< Two copies of the vertices */
 #endif
-#if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
+#if defined(BUILD_OGL)
+	unsigned int			piib;	
+#endif
+#if defined(BUILD_OGLES) || defined(BUILD_OGLES2) || defined(BUILD_OGLES3)
 	unsigned short			*piib;		/*!< Indices to render the volume */
 #endif
 	unsigned int			nIdxCnt;	/*!< Number of indices in piib */
@@ -92,13 +88,13 @@ struct PVRTShadowVolShadowVol {
 ****************************************************************************/
 
 /*!***********************************************************************
-@Function	PVRTShadowVolMeshCreateMesh
-@Modified	psMesh		The shadow volume mesh to populate
-@Input		pVertex		A list of vertices
-@Input		nNumVertex	The number of vertices
-@Input		pFaces		A list of faces
-@Input		nNumFaces	The number of faces
-@Description	Creates a mesh format suitable for generating shadow volumes
+@fn       	    PVRTShadowVolMeshCreateMesh
+@param[in,out]	psMesh		The shadow volume mesh to populate
+@param[in]		pVertex		A list of vertices
+@param[in]		nNumVertex	The number of vertices
+@param[in]		pFaces		A list of faces
+@param[in]		nNumFaces	The number of faces
+@brief      	Creates a mesh format suitable for generating shadow volumes
 *************************************************************************/
 void PVRTShadowVolMeshCreateMesh(
 	PVRTShadowVolShadowMesh		* const psMesh,
@@ -108,23 +104,23 @@ void PVRTShadowVolMeshCreateMesh(
 	const unsigned int		nNumFaces);
 
 /*!***********************************************************************
-@Function		PVRTShadowVolMeshInitMesh
-@Input			psMesh	The shadow volume mesh
-@Input			pContext	A struct for API specific data
-@Returns 		True on success
-@Description	Init the mesh
+@fn       		PVRTShadowVolMeshInitMesh
+@param[in]		psMesh	The shadow volume mesh
+@param[in]		pContext	A struct for API specific data
+@return  		True on success
+@brief      	Init the mesh
 *************************************************************************/
 bool PVRTShadowVolMeshInitMesh(
 	PVRTShadowVolShadowMesh		* const psMesh,
 	const SPVRTContext		* const pContext);
 
 /*!***********************************************************************
-@Function		PVRTShadowVolMeshInitVol
-@Modified		psVol	The shadow volume struct
-@Input			psMesh	The shadow volume mesh
-@Input			pContext	A struct for API specific data
-@Returns		True on success
-@Description	Init the renderable shadow volume information.
+@fn       		PVRTShadowVolMeshInitVol
+@param[in,out]	psVol	The shadow volume struct
+@param[in]		psMesh	The shadow volume mesh
+@param[in]		pContext	A struct for API specific data
+@return 		True on success
+@brief      	Init the renderable shadow volume information.
 *************************************************************************/
 bool PVRTShadowVolMeshInitVol(
 	PVRTShadowVolShadowVol			* const psVol,
@@ -132,38 +128,40 @@ bool PVRTShadowVolMeshInitVol(
 	const SPVRTContext		* const pContext);
 
 /*!***********************************************************************
-@Function		PVRTShadowVolMeshDestroyMesh
-@Input			psMesh	The shadow volume mesh to destroy
-@Description	Destroys all shadow volume mesh data created by PVRTShadowVolMeshCreateMesh
+@fn       		PVRTShadowVolMeshDestroyMesh
+@param[in]		psMesh	The shadow volume mesh to destroy
+@brief      	Destroys all shadow volume mesh data created by PVRTShadowVolMeshCreateMesh
 *************************************************************************/
 void PVRTShadowVolMeshDestroyMesh(
 	PVRTShadowVolShadowMesh		* const psMesh);
 
 /*!***********************************************************************
-@Function		PVRTShadowVolMeshReleaseMesh
-@Input			psMesh	The shadow volume mesh to release
-@Description	Releases all shadow volume mesh data created by PVRTShadowVolMeshInitMesh
+@fn       		PVRTShadowVolMeshReleaseMesh
+@param[in]		psMesh	The shadow volume mesh to release
+@brief      	Releases all shadow volume mesh data created by PVRTShadowVolMeshInitMesh
 *************************************************************************/
 void PVRTShadowVolMeshReleaseMesh(
-	PVRTShadowVolShadowMesh		* const psMesh);
+	PVRTShadowVolShadowMesh		* const psMesh,
+	SPVRTContext				* const psContext=NULL);
 
 /*!***********************************************************************
-@Function		PVRTShadowVolMeshReleaseVol
-@Input			psVol	The shadow volume information to release
-@Description	Releases all data create by PVRTShadowVolMeshInitVol
+@fn       		PVRTShadowVolMeshReleaseVol
+@param[in]		psVol	The shadow volume information to release
+@brief      	Releases all data create by PVRTShadowVolMeshInitVol
 *************************************************************************/
 void PVRTShadowVolMeshReleaseVol(
-	PVRTShadowVolShadowVol			* const psVol);
+	PVRTShadowVolShadowVol			* const psVol,
+	SPVRTContext					* const psContext=NULL);
 
 /*!***********************************************************************
-@Function		PVRTShadowVolSilhouetteProjectedBuild
-@Modified		psVol	The shadow volume information
-@Input			dwVisFlags	Shadow volume creation flags
-@Input			psMesh	The shadow volume mesh
-@Input			pvLightModel	The light position/direction
-@Input			bPointLight		Is the light a point light
-@Input			pContext	A struct for passing in API specific data	
-@Description	Using the light set up the shadow volume so it can be extruded.
+@fn       		PVRTShadowVolSilhouetteProjectedBuild
+@param[in,out]	psVol	        The shadow volume information
+@param[in]		dwVisFlags	    Shadow volume creation flags
+@param[in]		psMesh	        The shadow volume mesh
+@param[in]		pvLightModel	The light position/direction
+@param[in]		bPointLight		Is the light a point light
+@param[in]		pContext	    A struct for passing in API specific data	
+@brief      	Using the light set up the shadow volume so it can be extruded.
 *************************************************************************/
 void PVRTShadowVolSilhouetteProjectedBuild(
 	PVRTShadowVolShadowVol			* const psVol,
@@ -174,14 +172,14 @@ void PVRTShadowVolSilhouetteProjectedBuild(
 	const SPVRTContext * const pContext = 0);
 
 /*!***********************************************************************
-@Function		PVRTShadowVolSilhouetteProjectedBuild
-@Modified		psVol	The shadow volume information
-@Input			dwVisFlags	Shadow volume creation flags
-@Input			psMesh	The shadow volume mesh
-@Input			pvLightModel	The light position/direction
-@Input			bPointLight		Is the light a point light
-@Input			pContext	A struct for passing in API specific data	
-@Description	Using the light set up the shadow volume so it can be extruded.
+@fn       		PVRTShadowVolSilhouetteProjectedBuild
+@param[in,out]	psVol	The shadow volume information
+@param[in]		dwVisFlags	Shadow volume creation flags
+@param[in]		psMesh	The shadow volume mesh
+@param[in]		pvLightModel	The light position/direction
+@param[in]		bPointLight		Is the light a point light
+@param[in]		pContext	A struct for passing in API specific data	
+@brief      	Using the light set up the shadow volume so it can be extruded.
 *************************************************************************/
 void PVRTShadowVolSilhouetteProjectedBuild(
 	PVRTShadowVolShadowVol			* const psVol,
@@ -192,13 +190,13 @@ void PVRTShadowVolSilhouetteProjectedBuild(
 	const SPVRTContext * const pContext = 0);
 
 /*!***********************************************************************
-@Function		PVRTShadowVolBoundingBoxExtrude
-@Modified		pvExtrudedCube	8 Vertices to represent the extruded box
-@Input			pBoundingBox	The bounding box to extrude
-@Input			pvLightMdl		The light position/direction
-@Input			bPointLight		Is the light a point light
-@Input			fVolLength		The length the volume has been extruded by
-@Description	Extrudes the bounding box of the volume
+@fn       		PVRTShadowVolBoundingBoxExtrude
+@param[in,out]	pvExtrudedCube	8 Vertices to represent the extruded box
+@param[in]		pBoundingBox	The bounding box to extrude
+@param[in]		pvLightMdl		The light position/direction
+@param[in]		bPointLight		Is the light a point light
+@param[in]		fVolLength		The length the volume has been extruded by
+@brief      	Extrudes the bounding box of the volume
 *************************************************************************/
 void PVRTShadowVolBoundingBoxExtrude(
 	PVRTVECTOR3				* const pvExtrudedCube,
@@ -208,17 +206,17 @@ void PVRTShadowVolBoundingBoxExtrude(
 	const float				fVolLength);
 
 /*!***********************************************************************
-@Function		PVRTShadowVolBoundingBoxIsVisible
-@Modified		pdwVisFlags		Visibility flags
-@Input			bObVisible		Is the object visible? Unused set to true
-@Input			bNeedsZClipping	Does the object require Z clipping? Unused set to true
-@Input			pBoundingBox	The volumes bounding box
-@Input			pmTrans			The projection matrix
-@Input			pvLightMdl		The light position/direction
-@Input			bPointLight		Is the light a point light
-@Input			fCamZProj		The camera's z projection value
-@Input			fVolLength		The length the volume is extruded by
-@Description	Determines if the volume is visible and if it needs caps
+@fn       		PVRTShadowVolBoundingBoxIsVisible
+@param[in,out]	pdwVisFlags		Visibility flags
+@param[in]		bObVisible		Is the object visible? Unused set to true
+@param[in]		bNeedsZClipping	Does the object require Z clipping? Unused set to true
+@param[in]		pBoundingBox	The volumes bounding box
+@param[in]		pmTrans			The projection matrix
+@param[in]		pvLightMdl		The light position/direction
+@param[in]		bPointLight		Is the light a point light
+@param[in]		fCamZProj		The camera's z projection value
+@param[in]		fVolLength		The length the volume is extruded by
+@brief      	Determines if the volume is visible and if it needs caps
 *************************************************************************/
 void PVRTShadowVolBoundingBoxIsVisible(
 	unsigned int			* const pdwVisFlags,
@@ -232,11 +230,11 @@ void PVRTShadowVolBoundingBoxIsVisible(
 	const float				fVolLength);
 
 /*!***********************************************************************
-@Function		PVRTShadowVolSilhouetteProjectedRender
-@Input			psMesh		Shadow volume mesh
-@Input			psVol		Renderable shadow volume information
-@Input			pContext	A struct for passing in API specific data
-@Description	Draws the shadow volume
+@fn       		PVRTShadowVolSilhouetteProjectedRender
+@param[in]		psMesh		Shadow volume mesh
+@param[in]		psVol		Renderable shadow volume information
+@param[in]		pContext	A struct for passing in API specific data
+@brief      	Draws the shadow volume
 *************************************************************************/
 int PVRTShadowVolSilhouetteProjectedRender(
 	const PVRTShadowVolShadowMesh	* const psMesh,

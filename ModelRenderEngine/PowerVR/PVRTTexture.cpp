@@ -4,7 +4,7 @@
 
  @Title        PVRTTexture
 
- @Version       @Version      
+ @Version      
 
  @Copyright    Copyright (c) Imagination Technologies Limited.
 
@@ -1773,4 +1773,3 @@ void PVRTMapLegacyTextureEnumToNewFormat(PVRTPixelType OldFormat, PVRTuint64& ne
 /*****************************************************************************
  End of file (PVRTTexture.cpp)
 *****************************************************************************/
-

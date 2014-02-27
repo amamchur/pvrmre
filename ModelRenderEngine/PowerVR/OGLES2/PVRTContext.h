@@ -1,25 +1,24 @@
-/******************************************************************************
+/*!****************************************************************************
 
- @File         PVRTContext.h
-
- @Title        OGLES2/PVRTContext
-
- @Version      
-
- @Copyright    Copyright (c) Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  Context specific stuff - i.e. 3D API-related.
+ @file         OGLES2/PVRTContext.h
+ @ingroup      API_OGLES2
+ @copyright    Copyright (c) Imagination Technologies Limited.
+ @brief        Context specific stuff - i.e. 3D API-related.
 
 ******************************************************************************/
+
 #ifndef _PVRTCONTEXT_H_
 #define _PVRTCONTEXT_H_
+
+/*!
+ @addtogroup   API_OGLES2
+ @{
+*/
 
 #include <stdio.h>
 #if defined(BUILD_OGLES2)
 #if defined(__APPLE__)
-#ifdef TARGET_OS_IPHONE
+#if defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE==1
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #else	//OSX 
@@ -41,9 +40,11 @@
 #include <GLES2/gl2extimg.h>
 #endif
 #elif defined(BUILD_OGLES3) 
+#include <EGL/egl.h>
 #include <GLES3/gl3.h>
+#include <GLES3/gl3ext.h>
 #include <GLES2/gl2ext.h>
-#include <GLES3/gl3extimg.h>
+#include <GLES2/gl2extimg.h>
 #endif
 
 /****************************************************************************
@@ -62,9 +63,10 @@
 /****************************************************************************
 ** Structures
 ****************************************************************************/
+
 /*!**************************************************************************
-@Struct SPVRTContext
-@Brief A structure for storing API specific variables
+ @struct    SPVRTContext
+ @brief     A structure for storing API specific variables
 ****************************************************************************/
 struct SPVRTContext
 {
@@ -75,6 +77,7 @@ struct SPVRTContext
 ** Functions
 ****************************************************************************/
 
+/*! @} */
 
 #endif /* _PVRTCONTEXT_H_ */
 
