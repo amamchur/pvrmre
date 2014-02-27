@@ -481,9 +481,14 @@ UINavigationControllerDelegate> {
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    [[popover retain] autorelease];
-    [popover dismissPopoverAnimated:YES];
-    self.popover = nil;
+    BOOL os7 = floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1;
+    if (os7) {
+        [picker dismissViewControllerAnimated:YES completion:NULL];
+    } else {
+        [[popover retain] autorelease];
+        [popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
     [self hideToolbar];
     
     glDeleteTextures(1, &backgroundTextId);
@@ -518,14 +523,20 @@ UINavigationControllerDelegate> {
     UIImagePickerController *pc = [[UIImagePickerController alloc] init];
     pc.sourceType = UIImagePickerControllerSourceTypeCamera;
     pc.delegate = self;
-    UIPopoverController *p = [[UIPopoverController alloc] initWithContentViewController:pc];
-    p.delegate = self;
-    [p presentPopoverFromBarButtonItem:sender
-              permittedArrowDirections:UIPopoverArrowDirectionAny
-                              animated:YES];
-    p.passthroughViews = [NSArray array];
-    self.popover = p;
-    [p release];
+    BOOL os7 = floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1;
+    if (os7) {
+        [self presentViewController:pc animated:YES completion:NULL];
+    } else {
+        UIPopoverController *p = [[UIPopoverController alloc] initWithContentViewController:pc];
+        p.delegate = self;
+        [p presentPopoverFromBarButtonItem:sender
+                  permittedArrowDirections:UIPopoverArrowDirectionAny
+                                  animated:YES];
+        p.passthroughViews = [NSArray array];
+        self.popover = p;
+        [p release];
+    }
+
     [pc release];
 }
 

@@ -56,7 +56,7 @@ namespace mre {
             delete iter->second;
         }
         
-        delete tmp;        
+        delete[] tmp;
         delete vbos;
         delete indexVbo;
         delete pod_model;
@@ -132,7 +132,7 @@ namespace mre {
             PVRTTransformArray(boxes[i].Point, box.Point, sizeof(box.Point)/sizeof(*box.Point), &world);
         }
         PVRTBoundingBoxCompute(&model_box, boxes->Point, count * 8);
-        delete boxes;
+        delete[] boxes;
     }
     
     const PVRTMat4& model::get_projection() const {

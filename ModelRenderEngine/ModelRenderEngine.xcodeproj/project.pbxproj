@@ -35,7 +35,7 @@
 		84D095BD179BF1DF0099D413 /* texture_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84D095BB179BF1DF0099D413 /* texture_buffer.cpp */; };
 		84F80D2D181AEC25006AB5FD /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F80D2C181AEC25006AB5FD /* AppIcon.png */; };
 		84F80D30181AEC4B006AB5FD /* AppIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */; };
-		87926FAF18BF8CFF00902BC5 /* libOGLES2Tools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87926FAE18BF8CFF00902BC5 /* libOGLES2Tools.a */; };
+		B5441E7018BFD40A0051ABA6 /* libOGLES2Tools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5441E6F18BFD40A0051ABA6 /* libOGLES2Tools.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,7 +81,8 @@
 		84D095BC179BF1DF0099D413 /* texture_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture_buffer.h; sourceTree = "<group>"; };
 		84F80D2C181AEC25006AB5FD /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppIcon.png; path = ../AppIcon.png; sourceTree = "<group>"; };
 		84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon@2x.png"; path = "../AppIcon@2x.png"; sourceTree = "<group>"; };
-		87926FAE18BF8CFF00902BC5 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libOGLES2Tools.a; path = "PowerVR/OGLES2/Build/iOS/build/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
+		87926FAE18BF8CFF00902BC5 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOGLES2Tools.a; path = "PowerVR/OGLES2/Build/iOS/build/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
+		B5441E6F18BFD40A0051ABA6 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libOGLES2Tools.a; path = "PowerVR/OGLES2/Build/iOS/build/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				87926FAF18BF8CFF00902BC5 /* libOGLES2Tools.a in Frameworks */,
+				B5441E7018BFD40A0051ABA6 /* libOGLES2Tools.a in Frameworks */,
 				8431344A1820788000B1CC46 /* libz.dylib in Frameworks */,
 				842564BF172F1B110079B651 /* ImageIO.framework in Frameworks */,
 				842564B8172F002C0079B651 /* AssetsLibrary.framework in Frameworks */,
@@ -137,6 +138,7 @@
 		843D4110172C38EF00AC2DA1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5441E6F18BFD40A0051ABA6 /* libOGLES2Tools.a */,
 				87926FAE18BF8CFF00902BC5 /* libOGLES2Tools.a */,
 				843134491820788000B1CC46 /* libz.dylib */,
 				842564BE172F1B110079B651 /* ImageIO.framework */,

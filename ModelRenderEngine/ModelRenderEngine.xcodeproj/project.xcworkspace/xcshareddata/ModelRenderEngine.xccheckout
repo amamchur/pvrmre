@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7182D605-ED73-4DCD-A49F-6C5AAE5125B6</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ModelRenderEngine</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>7FC2C105-70A0-45FD-85DF-1AAB4371324F</key>
+		<string>https://github.com/amamchur/pvrmre.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ModelRenderEngine/ModelRenderEngine.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>7FC2C105-70A0-45FD-85DF-1AAB4371324F</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/amamchur/pvrmre.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>7FC2C105-70A0-45FD-85DF-1AAB4371324F</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>7FC2C105-70A0-45FD-85DF-1AAB4371324F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>pvrmre</string>
+		</dict>
+	</array>
+</dict>
+</plist>
