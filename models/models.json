@@ -168,5 +168,18 @@
             ]
          }
       ]
+   },
+   {
+      "title":"Cortezari Lamp",
+      "file":"cortezari_lamp.pod",
+      "nodesInfo":[
+      ]
+   },
+   {
+      "title":"Verpan",
+      "file":"verpan.pod",
+      "nodesInfo":[
+      ]
    }
+
 ]

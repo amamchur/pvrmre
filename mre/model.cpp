@@ -15,7 +15,7 @@
 #include <sys/time.h>
 
 #define CAM_NEAR 1
-#define CAM_FAR 1000000
+#define CAM_FAR 10000
 
 namespace mre {
     model::model(std::string dir, std::string pod)
