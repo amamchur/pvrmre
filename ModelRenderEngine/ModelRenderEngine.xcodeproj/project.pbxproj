@@ -33,9 +33,6 @@
 		B5441E7D18BFE2150051ABA6 /* model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5441E7618BFE2150051ABA6 /* model.cpp */; };
 		B5441E7E18BFE2150051ABA6 /* node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5441E7818BFE2150051ABA6 /* node.cpp */; };
 		B5441E7F18BFE2150051ABA6 /* texture_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5441E7A18BFE2150051ABA6 /* texture_buffer.cpp */; };
-		B5441E8818BFE2C10051ABA6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B5441E8218BFE2C10051ABA6 /* README.md */; };
-		B5441E8918BFE2C10051ABA6 /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = B5441E8318BFE2C10051ABA6 /* release_notes.md */; };
-		B5441E8A18BFE35A0051ABA6 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5441E8118BFE2C10051ABA6 /* libTestFlight.a */; };
 		B5441E8C18BFE4030051ABA6 /* libOGLES2Tools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5441E8B18BFE4030051ABA6 /* libOGLES2Tools.a */; };
 		B5441E9718BFE53B0051ABA6 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5441E9618BFE53B0051ABA6 /* libJsonLiteObjC.a */; };
 		B5441E9918BFE5730051ABA6 /* models in Resources */ = {isa = PBXBuildFile; fileRef = B5441E9818BFE5730051ABA6 /* models */; };
@@ -75,7 +72,7 @@
 		84F80D2C181AEC25006AB5FD /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppIcon.png; path = ../AppIcon.png; sourceTree = "<group>"; };
 		84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon@2x.png"; path = "../AppIcon@2x.png"; sourceTree = "<group>"; };
 		87926FAE18BF8CFF00902BC5 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOGLES2Tools.a; path = "PowerVR/OGLES2/Build/iOS/build/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
-		B5441E6F18BFD40A0051ABA6 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libOGLES2Tools.a; path = "PowerVR/OGLES2/Build/iOS/build/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
+		B5441E6F18BFD40A0051ABA6 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOGLES2Tools.a; path = "PowerVR/OGLES2/Build/iOS/build/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
 		B5441E7418BFE2150051ABA6 /* effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = effect.cpp; sourceTree = "<group>"; };
 		B5441E7518BFE2150051ABA6 /* effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = effect.h; sourceTree = "<group>"; };
 		B5441E7618BFE2150051ABA6 /* model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = model.cpp; sourceTree = "<group>"; };
@@ -84,14 +81,8 @@
 		B5441E7918BFE2150051ABA6 /* node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = node.h; sourceTree = "<group>"; };
 		B5441E7A18BFE2150051ABA6 /* texture_buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture_buffer.cpp; sourceTree = "<group>"; };
 		B5441E7B18BFE2150051ABA6 /* texture_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture_buffer.h; sourceTree = "<group>"; };
-		B5441E8118BFE2C10051ABA6 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
-		B5441E8218BFE2C10051ABA6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		B5441E8318BFE2C10051ABA6 /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
-		B5441E8418BFE2C10051ABA6 /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
-		B5441E8518BFE2C10051ABA6 /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
-		B5441E8618BFE2C10051ABA6 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		B5441E8B18BFE4030051ABA6 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOGLES2Tools.a; path = "../../../../Library/Developer/Xcode/DerivedData/ModelRenderEngine-ggqflczwwksljoemqoeqsjeqxpor/Build/Products/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
-		B5441E9618BFE53B0051ABA6 /* libJsonLiteObjC.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libJsonLiteObjC.a; path = "../ThirdParty/jsonlite/platform/ios/build/Debug-iphoneos/libJsonLiteObjC.a"; sourceTree = "<group>"; };
+		B5441E9618BFE53B0051ABA6 /* libJsonLiteObjC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libJsonLiteObjC.a; path = "../ThirdParty/jsonlite/platform/ios/build/Debug-iphoneos/libJsonLiteObjC.a"; sourceTree = "<group>"; };
 		B5441E9818BFE5730051ABA6 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; name = models; path = ../models; sourceTree = "<group>"; };
 		B5441E9A18BFEE7A0051ABA6 /* MREModelInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MREModelInfo.h; sourceTree = "<group>"; };
 		B5441E9B18BFEE7A0051ABA6 /* MREModelInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MREModelInfo.m; sourceTree = "<group>"; };
@@ -108,7 +99,6 @@
 			files = (
 				B5441E9718BFE53B0051ABA6 /* libJsonLiteObjC.a in Frameworks */,
 				B5441E8C18BFE4030051ABA6 /* libOGLES2Tools.a in Frameworks */,
-				B5441E8A18BFE35A0051ABA6 /* libTestFlight.a in Frameworks */,
 				8431344A1820788000B1CC46 /* libz.dylib in Frameworks */,
 				842564BF172F1B110079B651 /* ImageIO.framework in Frameworks */,
 				842564B8172F002C0079B651 /* AssetsLibrary.framework in Frameworks */,
@@ -126,7 +116,6 @@
 		843D4105172C38EF00AC2DA1 = {
 			isa = PBXGroup;
 			children = (
-				B5441E8018BFE2C10051ABA6 /* TestFlightSDK */,
 				B5441E7318BFE2150051ABA6 /* mre */,
 				843D4117172C38EF00AC2DA1 /* ModelRenderEngine */,
 				843D4110172C38EF00AC2DA1 /* Frameworks */,
@@ -219,20 +208,6 @@
 			path = ../mre;
 			sourceTree = "<group>";
 		};
-		B5441E8018BFE2C10051ABA6 /* TestFlightSDK */ = {
-			isa = PBXGroup;
-			children = (
-				B5441E8118BFE2C10051ABA6 /* libTestFlight.a */,
-				B5441E8218BFE2C10051ABA6 /* README.md */,
-				B5441E8318BFE2C10051ABA6 /* release_notes.md */,
-				B5441E8418BFE2C10051ABA6 /* TestFlight+AsyncLogging.h */,
-				B5441E8518BFE2C10051ABA6 /* TestFlight+ManualSessions.h */,
-				B5441E8618BFE2C10051ABA6 /* TestFlight.h */,
-			);
-			name = TestFlightSDK;
-			path = ../ThirdParty/TestFlightSDK;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -290,7 +265,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5441E8918BFE2C10051ABA6 /* release_notes.md in Resources */,
 				843D411C172C38EF00AC2DA1 /* InfoPlist.strings in Resources */,
 				B5441E9918BFE5730051ABA6 /* models in Resources */,
 				843D4124172C38EF00AC2DA1 /* Default.png in Resources */,
@@ -300,7 +274,6 @@
 				842564C4172F23130079B651 /* MREMenuViewController.xib in Resources */,
 				842564C6172F26410079B651 /* generics_epoca_senza_render.jpg in Resources */,
 				84F80D2D181AEC25006AB5FD /* AppIcon.png in Resources */,
-				B5441E8818BFE2C10051ABA6 /* README.md in Resources */,
 				84F80D30181AEC4B006AB5FD /* AppIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -416,10 +389,7 @@
 				GCC_PREFIX_HEADER = "ModelRenderEngine/ModelRenderEngine-Prefix.pch";
 				INFOPLIST_FILE = "ModelRenderEngine/ModelRenderEngine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../ThirdParty/TestFlightSDK",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "A445890E-9541-40D8-92DF-B0DF1F05C0DB";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -439,10 +409,7 @@
 				GCC_PREFIX_HEADER = "ModelRenderEngine/ModelRenderEngine-Prefix.pch";
 				INFOPLIST_FILE = "ModelRenderEngine/ModelRenderEngine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../ThirdParty/TestFlightSDK",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "A445890E-9541-40D8-92DF-B0DF1F05C0DB";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";

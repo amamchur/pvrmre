@@ -78,6 +78,8 @@ namespace mre {
         model(std::string dir, std::string pod);
         ~model();
         
+        void load_effects(CPVRTPFXParser &parser);
+        
         const PVRTMat4& get_projection() const;
         const PVRTMat4& get_view() const;
         const PVRTMat4& get_world() const;

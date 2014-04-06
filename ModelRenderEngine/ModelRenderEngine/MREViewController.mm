@@ -288,8 +288,17 @@ UINavigationControllerDelegate> {
     }
     
     NSString *str = [[NSBundle mainBundle] bundlePath];
+    NSString *dir = [str stringByAppendingPathComponent:@"models"];
     NSString *file = _modelInfo.file;
-    model = new mre::model([[str stringByAppendingPathComponent:@"models"] UTF8String], [file UTF8String]);
+
+    model = new mre::model([dir UTF8String], [file UTF8String]);
+
+    NSString *effects = [dir stringByAppendingPathComponent:@"mre.pfx"];
+    CPVRTPFXParser parser;
+    CPVRTString	errorStr;
+    parser.ParseFromFile([effects UTF8String], &errorStr);
+    
+    model->load_effects(parser);
 }
 
 - (void)setupGL {

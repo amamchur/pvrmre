@@ -10,7 +10,6 @@
 
 #import "MREViewController.h"
 #import "MREMenuViewController.h"
-#import "TestFlight.h"
 
 @implementation MREAppDelegate
 
@@ -21,8 +20,6 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [TestFlight takeOff:@"c92632d2-0349-4475-a96f-00dfac8c6699"];
-    
     MREMenuViewController *menu = [[MREMenuViewController alloc] initWithNibName:@"MREMenuViewController"
                                                                           bundle:nil];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:menu];

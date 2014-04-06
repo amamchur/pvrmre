@@ -13,6 +13,8 @@
 #import "MREModelInfo.h"
 #import "MRENodelInfo.h"
 
+#import "JsonLiteObjC/JsonLiteObjc.h"
+
 @interface MREMenuViewController ()
 
 @property (retain, nonatomic) IBOutlet UITableView *table;
@@ -39,18 +41,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    MREDataLoader *loader = [[MREDataLoader alloc] init];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"models"
+                                                     ofType:@"json"
+                                                   inDirectory:@"models"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    JsonLiteDeserializer *deserializer = [JsonLiteDeserializer deserializerWithRootClass:[MREModelInfo class]];
+    JsonLiteParser *parser = [JsonLiteParser parserWithDepth:32];
+    parser.delegate = deserializer;
+    [parser parse:data];
     
-    NSURL *url = [NSURL URLWithString:@"http://mre.mamchur.net/models.json"];
-    [loader fetchUrl:url
-             rootCls:[MREModelInfo class]
-             success:^(id resource) {
-                 self.models = resource;
-                 [_table reloadData];
-             }
-             failure:^(NSError *error) {
-                 
-             }];
+    NSLog(@"%@", parser.parseError);
+    
+    self.models = [deserializer object];
+    [_table reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

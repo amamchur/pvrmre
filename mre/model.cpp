@@ -96,6 +96,18 @@ namespace mre {
         }
     }
     
+    void model::load_effects(CPVRTPFXParser &parser) {
+        unsigned int count = parser.GetNumberEffects();
+        unsigned int unknownUniforms = 0;
+        CPVRTString	errorStr;
+        for (unsigned int i = 0; i < count; i++) {
+            SPVRTPFXParserEffect pe = parser.GetEffect(i);
+            CPVRTPFXEffect *effect = new CPVRTPFXEffect();
+            effect->Load(parser, pe.Name.c_str(), parser.GetPFXFileName().c_str(), this, unknownUniforms, &errorStr);
+            effects[pe.Name.c_str()] = effect;
+        }
+    }
+    
     void model::load_effects() {
         const CPVRTModelPOD &pod = *pod_model;
         std::map<std::string, int> effectsFile;
