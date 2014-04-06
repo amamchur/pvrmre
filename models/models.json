@@ -54,47 +54,52 @@
          {
             "nodeName":"Object002",
             "materials":[
-               "f_1_d",
-               "f_2_d",
-               "f_3_d",
-               "f_4_d",
-               "f_5_d",
-               "f_6_d"
+               "Dark_wood",
+               "Dark-bahiarosewood",
+               "Dark-bubinga",
+               "Dark-rosewoodeastindian",
+               "Dark-walnutcluster-black",
+               "Dark-walnutcluster",
+               "Dark-walnutcrotch",
+               "Dark-zebrano",
+               "Light-olivetree"
             ]
          },
          {
             "nodeName":"Object004",
             "materials":[
-               "w_1",
-               "w_2",
-               "w_3",
-               "w_4"
+               "frag_tex_1",
+               "frag_tex_2",
+               "frag_tex_3",
+               "frag_tex_4"
             ]
          }
       ]
    },
    {
-      "title":"Djursholm",
+      "title":"Engelsson",
       "file":"djursholm.pod",
       "nodesInfo":[
          {
             "nodeName":"Plane001",
             "materials":[
-               "f_1_d",
-               "f_2_d",
-               "f_3_d",
-               "f_4_d",
-               "f_5_d",
-               "f_6_d"
+               "nido_tex_1",
+               "nido_tex_2",
+               "frag_tex_1",
+               "frag_tex_2",
+               "frag_tex_3",
+               "frag_tex_4"
             ]
          },
          {
             "nodeName":"Box009",
             "materials":[
-               "w_1",
-               "w_2",
-               "w_3",
-               "w_4"
+               "Dark-bahiarosewood",
+               "Dark-bubinga",
+               "Dark-walnutcluster-black",
+               "Dark-walnutcluster",
+               "Dark-walnutcrotch",
+               "Dark-zebrano"
             ]
          }
       ]
@@ -106,21 +111,24 @@
          {
             "nodeName":"Box10",
             "materials":[
-               "f_1_d",
-               "f_2_d",
-               "f_3_d",
-               "f_4_d",
-               "f_5_d",
-               "f_6_d"
+               "Dark_wood",
+               "Dark-bahiarosewood",
+               "Dark-bubinga",
+               "Dark-rosewoodeastindian",
+               "Dark-walnutcluster-black",
+               "Dark-walnutcluster",
+               "Dark-walnutcrotch",
+               "Dark-zebrano",
+               "Light-olivetree"
             ]
          },
          {
             "nodeName":"Object001",
             "materials":[
-               "w_1",
-               "w_2",
-               "w_3",
-               "w_4"
+               "old_gold",
+               "old_silver",
+               "old_steel",
+               "old_bronze"
             ]
          }
       ]
@@ -132,50 +140,31 @@
          {
             "nodeName":"nido_01",
             "materials":[
-               "f_1_d",
-               "f_2_d",
-               "f_3_d",
-               "f_4_d",
-               "f_5_d",
-               "f_6_d"
+               "nido_tex_1"
             ]
          },
          {
             "nodeName":"nido_02",
             "materials":[
-               "f_1_d",
-               "f_2_d",
-               "f_3_d",
-               "f_4_d",
-               "f_5_d",
-               "f_6_d"
+               "nido_tex_4"
             ]
          },
          {
             "nodeName":"nido_03",
             "materials":[
-               "w_1",
-               "w_2",
-               "w_3",
-               "w_4"
+               "nido_tex_2"
             ]
          },
          {
             "nodeName":"nido_04",
             "materials":[
-               "w_1",
-               "w_2",
-               "w_3",
-               "w_4"
+               "nido_tex_7"
             ]
          },
          {
             "nodeName":"nido_05",
             "materials":[
-               "w_1",
-               "w_2",
-               "w_3",
-               "w_4"
+               "nido_tex_7"
             ]
          }
       ]

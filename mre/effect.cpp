@@ -220,6 +220,10 @@ namespace mre {
                     glEnableVertexAttribArray(location);
 					glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, mesh.sNormals.nStride, mesh.sNormals.pData);
                     continue;
+                case ePVRTPFX_UsTANGENT:
+                    glEnableVertexAttribArray(location);
+					glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, mesh.sTangents.nStride, mesh.sTangents.pData);
+                    continue;
                 case ePVRTPFX_UsUV:
                     glEnableVertexAttribArray(location);
 					glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, mesh.psUVW[0].nStride, mesh.psUVW[0].pData);

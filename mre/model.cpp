@@ -302,7 +302,7 @@ namespace mre {
     void model::render() {
         recalc_view_projection();
                                
-        glEnable(GL_CULL_FACE);
+        glDisable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
         
         for (int i = 0; i < pod_model->nNumMeshNode; i++) {
