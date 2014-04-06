@@ -406,6 +406,10 @@ namespace mre {
         return node.pszName;
     }
     
+    int model::get_node_count() const {
+        return pod_model->nNumMeshNode;
+    }
+    
     int model::get_node_index(const std::string& name) const {
         for (int i = 0; i < pod_model->nNumMeshNode; i++) {
             const SPODNode &node = pod_model->pNode[i];

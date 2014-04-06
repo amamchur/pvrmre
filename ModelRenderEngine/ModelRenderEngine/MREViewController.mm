@@ -219,6 +219,7 @@ UINavigationControllerDelegate> {
     
     [self setupGL];
     [self loadModel];
+    [self resetMaterials];
     
     background = new CPVRTBackground();
     background->Init(NULL, FALSE);
@@ -299,6 +300,28 @@ UINavigationControllerDelegate> {
     parser.ParseFromFile([effects UTF8String], &errorStr);
     
     model->load_effects(parser);
+}
+
+- (void)resetMaterials {
+    int count = model->get_node_count();
+    for (int i = 0; i < count; i++) {
+        std::string name = model->get_node_name(i);
+        NSString *n = [NSString stringWithUTF8String:name.c_str()];
+        NSArray *array = materials[n];
+        if ([array count] == 0) {
+            continue;
+        }
+        
+        MREMaterial *m = array[0];
+        GLuint textId = model->get_texture([m.texture UTF8String]);
+        mre::effect_overrides eo;
+        mre::texture_override to;
+        to.unit = 0;
+        to.textId = textId;
+        eo.texture_overrides[0] = to;
+        model->set_node_overrides(i, eo);
+        model->set_selected_node(-1);
+    }
 }
 
 - (void)setupGL {

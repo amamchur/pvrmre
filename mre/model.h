@@ -106,6 +106,7 @@ namespace mre {
         int get_select_node() const;
         
         std::string get_node_name(int index) const;
+        int get_node_count() const;
         int get_node_index(const std::string& name) const;
         
         int get_node_at_pos(int x, int y, int width, int height);

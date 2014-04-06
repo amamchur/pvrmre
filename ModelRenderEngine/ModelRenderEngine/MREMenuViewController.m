@@ -50,8 +50,6 @@
     parser.delegate = deserializer;
     [parser parse:data];
     
-    NSLog(@"%@", parser.parseError);
-    
     self.models = [deserializer object];
     [_table reloadData];
 }
