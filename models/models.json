@@ -2,6 +2,7 @@
    {
       "title":"Chair S",
       "file":"e142.pod",
+      "lighg": 1,
       "nodesInfo":[
          {
             "nodeName":"Object001",

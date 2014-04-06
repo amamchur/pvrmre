@@ -102,6 +102,8 @@ namespace mre {
         void setup(float aspect);
         void render();
         
+        void set_light_index(int index);
+        
         void set_selected_node(int index);
         int get_select_node() const;
         

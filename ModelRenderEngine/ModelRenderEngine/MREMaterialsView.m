@@ -119,7 +119,7 @@
     end = MIN(end, [datasource materialsViewNumberOfMeterial:self] - 1);
     
     for (NSInteger i = start; i <= end; i++) {
-        [array addObject:[NSNumber numberWithInt:i]];
+        [array addObject:[NSNumber numberWithInteger:i]];
     }
     
     return array;

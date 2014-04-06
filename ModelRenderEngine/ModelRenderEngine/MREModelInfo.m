@@ -17,6 +17,7 @@
     self.title = nil;
     self.file = nil;
     self.nodesInfo = nil;
+    self.light = nil;
     [super dealloc];
 }
 

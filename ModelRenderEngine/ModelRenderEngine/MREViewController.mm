@@ -219,7 +219,7 @@ UINavigationControllerDelegate> {
     
     [self setupGL];
     [self loadModel];
-    [self resetMaterials];
+    [self resetCfg];
     
     background = new CPVRTBackground();
     background->Init(NULL, FALSE);
@@ -236,8 +236,8 @@ UINavigationControllerDelegate> {
     }
 
     CGImageRef spriteImage = img.CGImage;
-    size_t width = CGImageGetWidth(spriteImage);
-    size_t height = CGImageGetHeight(spriteImage);
+    GLsizei width = (GLsizei)CGImageGetWidth(spriteImage);
+    GLsizei height = (GLsizei)CGImageGetHeight(spriteImage);
     
     GLubyte *data = (GLubyte *)malloc(width * height * 4 * sizeof(GLubyte));
     CGContextRef ctx = CGBitmapContextCreate(data,
@@ -302,7 +302,7 @@ UINavigationControllerDelegate> {
     model->load_effects(parser);
 }
 
-- (void)resetMaterials {
+- (void)resetCfg {
     int count = model->get_node_count();
     for (int i = 0; i < count; i++) {
         std::string name = model->get_node_name(i);
@@ -322,6 +322,8 @@ UINavigationControllerDelegate> {
         model->set_node_overrides(i, eo);
         model->set_selected_node(-1);
     }
+    
+    model->set_light_index([_modelInfo.light intValue]);
 }
 
 - (void)setupGL {
@@ -351,7 +353,7 @@ UINavigationControllerDelegate> {
     model = NULL;
 }
 
-- (signed char)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     return touch.view == self.view;
 }
 

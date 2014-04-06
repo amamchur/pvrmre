@@ -44,7 +44,7 @@ namespace mre {
         glDeleteBuffers(count, vbos);
         glDeleteBuffers(count, indexVbo);
         
-        GLsizei n = textures.size();
+        GLsizei n = (GLsizei)textures.size();
         GLuint *tmp = new GLuint[n];
         int pos = 0;
         for (auto iter = textures.begin(); iter != textures.end(); ++iter) {
@@ -283,7 +283,8 @@ namespace mre {
         GLenum type = (mesh.sFaces.eType == EPODDataUnsignedShort) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT;        
         for(int i = 0; i < (int)mesh.nNumStrips; ++i) {
             if (indexVbo[index]) {
-                glDrawElements(GL_TRIANGLE_STRIP, mesh.pnStripLength[i]+2, type, (void*)(offset * mesh.sFaces.nStride));
+                GLvoid* indices = reinterpret_cast<GLvoid*>(offset * mesh.sFaces.nStride);
+                glDrawElements(GL_TRIANGLE_STRIP, mesh.pnStripLength[i]+2, type, indices);
             } else {
                 glDrawArrays(GL_TRIANGLE_STRIP, offset, mesh.pnStripLength[i]+2);
             }
@@ -335,6 +336,11 @@ namespace mre {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);            
             effect.cleanup();
         }
+    }
+    
+    void model::set_light_index(int index) {
+        light_pos = pod_model->GetLightPosition(index);
+        light_dir = pod_model->GetLightDirection(index);
     }
     
     void model::set_selected_node(int index) {

@@ -10,6 +10,7 @@
 
 @interface MREModelInfo : NSObject
 
+@property (copy, nonatomic) NSNumber *light;
 @property (copy, nonatomic) NSString *title;
 @property (copy, nonatomic) NSString *file;
 @property (copy, nonatomic) NSArray *nodesInfo;
