@@ -542,6 +542,7 @@ UINavigationControllerDelegate> {
     backgroundTextId = [self loadTextureFromImage:img];
     
     model->setup_default_camera();
+    model->set_light_index([_modelInfo.light intValue]);
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
