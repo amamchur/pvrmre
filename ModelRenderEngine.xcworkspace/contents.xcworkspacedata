@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:ThirdParty/PowerVR/OGLES2/Build/iOS/OGLES2Tools.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/jsonlite/platform/ios/JsonLiteObjC.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ModelRenderEngine/ModelRenderEngine.xcodeproj">
+   </FileRef>
+</Workspace>

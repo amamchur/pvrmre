@@ -10,6 +10,8 @@
 	<string>ModelRenderEngine</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>AA2DF391-76AD-4E94-8D9A-1FDD2350F98D</key>
+		<string>https://github.com/amamchur/jsonlite.git</string>
 		<key>F06B760A-E566-4FA1-AB53-95CAFC3AB9C4</key>
 		<string>https://github.com/amamchur/pvrmre.git</string>
 	</dict>
@@ -17,6 +19,8 @@
 	<string>ModelRenderEngine/ModelRenderEngine.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>AA2DF391-76AD-4E94-8D9A-1FDD2350F98D</key>
+		<string>../ThirdParty/jsonlite</string>
 		<key>F06B760A-E566-4FA1-AB53-95CAFC3AB9C4</key>
 		<string>../..</string>
 	</dict>
@@ -28,6 +32,14 @@
 	<string>F06B760A-E566-4FA1-AB53-95CAFC3AB9C4</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>AA2DF391-76AD-4E94-8D9A-1FDD2350F98D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>jsonlite</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
