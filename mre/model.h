@@ -25,15 +25,13 @@
 #include "camera.h"
 
 namespace mre {
-    class node;
     class effect_overrides;
-    class light;
+
+    typedef std::map<std::string, CPVRTPFXEffect*> effects_map;
+    typedef std::map<int, mre::effect_overrides> nodes_overrides;
     
     class model {
     private:
-        typedef std::map<std::string, CPVRTPFXEffect*> effects_map;
-        typedef std::map<int, mre::effect_overrides> nodes_overrides_map;
-        
         CPVRTModelPOD *pod_model;
         std::string pod_directory;
         
@@ -43,7 +41,6 @@ namespace mre {
         PVRTMat4 world;
         
         effects_map effects;
-        nodes_overrides_map nodes_overrides;
 
         int selected_node_index;
         
@@ -59,6 +56,7 @@ namespace mre {
         
         mre::light light;
         mre::camera camera;
+        mre::nodes_overrides nodes_overrides;
         
         model(std::string dir, std::string pod);
         ~model();
@@ -76,8 +74,7 @@ namespace mre {
         
         std::string get_node_name(int index) const;
         int get_node_count() const;
-        int get_node_index(const std::string& name) const;
-        
+        int get_node_index(const std::string& name) const;        
         int get_node_at_pos(int x, int y, int width, int height);
         
         void set_node_overrides(int node, const effect_overrides& o);

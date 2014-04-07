@@ -31,7 +31,6 @@
 		84F80D30181AEC4B006AB5FD /* AppIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */; };
 		B5441E7C18BFE2150051ABA6 /* effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5441E7418BFE2150051ABA6 /* effect.cpp */; };
 		B5441E7D18BFE2150051ABA6 /* model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5441E7618BFE2150051ABA6 /* model.cpp */; };
-		B5441E7E18BFE2150051ABA6 /* node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5441E7818BFE2150051ABA6 /* node.cpp */; };
 		B5441E7F18BFE2150051ABA6 /* texture_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5441E7A18BFE2150051ABA6 /* texture_buffer.cpp */; };
 		B5441E8C18BFE4030051ABA6 /* libOGLES2Tools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5441E8B18BFE4030051ABA6 /* libOGLES2Tools.a */; };
 		B5441E9718BFE53B0051ABA6 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5441E9618BFE53B0051ABA6 /* libJsonLiteObjC.a */; };
@@ -81,8 +80,6 @@
 		B5441E7518BFE2150051ABA6 /* effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = effect.h; sourceTree = "<group>"; };
 		B5441E7618BFE2150051ABA6 /* model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = model.cpp; sourceTree = "<group>"; };
 		B5441E7718BFE2150051ABA6 /* model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = model.h; sourceTree = "<group>"; };
-		B5441E7818BFE2150051ABA6 /* node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = node.cpp; sourceTree = "<group>"; };
-		B5441E7918BFE2150051ABA6 /* node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = node.h; sourceTree = "<group>"; };
 		B5441E7A18BFE2150051ABA6 /* texture_buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture_buffer.cpp; sourceTree = "<group>"; };
 		B5441E7B18BFE2150051ABA6 /* texture_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture_buffer.h; sourceTree = "<group>"; };
 		B5441E8B18BFE4030051ABA6 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOGLES2Tools.a; path = "../../../../Library/Developer/Xcode/DerivedData/ModelRenderEngine-ggqflczwwksljoemqoeqsjeqxpor/Build/Products/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
@@ -212,8 +209,6 @@
 				B5C42F6B18F3490900E87DFE /* light.h */,
 				B5441E7618BFE2150051ABA6 /* model.cpp */,
 				B5441E7718BFE2150051ABA6 /* model.h */,
-				B5441E7818BFE2150051ABA6 /* node.cpp */,
-				B5441E7918BFE2150051ABA6 /* node.h */,
 				B5441E7A18BFE2150051ABA6 /* texture_buffer.cpp */,
 				B5441E7B18BFE2150051ABA6 /* texture_buffer.h */,
 				B5C42F7018F35A4000E87DFE /* texture_manager.cpp */,
@@ -328,7 +323,6 @@
 				B5441E7C18BFE2150051ABA6 /* effect.cpp in Sources */,
 				B5441E7F18BFE2150051ABA6 /* texture_buffer.cpp in Sources */,
 				842564C3172F23130079B651 /* MREMenuViewController.m in Sources */,
-				B5441E7E18BFE2150051ABA6 /* node.cpp in Sources */,
 				B5C42F7218F35A4000E87DFE /* texture_manager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

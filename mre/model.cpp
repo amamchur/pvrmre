@@ -15,7 +15,6 @@
 
 #include "model.h"
 #include "effect.h"
-#include "node.h"
 #include "texture_buffer.h"
 
 #include <map>
@@ -182,6 +181,7 @@ namespace mre {
             } else {
                 pfx_effect = effects[material.pszEffectName];
             }
+            
             mre::effect effect(*this, pfx_effect);
             auto pos = nodes_overrides.find(i);
             if (pos != nodes_overrides.end()) {
