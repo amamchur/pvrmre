@@ -151,6 +151,12 @@
                   "diffuse":"797979",
                   "ambient":"000000",
                   "specular":"101010"
+               },
+               {
+                  "thumbnail": "t5",
+                  "diffuse":"694904",
+                  "ambient":"694904",
+                  "specular":"101010"
                }            
             ]
          },
@@ -168,7 +174,13 @@
                   "diffuse":"0F0F0F",
                   "ambient":"000000",
                   "specular":"0F0F0F"
-               }            
+               },
+               {
+                  "thumbnail": "t6",
+                  "diffuse":"F0F0F0",
+                  "ambient":"E0E0E0",
+                  "specular":"FFFFFF"
+               }             
             ]
          }
       ]
