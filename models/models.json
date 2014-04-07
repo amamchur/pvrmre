@@ -72,6 +72,7 @@
    {
       "title":"Cortezari Lamp",
       "file":"cortezari_lamp.pod",
+      "light": 3,
       "nodesInfo":[
       ]
    }
