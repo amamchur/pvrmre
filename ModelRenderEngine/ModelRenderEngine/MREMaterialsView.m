@@ -15,13 +15,11 @@
 @implementation MREMaterial
 
 @synthesize image;
-@synthesize name;
-@synthesize texture;
+@synthesize effect;
 
 - (void)dealloc {
     self.image = nil;
-    self.name = nil;
-    self.texture = nil;
+    self.effect = nil;
     [super dealloc];
 }
 

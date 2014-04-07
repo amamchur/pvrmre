@@ -2,78 +2,161 @@
    {
       "title":"Chair S",
       "file":"e142.pod",
-      "light": 0,
+      "light":0,
       "nodesInfo":[
          {
             "nodeName":"Object001",
-            "materials":[
-               "st263",
-               "st2090"
+            "effects":[
+               {
+                  "thumbnail": "st263",
+                  "textures": ["st263"]
+               },
+               {
+                  "thumbnail": "st2090",
+                  "textures": ["st2090"]
+               }            
             ]
          },
          {
             "nodeName":"Plane003",
-            "materials":[
-               "w_1",
-               "w_2"
+            "effects":[
+               {
+                  "thumbnail": "w_1",
+                  "textures": ["w_1"]
+               },
+               {
+                  "thumbnail": "w_2",
+                  "textures": ["w_2"]
+               }            
             ]
          }
       ]
    },
+
    {
       "title":"Selva Vendome Bergere",
       "file":"selva_poltron.pod",
-      "light": 1,
+      "light":1,
       "nodesInfo":[
          {
             "nodeName":"fabrick",
-            "materials":[
-               "f_1_d",
-               "f_2_d",
-               "f_3_d",
-               "f_4_d",
-               "f_5_d",
-               "f_6_d"
+            "effects":[
+               {
+                  "thumbnail": "f_1_d",
+                  "textures": ["f_1_d"]
+               },
+               {
+                  "thumbnail": "f_2_d",
+                  "textures": ["f_2_d"]
+               },
+               {
+                  "thumbnail": "f_3_d",
+                  "textures": ["f_3_d"]
+               },
+               {
+                  "thumbnail": "f_4_d",
+                  "textures": ["f_4_d"]
+               },
+               {
+                  "thumbnail": "f_5_d",
+                  "textures": ["f_5_d"]
+               },
+               {
+                  "thumbnail": "f_6_d",
+                  "textures": ["f_6_d"]
+               }
             ]
          },
          {
             "nodeName":"wood",
-            "materials":[
-               "w_1",
-               "w_2",
-               "w_3"
+            "effects":[
+               {
+                  "thumbnail": "w_1",
+                  "textures": ["w_1"]
+               },
+               {
+                  "thumbnail": "w_2",
+                  "textures": ["w_2"]
+               },
+               {
+                  "thumbnail": "w_3",
+                  "textures": ["w_3"]
+               }
             ]
          }
       ]
    },
+
    {
       "title":"Engelsson",
       "file":"djursholm.pod",
       "nodesInfo":[
          {
             "nodeName":"Plane001",
-            "materials":[
-                         "f_1_d",
-                         "f_2_d",
-               "f_5_d",
-               "f_6_d"
+            "effects":[
+               {
+                  "thumbnail": "f_1_d",
+                  "textures": ["f_1_d"]
+               },
+               {
+                  "thumbnail": "f_2_d",
+                  "textures": ["f_2_d"]
+               },
+               {
+                  "thumbnail": "f_5_d",
+                  "textures": ["f_5_d"]
+               },
+               {
+                  "thumbnail": "f_6_d",
+                  "textures": ["f_6_d"]
+               }
             ]
          },
          {
             "nodeName":"Box009",
-            "materials":[
-                         "w_1",
-                         "w_2",
-                         "w_5"
+            "effects":[
+               {
+                  "thumbnail": "w_1",
+                  "textures": ["w_1"]
+               },
+               {
+                  "thumbnail": "w_2",
+                  "textures": ["w_2"]
+               },
+               {
+                  "thumbnail": "w_5",
+                  "textures": ["w_5"]
+               }
             ]
          }
       ]
    },
+
    {
       "title":"Cortezari Lamp",
       "file":"cortezari_lamp.pod",
-      "light": 3,
+      "light":3,
       "nodesInfo":[
+         {
+            "nodeName":"Top light Corte ZARI",
+            "effects":[
+               {
+                  "thumbnail": "w_1",
+                  "diffuse":"FF0000",
+                  "textures": ["w_1"]
+               }            
+            ]
+         },
+         {
+            "nodeName":"Object001",
+            "effects":[
+               {
+                  "thumbnail": "w_1",
+                  "diffuse":"00FF00",
+                  "textures": ["w_1"]
+               }            
+            ]
+         }
       ]
    }
 ]

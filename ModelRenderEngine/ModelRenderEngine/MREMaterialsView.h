@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class MREMaterialsView;
+@class MREEffectInfo;
 
 @interface MREMaterial : NSObject
 
 @property (nonatomic, retain) UIImage *image;
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *texture;
+@property (nonatomic, retain) MREEffectInfo *effect;
 
 @end
 

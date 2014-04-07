@@ -11,6 +11,6 @@
 @interface MRENodelInfo : NSObject
 
 @property  (copy, nonatomic) NSString *nodeName;
-@property  (copy, nonatomic) NSArray *materials;
+@property  (copy, nonatomic) NSArray *effects;
 
 @end

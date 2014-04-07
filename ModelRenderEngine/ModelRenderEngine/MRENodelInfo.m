@@ -7,13 +7,22 @@
 //
 
 #import "MRENodelInfo.h"
+#import "MREEffectInfo.h"
+#import "JsonLiteObjC/JsonLiteObjC.h"
 
 @implementation MRENodelInfo
 
 - (void)dealloc {
     self.nodeName = nil;
-    self.materials = nil;
+    self.effects = nil;
     [super dealloc];
 }
+
++ (NSArray *)jsonLiteBindingRules {
+    return @[
+             [JsonLiteBindRule ruleForKey:@"effects" elementClass:[MREEffectInfo class]]
+             ];
+}
+
 
 @end

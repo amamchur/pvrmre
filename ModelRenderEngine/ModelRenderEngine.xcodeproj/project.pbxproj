@@ -29,6 +29,7 @@
 		843D4146172C417900AC2DA1 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D4145172C417900AC2DA1 /* GLKit.framework */; };
 		84F80D2D181AEC25006AB5FD /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F80D2C181AEC25006AB5FD /* AppIcon.png */; };
 		84F80D30181AEC4B006AB5FD /* AppIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */; };
+		879C2BBB18F301C400FB97D4 /* MREEffectInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 879C2BBA18F301C400FB97D4 /* MREEffectInfo.m */; };
 		B5441E7C18BFE2150051ABA6 /* effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5441E7418BFE2150051ABA6 /* effect.cpp */; };
 		B5441E7D18BFE2150051ABA6 /* model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5441E7618BFE2150051ABA6 /* model.cpp */; };
 		B5441E7E18BFE2150051ABA6 /* node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5441E7818BFE2150051ABA6 /* node.cpp */; };
@@ -72,6 +73,8 @@
 		84F80D2C181AEC25006AB5FD /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppIcon.png; path = ../AppIcon.png; sourceTree = "<group>"; };
 		84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon@2x.png"; path = "../AppIcon@2x.png"; sourceTree = "<group>"; };
 		87926FAE18BF8CFF00902BC5 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOGLES2Tools.a; path = "PowerVR/OGLES2/Build/iOS/build/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
+		879C2BB918F301C400FB97D4 /* MREEffectInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MREEffectInfo.h; sourceTree = "<group>"; };
+		879C2BBA18F301C400FB97D4 /* MREEffectInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MREEffectInfo.m; sourceTree = "<group>"; };
 		B5441E6F18BFD40A0051ABA6 /* libOGLES2Tools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOGLES2Tools.a; path = "PowerVR/OGLES2/Build/iOS/build/Debug-iphoneos/libOGLES2Tools.a"; sourceTree = "<group>"; };
 		B5441E7418BFE2150051ABA6 /* effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = effect.cpp; sourceTree = "<group>"; };
 		B5441E7518BFE2150051ABA6 /* effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = effect.h; sourceTree = "<group>"; };
@@ -154,26 +157,28 @@
 		843D4117172C38EF00AC2DA1 /* ModelRenderEngine */ = {
 			isa = PBXGroup;
 			children = (
+				84F80D2C181AEC25006AB5FD /* AppIcon.png */,
+				84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */,
+				842564C5172F26410079B651 /* generics_epoca_senza_render.jpg */,
 				843D4120172C38EF00AC2DA1 /* MREAppDelegate.h */,
 				843D4121172C38EF00AC2DA1 /* MREAppDelegate.m */,
 				84330E0B172DD3D100A4CBBB /* MREMaterialsView.h */,
 				84330E0C172DD3D100A4CBBB /* MREMaterialsView.m */,
-				843D4129172C38EF00AC2DA1 /* MREViewController.h */,
-				843D412A172C38EF00AC2DA1 /* MREViewController.mm */,
-				843D412C172C38EF00AC2DA1 /* MREViewController.xib */,
 				842564C0172F23130079B651 /* MREMenuViewController.h */,
 				842564C1172F23130079B651 /* MREMenuViewController.m */,
 				842564C2172F23130079B651 /* MREMenuViewController.xib */,
-				84F80D2F181AEC4B006AB5FD /* AppIcon@2x.png */,
-				84F80D2C181AEC25006AB5FD /* AppIcon.png */,
-				842564C5172F26410079B651 /* generics_epoca_senza_render.jpg */,
-				843D4118172C38EF00AC2DA1 /* Supporting Files */,
+				843D4129172C38EF00AC2DA1 /* MREViewController.h */,
+				843D412A172C38EF00AC2DA1 /* MREViewController.mm */,
+				843D412C172C38EF00AC2DA1 /* MREViewController.xib */,
+				B5441EA018BFF25F0051ABA6 /* MREDataLoader.h */,
+				B5441EA118BFF25F0051ABA6 /* MREDataLoader.m */,
+				879C2BB918F301C400FB97D4 /* MREEffectInfo.h */,
+				879C2BBA18F301C400FB97D4 /* MREEffectInfo.m */,
 				B5441E9A18BFEE7A0051ABA6 /* MREModelInfo.h */,
 				B5441E9B18BFEE7A0051ABA6 /* MREModelInfo.m */,
 				B5441E9D18BFEEED0051ABA6 /* MRENodelInfo.h */,
 				B5441E9E18BFEEED0051ABA6 /* MRENodelInfo.m */,
-				B5441EA018BFF25F0051ABA6 /* MREDataLoader.h */,
-				B5441EA118BFF25F0051ABA6 /* MREDataLoader.m */,
+				843D4118172C38EF00AC2DA1 /* Supporting Files */,
 			);
 			path = ModelRenderEngine;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 				B5441E9C18BFEE7A0051ABA6 /* MREModelInfo.m in Sources */,
 				843D411E172C38EF00AC2DA1 /* main.m in Sources */,
 				B5441E7D18BFE2150051ABA6 /* model.cpp in Sources */,
+				879C2BBB18F301C400FB97D4 /* MREEffectInfo.m in Sources */,
 				B5441EA218BFF25F0051ABA6 /* MREDataLoader.m in Sources */,
 				B5441E9F18BFEEED0051ABA6 /* MRENodelInfo.m in Sources */,
 				843D4122172C38EF00AC2DA1 /* MREAppDelegate.m in Sources */,

@@ -10,6 +10,7 @@
 #import "MREMaterialsView.h"
 #import "MREModelInfo.h"
 #import "MRENodelInfo.h"
+#import "MREEffectInfo.h"
 
 #import "effect.h"
 #import "model.h"
@@ -156,14 +157,13 @@ UINavigationControllerDelegate> {
     return self;
 }
 
-- (MREMaterial *)materialWithName:(NSString *)name {
-    NSString *imgPath = [[NSBundle mainBundle] pathForResource:name
+- (MREMaterial *)materialWithEffect:(MREEffectInfo *)effect {
+    NSString *imgPath = [[NSBundle mainBundle] pathForResource:effect.thumbnail
                                                         ofType:@"jpg"
                                                    inDirectory:@"models/textures_thumb"];
     MREMaterial *m = [[MREMaterial alloc] init];
     m.image = [UIImage imageWithContentsOfFile:imgPath];
-    m.texture = [NSString stringWithFormat:@"textures/%@.pvr", name];
-    m.name = name;
+    m.effect = effect;
     return [m autorelease];
 }
 
@@ -181,8 +181,8 @@ UINavigationControllerDelegate> {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     for (MRENodelInfo *info in _modelInfo.nodesInfo) {
         NSMutableArray *array = [NSMutableArray array];
-        for (NSString *str in info.materials) {
-            [array addObject:[self materialWithName:str]];
+        for (MREEffectInfo *effect in info.effects) {
+            [array addObject:[self materialWithEffect:effect]];
         }
         [dict setObject:array forKey:info.nodeName];
     }
@@ -302,6 +302,47 @@ UINavigationControllerDelegate> {
     model->load_effects(parser);
 }
 
+- (PVRTVec3)colorFromString:(NSString *)str {
+    PVRTVec3 vec3;
+    unsigned value = 0;
+    [[NSScanner scannerWithString:str] scanHexInt:&value];
+    vec3.x = ((value >> 16) & 0xFF) / 255.0f;
+    vec3.y = ((value >> 8) & 0xFF) / 255.0f;
+    vec3.z = ((value >> 0) & 0xFF) / 255.0f;
+    return vec3;
+}
+
+- (mre::effect_overrides)overridesForEffect:(MREEffectInfo *)effect {
+    mre::effect_overrides eo;
+    int textureSlot = 0;
+    for (NSString *texture in effect.textures) {
+        NSString *path = [NSString stringWithFormat:@"textures/%@.pvr", texture];
+        GLuint textId = model->get_texture([path UTF8String]);
+        mre::texture_override to;
+        to.unit = textureSlot;
+        to.textId = textId;
+        eo.texture_overrides[textureSlot] = to;
+        textureSlot++;
+    }
+    
+    if (effect.ambient != nil) {
+        PVRTVec3 vec3 = [self colorFromString:effect.diffuse];
+        eo.uniform_overrides[ePVRTPFX_UsMATERIALCOLORAMBIENT] = vec3;
+    }
+    
+    if (effect.diffuse != nil) {
+        PVRTVec3 vec3 = [self colorFromString:effect.diffuse];
+        eo.uniform_overrides[ePVRTPFX_UsMATERIALCOLORDIFFUSE] = vec3;
+    }
+    
+    if (effect.specular != nil) {
+        PVRTVec3 vec3 = [self colorFromString:effect.specular];
+        eo.uniform_overrides[ePVRTPFX_UsMATERIALCOLORSPECULAR] = vec3;
+    }
+    
+    return eo;
+}
+
 - (void)resetCfg {
     int count = model->get_node_count();
     for (int i = 0; i < count; i++) {
@@ -313,12 +354,8 @@ UINavigationControllerDelegate> {
         }
         
         MREMaterial *m = array[0];
-        GLuint textId = model->get_texture([m.texture UTF8String]);
-        mre::effect_overrides eo;
-        mre::texture_override to;
-        to.unit = 0;
-        to.textId = textId;
-        eo.texture_overrides[0] = to;
+        MREEffectInfo *effect = m.effect;
+        mre::effect_overrides eo = [self overridesForEffect:effect];
         model->set_node_overrides(i, eo);
         model->set_selected_node(-1);
     }
@@ -494,12 +531,8 @@ UINavigationControllerDelegate> {
     MREMaterial *m = [_activeMeterieals objectAtIndex:index];
     int node = model->get_select_node();
     if (node >= 0) {
-        GLuint textId = model->get_texture([m.texture UTF8String]);
-        mre::effect_overrides eo;
-        mre::texture_override to;
-        to.unit = 0;
-        to.textId = textId;
-        eo.texture_overrides[0] = to;
+        MREEffectInfo *effect = m.effect;
+        mre::effect_overrides eo = [self overridesForEffect:effect];
         model->set_node_overrides(node, eo);
         model->set_selected_node(-1);
     }
