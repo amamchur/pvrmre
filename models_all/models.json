@@ -1,0 +1,78 @@
+[
+   {
+      "title":"Chair S",
+      "file":"e142.pod",
+      "light": 0,
+      "nodesInfo":[
+         {
+            "nodeName":"Object001",
+            "materials":[
+               "st263",
+               "st2090"
+            ]
+         },
+         {
+            "nodeName":"Plane003",
+            "materials":[
+               "w_1",
+               "w_2"
+            ]
+         }
+      ]
+   },
+   {
+      "title":"Selva Vendome Bergere",
+      "file":"selva_poltron.pod",
+      "light": 1,
+      "nodesInfo":[
+         {
+            "nodeName":"fabrick",
+            "materials":[
+               "f_1_d",
+               "f_2_d",
+               "f_3_d",
+               "f_4_d",
+               "f_5_d",
+               "f_6_d"
+            ]
+         },
+         {
+            "nodeName":"wood",
+            "materials":[
+               "w_1",
+               "w_2",
+               "w_3"
+            ]
+         }
+      ]
+   },
+   {
+      "title":"Engelsson",
+      "file":"djursholm.pod",
+      "nodesInfo":[
+         {
+            "nodeName":"Plane001",
+            "materials":[
+                         "f_1_d",
+                         "f_2_d",
+               "f_5_d",
+               "f_6_d"
+            ]
+         },
+         {
+            "nodeName":"Box009",
+            "materials":[
+                         "w_1",
+                         "w_2",
+                         "w_5"
+            ]
+         }
+      ]
+   },
+   {
+      "title":"Cortezari Lamp",
+      "file":"cortezari_lamp.pod",
+      "nodesInfo":[
+      ]
+   }
+]
