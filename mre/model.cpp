@@ -1,10 +1,17 @@
 //
-//  Model.cpp
-//  ModelRenderEngine
+//  Copyright 2013-2014, Andrii Mamchur
 //
-//  Created by admin on 4/27/13.
-//  Copyright (c) 2013 Andrii Mamchur. All rights reserved.
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
 //
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License
 
 #include "model.h"
 #include "effect.h"
@@ -20,12 +27,6 @@
 namespace mre {
     model::model(std::string dir, std::string pod)
     : pod_directory(dir)
-    , distance(-1)
-    , dirty_view_projection(true)
-    , aspect(1)
-    , right_rotation(0.0)
-    , up_rotation(0.0)
-    , viewport_translation(0.0)
     , selected_node_index(-1) {
         std::string file = dir + "/" + pod;
         pod_model = new CPVRTModelPOD();
@@ -33,9 +34,7 @@ namespace mre {
         if (error == PVR_SUCCESS) {
             load_bounding_boxes();
             load_vbo();
-            load_nodes();
             load_effects();
-            setup_default_camera();
         }
     }
     
@@ -44,19 +43,10 @@ namespace mre {
         glDeleteBuffers(count, vbos);
         glDeleteBuffers(count, indexVbo);
         
-        GLsizei n = (GLsizei)textures.size();
-        GLuint *tmp = new GLuint[n];
-        int pos = 0;
-        for (auto iter = textures.begin(); iter != textures.end(); ++iter) {
-            tmp[pos++] = iter->second;
-        }
-        glGenTextures(n, tmp);
-        
         for (auto iter = effects.begin(); iter != effects.end(); ++iter) {
             delete iter->second;
         }
         
-        delete[] tmp;
         delete vbos;
         delete indexVbo;
         delete pod_model;
@@ -87,15 +77,6 @@ namespace mre {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
     
-    void model::load_nodes() {
-        const PVRTuint32 count = pod_model->nNumNode;
-        for (int i = 0; i < count; i++) {
-            const SPODNode &node = pod_model->pNode[i];
-            mre::node n(node.pszName, i);
-            nodes.push_back(n);
-        }
-    }
-    
     void model::load_effects(CPVRTPFXParser &parser) {
         unsigned int count = parser.GetNumberEffects();
         unsigned int unknownUniforms = 0;
@@ -103,7 +84,7 @@ namespace mre {
         for (unsigned int i = 0; i < count; i++) {
             SPVRTPFXParserEffect pe = parser.GetEffect(i);
             CPVRTPFXEffect *effect = new CPVRTPFXEffect();
-            effect->Load(parser, pe.Name.c_str(), parser.GetPFXFileName().c_str(), this, unknownUniforms, &errorStr);
+            effect->Load(parser, pe.Name.c_str(), parser.GetPFXFileName().c_str(), NULL, unknownUniforms, &errorStr);
             effects[pe.Name.c_str()] = effect;
         }
     }
@@ -126,7 +107,7 @@ namespace mre {
         unsigned int unknownUniforms = 0;
         for (auto iter = effectsMap.begin(); iter != effectsMap.end(); ++iter) {
             CPVRTPFXEffect *effect = new CPVRTPFXEffect();
-            effect->Load(parser, iter->first.c_str(), file.c_str(), this, unknownUniforms, &errorStr);
+            effect->Load(parser, iter->first.c_str(), file.c_str(), NULL, unknownUniforms, &errorStr);
             effects[iter->first] = effect;
         }
     }
@@ -147,126 +128,8 @@ namespace mre {
         delete[] boxes;
     }
     
-    const PVRTMat4& model::get_projection() const {
-        return projection;        
-    }
-    
-    const PVRTMat4& model::get_view() const {
-        return view;
-    }
-    
     const PVRTMat4& model::get_world() const {
         return world;
-    }
-    
-    const PVRTVec3& model::get_eye_pos() const {
-        return eye_pos;
-    }
-    
-    const PVRTVec3& model::get_light_pos() const {
-        return light_pos;
-    }
-    
-    const PVRTVec3& model::get_light_dir() const {
-        return light_dir;
-    }
-    
-    double model::get_distance() const {
-        return distance;
-    }
-    
-    void model::set_distance(double d) {
-        distance = d;
-        dirty_view_projection = true;
-    }
-    
-    double model::get_up_rotation() const {
-        return up_rotation;
-    }
-    
-    void model::set_up_rotation(double r) {
-        up_rotation = r;
-        dirty_view_projection = true;
-    }
-    
-    double model::get_right_rotation() const {
-        return right_rotation;
-    }
-    
-    void model::set_right_rotation(double r) {
-        right_rotation = r;
-        dirty_view_projection = true;
-    }
-    
-    const PVRTVec3& model::get_viewport_translation() const {
-        return viewport_translation;
-    }
-    
-    void model::set_viewport_translation(const PVRTVec3& t) {
-        viewport_translation = t;
-        dirty_view_projection = true;
-    }
-    
-    void model::recalc_view_projection() {
-        if (!dirty_view_projection) {
-            return;
-        }
-        
-        PVRTVec3 cam_pos(target_pos);
-        cam_pos.z += distance;
-        
-        PVRTVec3 forward = cam_pos - target_pos;
-        PVRTVec3 up(0.0, 1.0, 0.0);
-        PVRTVec3 right(1.0, 0.0, 0.0);
-        up.normalize();
-        right.normalize();
-        
-        PVRTQUATERNION qu, qr, q;
-        PVRTMatrixQuaternionRotationAxis(qu, up, up_rotation);
-        PVRTMatrixQuaternionRotationAxis(qr, right, right_rotation);
-        PVRTMatrixQuaternionMultiply(q, qu, qr);
-        
-        PVRTMat4 m;
-        PVRTMatrixRotationQuaternion(m, q);
-        
-        eye_pos = forward * m + target_pos;
-        up = up * m;
-        
-        PVRTMat4 vpt = PVRTMat4::Translation(viewport_translation);        
-        view = vpt * PVRTMat4::LookAtRH(eye_pos, target_pos, up);
-        projection = PVRTMat4::PerspectiveFovRH(M_PI_4, aspect, CAM_NEAR, CAM_FAR, PVRTMat4::OGL, false);
-        world = PVRTMat4::Identity();
-        
-        dirty_view_projection = false;
-    }
-    
-    void model::setup_default_camera() {
-        light_pos = pod_model->GetLightPosition(0);
-        light_dir = pod_model->GetLightDirection(0);
-        
-        up_rotation = 0;
-        right_rotation = 0;
-        viewport_translation *= 0;
-        
-        distance = std::max((double)model_box.Point[7].x, (double)model_box.Point[7].y);
-        distance = std::max((double)distance, (double)model_box.Point[7].z);
-        distance *= 2;
-        
-        target_pos.x = (model_box.Point[0].x + model_box.Point[7].x) / 2;
-        target_pos.y = (model_box.Point[0].y + model_box.Point[7].y) / 2;
-        target_pos.z = (model_box.Point[0].z + model_box.Point[7].z) / 2;
-        
-        dirty_view_projection = true;
-    }
-    
-    void model::setup(float aspect) {
-        if (this->aspect == aspect) {
-            return;
-        }
-        
-        this->aspect = aspect;
-        dirty_view_projection = true;
-        recalc_view_projection();
     }
     
     void model::draw_triangles_mesh(const SPODMesh &mesh, int index) {
@@ -300,9 +163,7 @@ namespace mre {
         }
     }
     
-    void model::render() {
-        recalc_view_projection();
-                               
+    void model::render() {                               
         glDisable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
         
@@ -339,8 +200,9 @@ namespace mre {
     }
     
     void model::set_light_index(int index) {
-        light_pos = pod_model->GetLightPosition(index);
-        light_dir = pod_model->GetLightDirection(index);
+        light.position = pod_model->GetLightPosition(index);
+        light.direction = pod_model->GetLightDirection(index);
+        light.color = pod_model->pLight[index].pfColour;
     }
     
     void model::set_selected_node(int index) {
@@ -424,31 +286,5 @@ namespace mre {
             }
         }
         return -1;
-    }
-    
-    GLuint model::get_texture(const std::string& name) {
-        auto pos = textures.find(name);        
-        if (pos != textures.end()) {
-            return pos->second;
-        }
-        
-        std::string path = pod_directory + "/" + name;
-        GLuint uiHandle = 0;
-        if(PVRTTextureLoadFromPVR(path.c_str(), &uiHandle) != PVR_SUCCESS) {
-            return 0;
-        }
-        
-        textures[name] = uiHandle;
-        return uiHandle;
-    }
-    
-    EPVRTError model::PVRTPFXOnLoadTexture(const CPVRTStringHash& TextureName, GLuint& uiHandle, unsigned int& uiFlags) {
-        std::string path = pod_directory + "/" + TextureName.c_str();
-        if(PVRTTextureLoadFromPVR(path.c_str(), &uiHandle) != PVR_SUCCESS) {
-            return PVR_FAIL;
-        }
-        
-        textures[TextureName.c_str()] = uiHandle;
-        return PVR_SUCCESS;
     }
 }

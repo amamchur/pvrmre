@@ -13,23 +13,17 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#ifndef PVRMRE_TEXTURE_BUFFER_H
-#define PVRMRE_TEXTURE_BUFFER_H
+#ifndef PVRMRE_LIGHT_H
+#define PVRMRE_LIGHT_H
 
 #include "OGLES2Tools.h"
 
 namespace mre {
-    class texture_buffer {
-    private:
-        GLsizei width;
-        GLsizei height;
-        GLuint texture;
-        GLuint render_buffer;
-        GLuint frame_buffer;
-        bool auto_delete_texture;
+    class light {
     public:
-        texture_buffer(GLsizei width, GLsizei height, bool auto_delete_texture = false);
-        ~texture_buffer();
+        PVRTVec3 position;
+        PVRTVec3 direction;
+        PVRTVec3 color;
     };
 }
 

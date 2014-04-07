@@ -13,23 +13,25 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#ifndef PVRMRE_TEXTURE_BUFFER_H
-#define PVRMRE_TEXTURE_BUFFER_H
+#ifndef PVRMRE_TEXTURE_MANAGER_H
+#define PVRMRE_TEXTURE_MANAGER_H
+
+#include <string>
+#include <map>
 
 #include "OGLES2Tools.h"
 
 namespace mre {
-    class texture_buffer {
+    class texture_manager {
     private:
-        GLsizei width;
-        GLsizei height;
-        GLuint texture;
-        GLuint render_buffer;
-        GLuint frame_buffer;
-        bool auto_delete_texture;
+        typedef std::map<std::string, GLuint> textures_map;
+        textures_map textures;
+        std::string directory;
     public:
-        texture_buffer(GLsizei width, GLsizei height, bool auto_delete_texture = false);
-        ~texture_buffer();
+        texture_manager(const std::string &dir);
+        ~texture_manager();
+        
+        GLuint get_texture(const std::string& name);
     };
 }
 

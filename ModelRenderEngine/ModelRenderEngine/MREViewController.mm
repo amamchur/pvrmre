@@ -14,6 +14,7 @@
 
 #import "effect.h"
 #import "model.h"
+#import "texture_manager.h"
 
 @interface MREViewController ()<
 UIGestureRecognizerDelegate,
@@ -21,6 +22,8 @@ UIPopoverControllerDelegate,
 UIImagePickerControllerDelegate,
 UINavigationControllerDelegate> {
     mre::model *model;
+    mre::texture_manager *textureManager;
+    
     CPVRTBackground *background;
     GLuint backgroundTextId;
 }
@@ -286,6 +289,7 @@ UINavigationControllerDelegate> {
 - (void)loadModel {
     if (model == NULL) {
         delete model;
+        delete textureManager;
     }
     
     NSString *str = [[NSBundle mainBundle] bundlePath];
@@ -293,13 +297,15 @@ UINavigationControllerDelegate> {
     NSString *file = _modelInfo.file;
 
     model = new mre::model([dir UTF8String], [file UTF8String]);
-
+    textureManager = new mre::texture_manager([dir UTF8String]);
+    
     NSString *effects = [dir stringByAppendingPathComponent:@"mre.pfx"];
     CPVRTPFXParser parser;
     CPVRTString	errorStr;
     parser.ParseFromFile([effects UTF8String], &errorStr);
     
     model->load_effects(parser);
+    model->camera.setup(model->model_box);
 }
 
 - (PVRTVec3)colorFromString:(NSString *)str {
@@ -317,7 +323,7 @@ UINavigationControllerDelegate> {
     int textureSlot = 0;
     for (NSString *texture in effect.textures) {
         NSString *path = [NSString stringWithFormat:@"textures/%@.pvr", texture];
-        GLuint textId = model->get_texture([path UTF8String]);
+        GLuint textId = textureManager->get_texture([path UTF8String]);
         mre::texture_override to;
         to.unit = textureSlot;
         to.textId = textId;
@@ -386,8 +392,10 @@ UINavigationControllerDelegate> {
         model = NULL;
     }
     
-    delete model;
-    model = NULL;
+    if (textureManager != NULL) {
+        delete textureManager;
+        textureManager = NULL;
+    }
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -397,10 +405,10 @@ UINavigationControllerDelegate> {
 - (void)onPinch:(UIPinchGestureRecognizer *)pinch {
     switch (pinch.state) {
         case UIGestureRecognizerStateBegan:
-            pinch.scale = 1 / model->get_distance();
+            pinch.scale = 1 / model->camera.distance;
             break;
         case UIGestureRecognizerStateChanged:
-            model->set_distance(1 / pinch.scale);
+            model->camera.distance = 1 / pinch.scale;
             break;
         default:
             break;
@@ -411,8 +419,8 @@ UINavigationControllerDelegate> {
     switch (pan.state) {
         case UIGestureRecognizerStateChanged: {
             CGPoint p  = [pan translationInView:self.view];
-            model->set_up_rotation(model->get_up_rotation() - p.x * 0.01);
-            model->set_right_rotation(model->get_right_rotation() - p.y * 0.01);
+            model->camera.up_rotation -= p.x * 0.01;
+            model->camera.right_rotation -= p.y * 0.01;
             [pan setTranslation:CGPointZero inView:self.view];
             break;
         }
@@ -425,10 +433,10 @@ UINavigationControllerDelegate> {
     switch (pan.state) {
         case UIGestureRecognizerStateChanged: {
             CGPoint p  = [pan translationInView:self.view];
-            PVRTVec3 v = model->get_viewport_translation();
+            PVRTVec3 v = model->camera.translation;
             v.x += p.x;
             v.y -= p.y;
-            model->set_viewport_translation(v);
+            model->camera.translation = v;
             [pan setTranslation:CGPointZero inView:self.view];
             break;
         }
@@ -554,7 +562,8 @@ UINavigationControllerDelegate> {
     }
     
     if (model != NULL) {        
-        model->setup(rect.size.width / rect.size.height);
+        model->camera.aspect = rect.size.width / rect.size.height;
+        model->camera.prepare();
         model->render();
     }
 }
@@ -574,8 +583,8 @@ UINavigationControllerDelegate> {
     UIImage *img = [info objectForKey:UIImagePickerControllerOriginalImage];
     backgroundTextId = [self loadTextureFromImage:img];
     
-    model->setup_default_camera();
     model->set_light_index([_modelInfo.light intValue]);
+    model->camera.setup(model->model_box);
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {

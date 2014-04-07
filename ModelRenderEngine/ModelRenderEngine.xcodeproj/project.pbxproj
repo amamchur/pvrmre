@@ -40,6 +40,9 @@
 		B5C42F6718F341BF00E87DFE /* MREEffectInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C42F6218F341BF00E87DFE /* MREEffectInfo.m */; };
 		B5C42F6818F341BF00E87DFE /* MREModelInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C42F6418F341BF00E87DFE /* MREModelInfo.m */; };
 		B5C42F6918F341BF00E87DFE /* MRENodelInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C42F6618F341BF00E87DFE /* MRENodelInfo.m */; };
+		B5C42F6C18F3490900E87DFE /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C42F6A18F3490900E87DFE /* light.cpp */; };
+		B5C42F6F18F34DD300E87DFE /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C42F6D18F34DD300E87DFE /* camera.cpp */; };
+		B5C42F7218F35A4000E87DFE /* texture_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C42F7018F35A4000E87DFE /* texture_manager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +96,12 @@
 		B5C42F6418F341BF00E87DFE /* MREModelInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MREModelInfo.m; sourceTree = "<group>"; };
 		B5C42F6518F341BF00E87DFE /* MRENodelInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRENodelInfo.h; sourceTree = "<group>"; };
 		B5C42F6618F341BF00E87DFE /* MRENodelInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRENodelInfo.m; sourceTree = "<group>"; };
+		B5C42F6A18F3490900E87DFE /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
+		B5C42F6B18F3490900E87DFE /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
+		B5C42F6D18F34DD300E87DFE /* camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cpp; sourceTree = "<group>"; };
+		B5C42F6E18F34DD300E87DFE /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
+		B5C42F7018F35A4000E87DFE /* texture_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture_manager.cpp; sourceTree = "<group>"; };
+		B5C42F7118F35A4000E87DFE /* texture_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture_manager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,14 +204,20 @@
 		B5441E7318BFE2150051ABA6 /* mre */ = {
 			isa = PBXGroup;
 			children = (
+				B5C42F6D18F34DD300E87DFE /* camera.cpp */,
+				B5C42F6E18F34DD300E87DFE /* camera.h */,
 				B5441E7418BFE2150051ABA6 /* effect.cpp */,
 				B5441E7518BFE2150051ABA6 /* effect.h */,
+				B5C42F6A18F3490900E87DFE /* light.cpp */,
+				B5C42F6B18F3490900E87DFE /* light.h */,
 				B5441E7618BFE2150051ABA6 /* model.cpp */,
 				B5441E7718BFE2150051ABA6 /* model.h */,
 				B5441E7818BFE2150051ABA6 /* node.cpp */,
 				B5441E7918BFE2150051ABA6 /* node.h */,
 				B5441E7A18BFE2150051ABA6 /* texture_buffer.cpp */,
 				B5441E7B18BFE2150051ABA6 /* texture_buffer.h */,
+				B5C42F7018F35A4000E87DFE /* texture_manager.cpp */,
+				B5C42F7118F35A4000E87DFE /* texture_manager.h */,
 			);
 			name = mre;
 			path = ../mre;
@@ -303,6 +318,8 @@
 				843D411E172C38EF00AC2DA1 /* main.m in Sources */,
 				B5441E7D18BFE2150051ABA6 /* model.cpp in Sources */,
 				B5441EA218BFF25F0051ABA6 /* MREDataLoader.m in Sources */,
+				B5C42F6F18F34DD300E87DFE /* camera.cpp in Sources */,
+				B5C42F6C18F3490900E87DFE /* light.cpp in Sources */,
 				843D4122172C38EF00AC2DA1 /* MREAppDelegate.m in Sources */,
 				843D412B172C38EF00AC2DA1 /* MREViewController.mm in Sources */,
 				84330E0D172DD3D200A4CBBB /* MREMaterialsView.m in Sources */,
@@ -312,6 +329,7 @@
 				B5441E7F18BFE2150051ABA6 /* texture_buffer.cpp in Sources */,
 				842564C3172F23130079B651 /* MREMenuViewController.m in Sources */,
 				B5441E7E18BFE2150051ABA6 /* node.cpp in Sources */,
+				B5C42F7218F35A4000E87DFE /* texture_manager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,5 @@
 //
-//  Copyright 2013, Andrii Mamchur
+//  Copyright 2013-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -96,16 +96,16 @@ namespace mre {
     }
     
     void effect::apply_default(EPVRTPFXUniformSemantic semantic, GLuint location, const SPODMaterial &material) {
-        PVRTMat4 projection = model.get_projection();
-        PVRTMat4 view = model.get_view();
+        PVRTMat4 projection = model.camera.projection;
+        PVRTMat4 view = model.camera.view;
         PVRTMat4 world = model.get_world();
         PVRTMat4 world_view = view * world;
         PVRTMat4 mvp = projection * world_view;
         PVRTMat4 world_view_i = world_view.inverse();
         PVRTMat4 world_view_it = world_view_i.transpose();
-        PVRTVec3 eye_pos = model.get_eye_pos();
-        PVRTVec3 light_pos = model.get_light_pos();
-        PVRTVec3 light_dir = model.get_light_dir();
+        PVRTVec3 eye_pos = model.camera.position;
+        PVRTVec3 light_pos = model.light.position;
+        PVRTVec3 light_dir = model.light.direction;
         PVRTVec3 light_pos_eye = light_pos * world_view_i;
         PVRTVec3 light_pos_model = light_pos * world;
         
@@ -186,6 +186,7 @@ namespace mre {
                 glUniform1f(location, sin(2 * M_PI * sec));
                 break;
             default:
+                assert(false);
                 break;
         }
     }
@@ -212,22 +213,30 @@ namespace mre {
             GLuint location = uniforms[i].nLocation;
             EPVRTPFXUniformSemantic semantic = (EPVRTPFXUniformSemantic)uniforms[i].nSemantic;
             switch (semantic) {
-                case ePVRTPFX_UsPOSITION:
+                case ePVRTPFX_UsPOSITION: {
+                    const CPODData &data = mesh.sVertex;
                     glEnableVertexAttribArray(location);
-					glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, mesh.sVertex.nStride, mesh.sVertex.pData);
+					glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, data.nStride, data.pData);
                     continue;
-                case ePVRTPFX_UsNORMAL:
+                }
+                case ePVRTPFX_UsNORMAL: {
+                    const CPODData &data = mesh.sNormals;
                     glEnableVertexAttribArray(location);
-					glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, mesh.sNormals.nStride, mesh.sNormals.pData);
+					glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, data.nStride, data.pData);
                     continue;
-                case ePVRTPFX_UsTANGENT:
+                }
+                case ePVRTPFX_UsTANGENT: {
+                    const CPODData &data = mesh.sTangents;
                     glEnableVertexAttribArray(location);
-					glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, mesh.sTangents.nStride, mesh.sTangents.pData);
+					glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, data.nStride, data.pData);
                     continue;
-                case ePVRTPFX_UsUV:
+                }
+                case ePVRTPFX_UsUV: {
+                    const CPODData &data = mesh.psUVW[0];
                     glEnableVertexAttribArray(location);
-					glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, mesh.psUVW[0].nStride, mesh.psUVW[0].pData);
+					glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, data.nStride, data.pData);
                     continue;
+                }
                 case ePVRTPFX_UsTEXTURE:
                     glUniform1i(location, uniforms[i].nIdx);
                     continue;
@@ -251,10 +260,12 @@ namespace mre {
                 case ePVRTPFX_UsPOSITION:
                 case ePVRTPFX_UsNORMAL:
                 case ePVRTPFX_UsUV:
+                case ePVRTPFX_UsTANGENT:
 					glDisableVertexAttribArray(uniforms[i].nLocation);
                     break;
             }
         }
+        
         glUseProgram(0);
     }
 }

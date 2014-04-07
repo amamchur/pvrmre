@@ -13,23 +13,27 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#ifndef PVRMRE_TEXTURE_BUFFER_H
-#define PVRMRE_TEXTURE_BUFFER_H
+#ifndef PVRMRE_CAMERA_H
+#define PVRMRE_CAMERA_H
 
 #include "OGLES2Tools.h"
 
 namespace mre {
-    class texture_buffer {
-    private:
-        GLsizei width;
-        GLsizei height;
-        GLuint texture;
-        GLuint render_buffer;
-        GLuint frame_buffer;
-        bool auto_delete_texture;
+    class camera {
     public:
-        texture_buffer(GLsizei width, GLsizei height, bool auto_delete_texture = false);
-        ~texture_buffer();
+        double distance;
+        double aspect;
+        double up_rotation;
+        double right_rotation;
+        PVRTVec3 position;
+        PVRTVec3 target;
+        PVRTVec3 translation;
+        
+        PVRTMat4 view;
+        PVRTMat4 projection;
+        
+        void prepare();
+        void setup(PVRTBOUNDINGBOX bounding_box);
     };
 }
 
