@@ -141,9 +141,16 @@
             "nodeName":"Top light Corte ZARI",
             "effects":[
                {
-                  "thumbnail": "w_1",
-                  "diffuse":"FF0000",
-                  "textures": ["w_1"]
+                  "thumbnail": "t2",
+                  "diffuse":"1F1F1F",
+                  "ambient":"010101",
+                  "specular":"FFFFFF"
+               },
+               {
+                  "thumbnail": "t4",
+                  "diffuse":"797979",
+                  "ambient":"000000",
+                  "specular":"101010"
                }            
             ]
          },
@@ -151,9 +158,16 @@
             "nodeName":"Object001",
             "effects":[
                {
-                  "thumbnail": "w_1",
-                  "diffuse":"00FF00",
-                  "textures": ["w_1"]
+                  "thumbnail": "t3",
+                  "diffuse":"4D372B",
+                  "ambient":"4D372B",
+                  "specular":"999999"
+               },
+               {
+                  "thumbnail": "t2",
+                  "diffuse":"0F0F0F",
+                  "ambient":"000000",
+                  "specular":"0F0F0F"
                }            
             ]
          }
